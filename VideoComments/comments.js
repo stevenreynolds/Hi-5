@@ -14,6 +14,73 @@ var player = {};     // the player element, so we can control it
 
 var getDurationInterval;
 
+
+
+$(function(){
+    var f = $('#video1'),
+    url = f.attr('src').split('?')[0],
+    action;
+
+// Listen for messages from the player
+if (window.addEventListener){
+    window.addEventListener('message', onMessageReceived, false);
+}
+else {
+    window.attachEvent('onmessage', onMessageReceived, false);
+}
+
+// Handle messages received from the player
+function onMessageReceived(e) {
+    var data = JSON.parse(e.data);
+console.log(data)
+
+    switch (data.event) {
+        case 'ready':
+        onReady();
+        break;
+
+        case 'playProgress':
+        onPlayProgress(data.data);
+        break;
+
+        case 'pause':
+        onPause();
+        break;
+
+        case 'finish':
+        onFinish();
+        break;
+    }
+
+    switch (data.method) {
+        case 'getDuration':
+            console.log(data.value);
+        break;
+
+    }
+}
+
+function onReady() {
+    console.log('Vimeo reeeeeeady')
+    post('getDuration');
+}
+
+// Helper function for sending a message to the player
+function post(action, value) {
+    var data = { method: action };
+
+    if (value) {
+        data.value = value;
+    }
+
+    f[0].contentWindow.postMessage(JSON.stringify(data), url);
+}
+
+});
+
+
+
+
 /**
  * Sets up the timeline based on the current video
  */

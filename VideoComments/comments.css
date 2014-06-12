@@ -60,5 +60,5 @@
 #video-content{
     margin: 0 auto;
     width: 570px;
-
+    position: relative;
 }
