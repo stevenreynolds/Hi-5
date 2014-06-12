@@ -1,0 +1,315 @@
+<!DOCTYPE HTML>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>YouTube JavaScript Player API controls</title>
+
+<style>
+* { box-sizing: border-box}
+body {margin: 0; padding: 0}
+body *{font-family:Verdana, Geneva, sans-serif;font-size:11px;}
+a:hover {color: #007DF8;cursor: pointer;}
+a{color: #0E7FCA; text-decoration: underline;}
+p{margin-bottom: 15px; border-bottom: 1px solid #ccc; width: 570px; padding-bottom: 10px}
+progress, input[type=range]{width: 100%; display: block; margin: 10px 0}
+input[type=text]{padding: 2px}
+</style>
+<script type="text/javascript" src="http://www.youtube.com/player_api"></script>
+
+<script>    
+    //http://www.andrewchart.co.uk/blog/web-design/youtube-chromeless-api-fullscreen
+    //ver en youtube: player.getVideoUrl() en la api
+
+    //create the player object
+    var player = {};
+
+    
+    function onYouTubeIframeAPIReady() {
+
+        //add functions to player on ready
+        player.ytcplayerId = new YT.Player('ytcplayerId');
+
+
+        //Id vars
+        var playId = document.getElementById('playId');
+        var muteId = document.getElementById('muteId');
+        var stateId = document.getElementById('stateId');
+        var loadedId = document.getElementById('loadedId');
+        var progressLoadedId = document.getElementById('progressLoadedId');
+        var currentTimeId = document.getElementById('currentTimeId');
+        var rangeCurrentTimeId = document.getElementById('rangeCurrentTimeId');
+        var durationId = document.getElementById('durationId');
+        var volumeId = document.getElementById('volumeId');
+        var rangeVolumeId = document.getElementById('rangeVolumeId');
+        var qualityId = document.getElementById('qualityId');
+        var selectQualityId = document.getElementById('selectQualityId');
+        var watchLaterId = document.getElementById('watchLaterId');
+
+
+        //time vars
+        var durationvalue;
+
+
+        //listeners
+        playId.addEventListener('click', setPlayVideo, false);
+        muteId.addEventListener('click', setmuteVideo, false);
+        rangeCurrentTimeId.addEventListener('change', setCurrentTime, false);
+        rangeVolumeId.addEventListener('change', setVolume, false);
+        selectQualityId.addEventListener('change', setPlaybackQuality, false);
+
+        //intervals
+        var getPlayVideoInterval = setInterval(getPlayVideo, 50);
+        getPlayVideo();
+
+        var getmuteVideoInterval = setInterval(getmuteVideo, 50);
+        getmuteVideo();
+
+        var getPlayerStateInterval = setInterval(getPlayerState, 50);
+        getPlayerState();
+
+        var getDurationInterval = setInterval(getDuration, 50);
+        getDuration();
+
+        var getVideoLoadedFractionInterval = setInterval(getVideoLoadedFraction, 50);
+        getVideoLoadedFraction();
+
+        var getCurrentTimeInterval = setInterval(getCurrentTime, 50);
+        getCurrentTime();
+
+        var getVolumeInterval = setInterval(getVolume, 50);
+        getVolume();
+
+        var getQualityInterval = setInterval(getPlaybackQuality, 50);
+        getPlaybackQuality();
+
+        var getAvailableQualityLevelsInterval = setInterval(getAvailableQualityLevels, 50);
+        getAvailableQualityLevels();
+
+        var getVideoUrlInterval = setInterval(getVideoUrl, 50);
+        getVideoUrl();
+
+
+        //player functions
+        function setPlayVideo() {
+            var state = updateytplayerInfo();
+                
+            if(state == 'playing' ) {
+                player.ytcplayerId.pauseVideo();
+            } else {
+                player.ytcplayerId.playVideo();
+            }
+        }
+        function getPlayVideo() {
+            var state = updateytplayerInfo();
+                
+            if(state == 'playing') {
+                playId.innerHTML = 'Pause';
+            } else if(state == 'ended' ) {
+                playId.innerHTML = 'Repeat';
+            } else {
+                playId.innerHTML = 'Play';
+            }
+        }
+        function setPlaybackQuality() {
+            if ('setPlaybackQuality' in player.ytcplayerId){
+                var qualityvalue = selectQualityId.value;
+                player.ytcplayerId.setPlaybackQuality(qualityvalue);
+            }
+        }
+        function getPlaybackQuality() {
+            if ('getPlaybackQuality' in player.ytcplayerId){
+                var qualityvalue = player.ytcplayerId.getPlaybackQuality();
+                qualityId.value = qualityvalue;
+            }
+        }
+        function getAvailableQualityLevels() {
+            if ('getAvailableQualityLevels' in player.ytcplayerId){
+                var qualityvalue = player.ytcplayerId.getPlaybackQuality();
+                var availableQualityvalue = player.ytcplayerId.getAvailableQualityLevels();
+                var current;                
+                
+                if(selectQualityId.options.length == 0){
+                    for (var i = 0; i < availableQualityvalue.length; i++) {
+                    //for(index in availableQualityvalue) {
+                        var item = availableQualityvalue[i];
+                        if (item == qualityvalue){
+                            current = true;
+                        } else{
+                            current = false;
+                        }
+                        selectQualityId.options[selectQualityId.options.length] = new Option(item, item, false, current);
+                        if (availableQualityvalue.length == i+1){
+                            var itemsAll = true;
+                        }
+                    }
+                    if (itemsAll == true){
+                        selectQualityId.options[selectQualityId.options.length] = new Option('default', 'default', false, false);
+                    }
+                }
+            }
+        }
+        function setmuteVideo() {
+            if(player.ytcplayerId.isMuted() == true || player.ytcplayerId.getVolume() == 0){
+                player.ytcplayerId.unMute();
+            } else{
+                player.ytcplayerId.mute();          
+            }
+        }
+        function getmuteVideo() {
+            if ('isMuted' in player.ytcplayerId){
+                if(player.ytcplayerId.isMuted() == true || player.ytcplayerId.getVolume() == 0){
+                    muteId.innerHTML = 'Unmute';
+                } else{
+                    muteId.innerHTML = 'Mute';              
+                }
+            }
+        }
+        function getVolume() {
+            if ('getVolume' in player.ytcplayerId){
+                var volumevalue = player.ytcplayerId.getVolume();
+                volumeId.value = volumevalue;
+                rangeVolumeId.value = volumevalue;
+            }
+        }
+        function setVolume() {
+            if ('setVolume' in player.ytcplayerId){
+                var volumevalue = rangeVolumeId.value;
+                player.ytcplayerId.setVolume(volumevalue);
+            }
+        }
+        function getPlayerState() {
+            var state = updateytplayerInfo();
+            stateId.value = state;
+        }
+        function getDuration() {
+            if ('getDuration' in player.ytcplayerId){
+                durationvalue = player.ytcplayerId.getDuration();
+                if(durationvalue != '') {
+                    durationId.value = secondsToHms( durationvalue );
+                    clearInterval(getDurationInterval);
+                } 
+            }
+        }
+        function getVideoLoadedFraction() {
+            if ('getVideoLoadedFraction' in player.ytcplayerId){
+                var loadedvalue = player.ytcplayerId.getVideoLoadedFraction();
+                if(loadedvalue > durationvalue) {
+                    loadedId.value = durationvalue;
+                } else{
+                    loadedId.value = secondsToHms( loadedvalue*durationvalue );
+                    progressLoadedId.value = loadedvalue*100;
+                }
+            }
+        }
+        function getCurrentTime() {
+            if ('getCurrentTime' in player.ytcplayerId){
+                var currentTimevalue = player.ytcplayerId.getCurrentTime();
+                var state = updateytplayerInfo();
+                
+                if(state == 'ended') {
+                    currentTimeId.value = secondsToHms( durationvalue );
+                    progressCurrentTimeId.value = 100;
+                    rangeCurrentTimeId.value = 100;
+                } else {
+                    currentTimeId.value = secondsToHms( currentTimevalue );
+                    progressCurrentTimeId.value = currentTimevalue*100/durationvalue;
+                    rangeCurrentTimeId.value = currentTimevalue*100/durationvalue;
+                }
+            }
+        }
+        function setCurrentTime() {
+            if ('seekTo' in player.ytcplayerId){
+                var currentTime = rangeCurrentTimeId.value;
+                player.ytcplayerId.seekTo(currentTime);
+            }
+        }
+
+        function secondsToHms(d) {
+            d = Number(d);
+            var h = Math.floor(d / 3600);
+            var m = Math.floor(d % 3600 / 60);
+            var s = Math.floor(d % 3600 % 60);
+            return ((h > 0 ? h + ":" : "") + (m > 0 ? (h > 0 && m < 10 ? "0" : "") + m + ":" : "0:") + (s < 10 ? "0" : "") + s); 
+        }
+
+        function getVideoUrl() {
+            if ('getVideoUrl' in player.ytcplayerId){
+                var videoUrl = player.ytcplayerId.getVideoUrl();                
+                watchLaterId.setAttribute('href', videoUrl)
+            }
+        }
+        function updateytplayerInfo() {
+            if ('getPlayerState' in player.ytcplayerId){
+                var playerState = player.ytcplayerId.getPlayerState();
+                switch (playerState) {
+                    case 5:
+                    return 'video cued';
+                    case 3:
+                    return 'buffering';
+                    case 2:
+                    return 'paused';
+                    case 1:
+                    return 'playing';
+                    case 0:
+                    return 'ended';
+                    case -1:
+                    return 'unstarted';
+                    default:
+                    return 'Status uncertain';
+                }
+            } else{
+                return 'loading...';
+            }
+        }
+    }
+</script>
+
+</head>
+<body>
+    <iframe id="ytcplayerId" type="text/html" width="570" height="321" src="http://www.youtube.com/embed/WOqfYMUEQso?enablejsapi=1" frameborder="0"></iframe>
+
+    <p class="progressLoaded-content">
+        Loaded <br>
+        <input type="text" size="10" id="loadedId" value="">
+        <progress id="progressLoadedId" max="100" value=""></progress>
+    </p>
+
+    <p class="progresscurrentTime-content">
+        Current time <br>
+        <input type="text" size="10" id="currentTimeId" value="">
+        <progress id="progressCurrentTimeId" max="100" value=""></progress>
+        <input id="rangeCurrentTimeId" type="range" value="" max="100">
+    </p>
+
+    <p class="controls-content">
+        <a id="playId">Play</a> |  
+        <a id="muteId">Mute</a> |  
+        <a id="watchLaterId">Watch on YouTube</a>
+    </p>
+
+    <p class="volume-content">
+        Volume <br>
+        <input type="text" size="10" id="volumeId" value="" max="100">
+        <input id="rangeVolumeId" type="range" value="" max="100">
+    </p>
+
+    <p class="controls-content">
+        State
+        <input type="text" size="10" id="stateId" value="">
+        Duration
+        <input type="text" size="10" id="durationId" value="">
+        
+    </p>
+
+    <p class="quality-content">
+        Current quality
+        <input type="text" size="10" id="qualityId" value="">
+        Change quality 
+        <select id="selectQualityId"></select> (available formats)
+        
+    </p>
+
+    
+
+</body>
+</html>
