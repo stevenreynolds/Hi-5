@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html>
+<head> 
+
+<meta charset=utf-8 />
+<title>Video.js Markers</title>
+  <script src="http://code.jquery.com/jquery-2.0.3.min.js"></script>
+  <link type="text/css" rel="stylesheet" href="https://vjs.zencdn.net/4.6/video-js.css" />
+  <script src="https://vjs.zencdn.net/4.6/video.js"></script>
+
+    <!-- include videojs marker src !-->
+  <script src="https://rawgithub.com/spchuang/videojs-markers/master/src/videojs.markers.js"></script>
+  <link href="https://rawgithub.com/spchuang/videojs-markers/master/src/videojs.markers.css" rel="stylesheet">
+
+  
+  <script src="https://rawgit.com/eXon/videojs-youtube/master/src/youtube.js"></script>
+  
+  
+</head>
+<body>
+  <h1>Video.js Example Embed</h1>
+  <p>Demo for <a href="https://github.com/spchuang/videojs-markers">videojs-markers</a></p>
+ 
+<!--   <video id="demo_video" class="video-js vjs-default-skin" controls preload="auto" width="640" height="268" 
+  data-setup='{ "asdf": true }'>
+    <source src="http://vjs.zencdn.net/v/oceans.mp4" type='video/mp4'>
+    <source src="http://vjs.zencdn.net/v/oceans.webm" type='video/webm'>
+  </video> -->
+     
+<!--    <video id="demo_video" src="http://www.youtube.com/watch?v=v1uyQZNg2vE" class="video-js vjs-default-skin" controls preload="auto" width="640" height="360" data-setup='{ "techOrder": ["youtube"] }'>
+  </video> -->
+
+  
+<!--   <video id="demo_video" class="video-js vjs-default-skin" controls preload="none" width="640" height="360"
+    data-setup='{"techOrder":["youtube","html5"],"ytcontrols":false}'>
+  <source src="http://www.youtube.com/watch?v=v1uyQZNg2vE" type='video/youtube' />
+</video>
+ -->
+
+  <video id="vid1" src="" class="video-js vjs-default-skin" controls preload="auto" width="640" height="360">
+   
+   <script type="text/javascript">
+     videojs('vid1', { "techOrder": ["youtube"], "src": "http://www.youtube.com/watch?v=xjS6SftYQaQ" }).ready(function() {
+    // Cue a video using ended event
+  // Most video.js events are supported
+    this.one('ended', function() {
+      this.src('http://www.youtube.com/watch?v=jofNR_WkoCE');
+    this.play();
+
+this.markers({
+  setting: {
+    //set style, markertip, and breakOverlay
+    markerStyle: {
+      'width':'8px',
+      'background-color': 'orange'
+    },
+    markerTip:{
+      display: true,
+      default_text: "Ad break"
+    },
+    breakOverlay:{
+      display: true,
+      display_time: 3,
+      default_text: "This is an ad break ",
+
+      //overlaid box style
+      style:{
+        'height': '30%',
+        'background-color': 'rgba(200,80,15,0.8)',
+        'color': 'white',
+        'font-size': '18px'
+      }
+    }
+  },
+  marker_breaks:[9.5, 16, 28, 36],
+  marker_text  :['text1','text2','text3','text4']
+});
+
+
+    });
+  });
+
+
+   //var video = videojs('vid1');
+   // video.ready(function(){
+
+// console.log('readay')
+
+   // })
+
+   </script>
+
+</body>
+</html>

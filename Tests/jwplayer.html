@@ -1,0 +1,43 @@
+<html>
+<head>
+<script src="http://www.google.com/jsapi?key=ABQIAAAAQO2RPu5r12mVC40HMDIFHRQqrBpdv_jP_dFl8Cw_MxS37sDB3xTXnsXso23z1ROPVCqEVVv6cqz_cA" type="text/javascript"></script>
+
+
+<link rel="stylesheet" href="http://support-static.jwplayer.com.s3-website-us-east-1.amazonaws.com/css/reset.css" type="text/css" media="screen">
+<link rel="stylesheet" href="http://support-static.jwplayer.com.s3-website-us-east-1.amazonaws.com/css/jwsupport.css" type="text/css" media="screen"> 
+<script type="text/javascript" src="http://support-static.jwplayer.com.s3-website-us-east-1.amazonaws.com/js/jquery-1.9.1.js"></script>
+<script type="text/javascript">(function() { jQuery.noConflict(); }())</script>
+<script type="text/javascript" src="http://support-static.jwplayer.com.s3-website-us-east-1.amazonaws.com/js/jquery-ui-1.10.3.custom.min.js"></script>
+<script type="text/javascript" src="http://support-static.jwplayer.com.s3-website-us-east-1.amazonaws.com/js/support.js"></script> 
+<!-- <script src="http://jwpsrv.com/library/5V3tOP97EeK2SxIxOUCPzg.js"></script> -->
+
+
+<script src="http://jwpsrv.com/library/AqFhtu2PEeOMGiIACyaB8g.js"></script>
+</head>
+
+<body>
+
+<div id="container">&nbsp;</div>
+
+
+<script type="text/javascript">
+jwplayer("container").setup({
+  image: "http://content.jwplatform.com/thumbs/q1fx20VZ-640.jpg",
+  file: "http://content.jwplatform.com/videos/q1fx20VZ-640.mp4",
+  tracks: [{ 
+    file: 'http://content.jwplatform.com/tracks/XtwSLSdq.txt',
+    kind: 'chapters'
+  }],
+  width: 640,
+  height: 270
+});
+
+    // jwplayer("container").setup({
+    //     file: "http://www.youtube.com/watch?v=8CjdLYBDUqw",
+    //     width: 640,
+    //     height: 360
+    // });
+</script>
+
+</body>
+</html>
