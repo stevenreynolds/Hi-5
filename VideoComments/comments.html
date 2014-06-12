@@ -16,172 +16,17 @@ input[type=text]{padding: 2px}
 </style>
 
 <script type="text/javascript" src="http://www.youtube.com/player_api"></script>
-
-<script>    
-    //create the player object
-    var player = {};
-    
-    function onYouTubeIframeAPIReady() {
-
-        player.ytcplayerId = new YT.Player('ytcplayerId');
-
-        var playId = document.getElementById('playId');
-        var stateId = document.getElementById('stateId');
-        var currentTimeId = document.getElementById('currentTimeId');
-        var rangeCurrentTimeId = document.getElementById('rangeCurrentTimeId');
-        var durationId = document.getElementById('durationId');
-        var watchLaterId = document.getElementById('watchLaterId');
-
-        //time vars
-        var durationvalue;
-
-        //listeners
-        playId.addEventListener('click', setPlayVideo, false);
-        rangeCurrentTimeId.addEventListener('change', setCurrentTime, false);
-
-        //intervals
-        var getPlayVideoInterval = setInterval(getPlayVideo, 50);
-        getPlayVideo();
-
-        var getPlayerStateInterval = setInterval(getPlayerState, 50);
-        getPlayerState();
-
-        var getDurationInterval = setInterval(getDuration, 50);
-        getDuration();
-
-        var getCurrentTimeInterval = setInterval(getCurrentTime, 50);
-        getCurrentTime();
-
-        var getVideoUrlInterval = setInterval(getVideoUrl, 50);
-        getVideoUrl();
-
-
-        //player functions
-        function setPlayVideo() {
-            var state = updateytplayerInfo();
-                
-            if(state == 'playing' ) {
-                player.ytcplayerId.pauseVideo();
-            } else {
-                player.ytcplayerId.playVideo();
-            }
-        }
-
-        function getPlayVideo() {
-            var state = updateytplayerInfo();
-                
-            if(state == 'playing') {
-                playId.innerHTML = 'Pause';
-            } else if(state == 'ended' ) {
-                playId.innerHTML = 'Repeat';
-            } else {
-                playId.innerHTML = 'Play';
-            }
-        }
-
-        function getPlayerState() {
-            var state = updateytplayerInfo();
-            stateId.value = state;
-        }
-
-        function getDuration() {
-            if ('getDuration' in player.ytcplayerId){
-                durationvalue = player.ytcplayerId.getDuration();
-                if(durationvalue != '') {
-                    durationId.value = secondsToHms( durationvalue );
-                    clearInterval(getDurationInterval);
-                } 
-            }
-        }
-
-        function getCurrentTime() {
-            if ('getCurrentTime' in player.ytcplayerId){
-                var currentTimevalue = player.ytcplayerId.getCurrentTime();
-                var state = updateytplayerInfo();
-                
-                if(state == 'ended') {
-                    currentTimeId.value = secondsToHms( durationvalue );
-                    progressCurrentTimeId.value = 100;
-                    rangeCurrentTimeId.value = 100;
-                } else {
-                    currentTimeId.value = secondsToHms( currentTimevalue );
-                    progressCurrentTimeId.value = currentTimevalue*100/durationvalue;
-                    rangeCurrentTimeId.value = currentTimevalue*100/durationvalue;
-                }
-            }
-        }
-
-        function setCurrentTime() {
-            if ('seekTo' in player.ytcplayerId){
-                var currentTime = rangeCurrentTimeId.value;
-                player.ytcplayerId.seekTo(currentTime);
-            }
-        }
-
-        function secondsToHms(d) {
-            d = Number(d);
-            var h = Math.floor(d / 3600);
-            var m = Math.floor(d % 3600 / 60);
-            var s = Math.floor(d % 3600 % 60);
-            return ((h > 0 ? h + ":" : "") + (m > 0 ? (h > 0 && m < 10 ? "0" : "") + m + ":" : "0:") + (s < 10 ? "0" : "") + s); 
-        }
-
-        function getVideoUrl() {
-            if ('getVideoUrl' in player.ytcplayerId){
-                var videoUrl = player.ytcplayerId.getVideoUrl();                
-                watchLaterId.setAttribute('href', videoUrl)
-            }
-        }
-
-        function updateytplayerInfo() {
-            if ('getPlayerState' in player.ytcplayerId){
-                var playerState = player.ytcplayerId.getPlayerState();
-                switch (playerState) {
-                    case 5:
-                    return 'video cued';
-                    case 3:
-                    return 'buffering';
-                    case 2:
-                    return 'paused';
-                    case 1:
-                    return 'playing';
-                    case 0:
-                    return 'ended';
-                    case -1:
-                    return 'unstarted';
-                    default:
-                    return 'Status uncertain';
-                }
-            } else{
-                return 'loading...';
-            }
-        }
-    }
-</script>
+<script type="text/javascript" src="jquery.js"></script>
+<script type="text/javascript" src="comments.js"></script>
+<link rel="stylesheet" type="text/css" href="comments.css">
 
 </head>
 <body>
-    <iframe id="ytcplayerId" type="text/html" width="570" height="321" src="http://www.youtube.com/embed/WOqfYMUEQso?enablejsapi=1" frameborder="0"></iframe>
+    <div id='video-content'>
 
-    <p class="progresscurrentTime-content">
-        Current time <br>
-        <input type="text" size="10" id="currentTimeId" value="">
-        <progress id="progressCurrentTimeId" max="100" value=""></progress>
-        <input id="rangeCurrentTimeId" type="range" value="" max="100">
-    </p>
+        <iframe id="movie_player" type="text/html" width="570" height="321" src="http://www.youtube.com/embed/WOqfYMUEQso?enablejsapi=1" frameborder="0"></iframe>
 
-    <p class="controls-content">
-        <a id="playId">Play</a> |  
-        <a id="muteId">Mute</a> |  
-        <a id="watchLaterId">Watch on YouTube</a>
-    </p>
-
-    <p class="controls-content">
-        State
-        <input type="text" size="10" id="stateId" value="">
-        Duration
-        <input type="text" size="10" id="durationId" value="">
-    </p>
+    </div>
 
 </body>
 </html>
