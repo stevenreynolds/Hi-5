@@ -1,0 +1,49 @@
+{
+ "kind": "youtube#channelListResponse",
+ "etag": "\"QVyS2yjpsZ-tKkk4JvgYeO_YkzY/W8A2g-J7MMfErRabuEqmIP1HP6w\"",
+ "pageInfo": {
+  "totalResults": 1,
+  "resultsPerPage": 1
+ },
+ "items": [
+  {
+
+   "kind": "youtube#channel",
+   "etag": "\"QVyS2yjpsZ-tKkk4JvgYeO_YkzY/jUTRMSavN4D_xMsu2UzpO_XaMd0\"",
+   "id": "UCbRX-3jdNlC95Ek6tr-e5ug",
+   "snippet": {
+    "title": "Joël Galeran",
+    "description": "",
+    "publishedAt": "2011-06-22T07:01:27.000Z",
+    "thumbnails": {
+     "default": {
+      "url": "https://yt3.ggpht.com/-PjWtPPwjQY8/AAAAAAAAAAI/AAAAAAAAAAA/CWXEDt_ny8Q/s88-c-k-no/photo.jpg"
+     },
+     "medium": {
+      "url": "https://yt3.ggpht.com/-PjWtPPwjQY8/AAAAAAAAAAI/AAAAAAAAAAA/CWXEDt_ny8Q/s240-c-k-no/photo.jpg"
+     },
+     "high": {
+      "url": "https://yt3.ggpht.com/-PjWtPPwjQY8/AAAAAAAAAAI/AAAAAAAAAAA/CWXEDt_ny8Q/s240-c-k-no/photo.jpg"
+     }
+    }
+   },
+   "contentDetails": {
+    "relatedPlaylists": {
+     "likes": "LLbRX-3jdNlC95Ek6tr-e5ug",
+     "favorites": "FLbRX-3jdNlC95Ek6tr-e5ug",
+     "uploads": "UUbRX-3jdNlC95Ek6tr-e5ug",
+     "watchHistory": "HLbRX-3jdNlC95Ek6tr-e5ug",
+     "watchLater": "WLbRX-3jdNlC95Ek6tr-e5ug"
+    },
+    "googlePlusUserId": "111791087198981696846"
+   },
+   "statistics": {
+    "viewCount": "0",
+    "commentCount": "0",
+    "subscriberCount": "0",
+    "hiddenSubscriberCount": false,
+    "videoCount": "2"
+   }
+  }
+ ]
+}
