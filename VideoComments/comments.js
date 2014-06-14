@@ -11,107 +11,125 @@ var comment;    // an element containing the author's name and the comment
 var pointer;    // shows the time referenced in the comment in the player
 
 var player = {};     // the player element, so we can control it
+var videoType;
 
 var getDurationInterval;
-
-
-
-$(function(){
-    var f = $('#video1'),
-    url = f.attr('src').split('?')[0],
-    action;
-
-// Listen for messages from the player
-if (window.addEventListener){
-    window.addEventListener('message', onMessageReceived, false);
-}
-else {
-    window.attachEvent('onmessage', onMessageReceived, false);
-}
-
-// Handle messages received from the player
-function onMessageReceived(e) {
-    var data = JSON.parse(e.data);
-console.log(data)
-
-    switch (data.event) {
-        case 'ready':
-        onReady();
-        break;
-
-        case 'playProgress':
-        onPlayProgress(data.data);
-        break;
-
-        case 'pause':
-        onPause();
-        break;
-
-        case 'finish':
-        onFinish();
-        break;
-    }
-
-    switch (data.method) {
-        case 'getDuration':
-            console.log(data.value);
-        break;
-
-    }
-}
-
-function onReady() {
-    console.log('Vimeo reeeeeeady')
-    post('getDuration');
-}
-
-// Helper function for sending a message to the player
-function post(action, value) {
-    var data = { method: action };
-
-    if (value) {
-        data.value = value;
-    }
-
-    f[0].contentWindow.postMessage(JSON.stringify(data), url);
-}
-
-});
-
-
 
 
 /**
  * Sets up the timeline based on the current video
  */
 function onYouTubeIframeAPIReady() {
-    //player.video = new YT.Player('movie_player');
 
-    player.video = new YT.Player('movie_player', {
-      height: '390',
-      width: '640',
-      //videoId: 'M7lc1UVf-VE',
-      events: {
-        'onReady': onPlayerReady,
-        //'onStateChange': onPlayerStateChange
-      }
+    $(function(){
+
+    if( $("#video").hasClass('youtube') ) {
+        videoType = 'youtube';
+
+        player.video = new YT.Player('video', {
+          height: '390',
+          width: '640',
+          //videoId: 'M7lc1UVf-VE',
+          events: {
+            'onReady': onPlayerReady,
+            //'onStateChange': onPlayerStateChange
+          }
+        });
+    }
+
     });
 
 }
 
+$(function(){
+    
+    if ( $("#video").hasClass('vimeo') ){
+        videoType = 'vimeo';
+
+        player = $('#video');
+        url = player.attr('src').split('?')[0];
+
+        // Listen for messages from the player
+        if (window.addEventListener){
+            window.addEventListener('message', onMessageReceived, false);
+        }
+        else {
+            window.attachEvent('onmessage', onMessageReceived, false);
+        }
+
+        // Handle messages received from the player
+        function onMessageReceived(e) {
+            var data = JSON.parse(e.data);
+            console.log(data)
+
+            switch (data.event) {
+                case 'ready':
+                onPlayerReady();
+                break;
+
+                case 'playProgress':
+                onPlayProgress(data.data);
+                break;
+
+                case 'pause':
+                onPause();
+                break;
+
+                case 'finish':
+                onFinish();
+                break;
+            }
+
+            switch (data.method) {
+                case 'getDuration':
+                    console.log(data.value);
+                break;
+
+            }
+        }
+
+
+        
+
+    }
+
+});
+
+// Helper function for sending a message to the player
+function vimeoPost(action, value) {
+    var data = { method: action };
+
+    if (value) {
+        data.value = value;
+    }
+
+    player[0].contentWindow.postMessage(JSON.stringify(data), url);
+}
+
+
+
 function onPlayerReady() {
+    if(videoType === 'vimeo'){
+        console.log('Vimeo reeeeeeady')
+    }
+
     container = document.getElementById("video-content");
     if (container !== null) {
         panel = container.firstChild;
         
         // get all necessart player data
-        iframe = document.getElementById("movie_player");
+        iframe = document.getElementById("video");
         width = 570;
         videoid = player.video;
 
-        getDurationInterval = setInterval(getDuration, 50);       
-        getDuration();
-
+        if(videoType === 'vimeo'){
+            vimeoPost('getDuration');
+        } 
+        else {
+            getDurationInterval = setInterval(getDuration, 50);       
+            getDuration();
+        }
+        
         // the timeline element holds all the avatars
         timeline = document.createElement("div");
         timeline.id = "timeline";
@@ -140,6 +158,8 @@ function getDuration() {
         if(duration != '') {
             clearInterval(getDurationInterval);
         } 
+    } else {
+        clearInterval(getDurationInterval);
     }
 }
 
@@ -153,37 +173,27 @@ function setCurrentTime(time) {
     //         player.video.playVideo();
     //     }
     // }
-
-    if ('seekTo' in player.video){
-        player.video.seekTo(time, true);
+    if(videoType === 'vimeo'){
+        console.log('sss')
+        vimeoPost('seekTo', time);
+    } 
+    else {
+        console.log('sssqqq')
+        if ('seekTo' in player.video){
+            player.video.seekTo(time, true);
+        }
     }
+    
 }
-
-/*
-// add mouse event handlers for comment displaying
-$(document).on("mousemove", ".avatar", function(e) {
-    // get the comment which belongs to this avatar
-    var c = comments[e.target.id.substr(6)];
-    // position the comment, so that it is exactly aligned with the avatar
-    $(".comment").css("left", (c.left < 600 ? c.left + 40: 640)) .css("top", 0)
-        // and fill the content
-        .html("<strong>" + c.author + "</strong><br> " + c.comment).show();
-    // add pointer to the time which the comment references
-    $(".pointer").css("left", c.left).css("top", -30).show();
-    // when the mouse leaves the avatar hide the pointer and the comment
-}).on("mouseleave", ".avatar", function(e) {
-    $(".pointer").hide();
-    $(".comment").hide();
-});
-*/
 
 // add an onclick event to the avatar, so we can seek to the referenced time
 $(document).on("click", ".avatar", function(e) {
     e.preventDefault();
+
     // get the comment to which this avatar is linked
     var c = comments[e.target.id.substr(6)];
     // move the video to the desired time
-    player.video.seekTo(c.time, true);
+    setCurrentTime(c.time);
 });
 
 
@@ -201,7 +211,7 @@ function getComments(start) {
         comment.uri = 'http://google.fr';
 
         // time converted to seconds from the beginning
-        var seconds = 300;
+        var seconds = 3;
         // the x-position of the avatar
         var pos = width / duration * seconds;
         comment.time = seconds;
