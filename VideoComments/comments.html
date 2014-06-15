@@ -17,19 +17,25 @@ input[type=text]{padding: 2px}
 
 <script type="text/javascript" src="http://www.youtube.com/player_api"></script>
 <script type="text/javascript" src="jquery.js"></script>
+<script src="http://a.vimeocdn.com/js/froogaloop2.min.js"></script>
+<!-- <script type="text/javascript" src="https://cdn.rawgit.com/vimeo/player-api/master/javascript/froogaloop.js"></script> -->
 
 <script type="text/javascript" src="comments.js"></script>
+
 <link rel="stylesheet" type="text/css" href="comments.css">
 
 </head>
 <body>
     <div id='video-content'>
+<!-- 
+        <iframe id="video" class="youtube" type="text/html" width="570" height="321" src="http://www.youtube.com/embed/4B36Lr0Unp4?enablejsapi=1" frameborder="0"></iframe>
+ -->
+        <iframe id="video" class="vimeo" src="http://player.vimeo.com/video/22439234?api=1&amp;player_id=video" width="570" height="321" frameborder="0" webkitAllowFullScreen mozallowfullscreen allowFullScreen></iframe>
 
-        <!-- <iframe id="video" class="youtube" type="text/html" width="570" height="321" src="http://www.youtube.com/embed/WOqfYMUEQso?enablejsapi=1" frameborder="0"></iframe> -->
-
-        <iframe id="video" class="vimeo" src="https://player.vimeo.com/video/22439234?api=1&amp;player_id=video" width="570" height="321" frameborder="0" webkitAllowFullScreen mozallowfullscreen allowFullScreen></iframe>
-
-        <div id="lol"></div>
+        <form id="form">
+            <input id="comment" type="text" placeholder="Your comment">
+            <input id="submitComment" type="submit" value="Submit">
+        </form>
 
     </div>
 

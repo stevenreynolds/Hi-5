@@ -12,6 +12,11 @@ $(function(){
             function onPlay() {
                 froogaloop.addEvent('play',
                 function(data) {
+
+                    froogaloop.api('getCurrentTime', function(value) {
+                        console.log(value)
+                    });
+                    
                     console.log('play event');
                 });
             }

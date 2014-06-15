@@ -51,66 +51,49 @@ $(function(){
     if ( $("#video").hasClass('vimeo') ){
         videoType = 'vimeo';
 
-        player = $('#video');
-        url = player.attr('src').split('?')[0];
+        //var vimeoPlayer = document.querySelector('iframe');
+        var vimeoPlayer = $('#video')[0];
 
-        // Listen for messages from the player
-        if (window.addEventListener){
-            window.addEventListener('message', onMessageReceived, false);
-        }
-        else {
-            window.attachEvent('onmessage', onMessageReceived, false);
-        }
+        $f(vimeoPlayer).addEvent('ready', ready);
 
-        // Handle messages received from the player
-        function onMessageReceived(e) {
-            var data = JSON.parse(e.data);
-            console.log(data)
+        function ready(player_id) {
 
-            switch (data.event) {
-                case 'ready':
-                onPlayerReady();
-                break;
+            player = $f(player_id);
 
-                case 'playProgress':
-                onPlayProgress(data.data);
-                break;
+            function setupEventListeners() {
+                function onPlay() {
+                    player.addEvent('play',
+                    function(data) {
 
-                case 'pause':
+                        player.api('getCurrentTime', function(value) {
+                            console.log(value)
+                        });
+                        
+                        console.log('play event');
+                    });
+                }
+                function onPause() {
+                    player.addEvent('pause',
+                    function(data) {
+                        console.log('pause event');
+                    });
+                }
+                function onFinish() {
+                    player.addEvent('finish',
+                    function(data) {
+                        console.log('finish');
+                    });
+                }
+                onPlay();
                 onPause();
-                break;
-
-                case 'finish':
                 onFinish();
-                break;
             }
-
-            switch (data.method) {
-                case 'getDuration':
-                    duration = data.value;
-                break;
-
-            }
+            setupEventListeners();
         }
-
-
-        
 
     }
 
 });
-
-// Helper function for sending a message to the player
-function vimeoPost(action, value) {
-    var data = { method: action };
-
-    if (value) {
-        data.value = value;
-    }
-
-    player[0].contentWindow.postMessage(JSON.stringify(data), url);
-}
-
 
 
 function onPlayerReady() {
@@ -127,13 +110,8 @@ function onPlayerReady() {
         width = 570;
         videoid = player.video;
 
-        if(videoType === 'vimeo'){
-            vimeoPost('getDuration');
-        } 
-        else {
-            getDurationInterval = setInterval(getDuration, 50);       
-            getDuration();
-        }
+        getDurationInterval = setInterval(getDuration, 50);       
+        getDuration();
         
         // the timeline element holds all the avatars
         timeline = document.createElement("div");
@@ -162,24 +140,29 @@ function getDuration() {
         duration = player.video.getDuration();
         if(duration != '') {
             clearInterval(getDurationInterval);
-        } 
+        }
+        return duration; 
     } else {
         clearInterval(getDurationInterval);
+
+        player.api('getDuration', function(value) {
+            duration = value;
+            return duration;
+        });
     }
+
 }
 
 function setCurrentTime(time) {
     // if ('getPlayerState' in player.video){
     //     var playerState = player.video.getPlayerState();
-
     //     alert(playerState)
-
     //     if(playerState == -1){
     //         player.video.playVideo();
     //     }
     // }
     if(videoType === 'vimeo'){
-        vimeoPost('seekTo', time);
+        player.api('seekTo', time);
     } 
     else {
         if ('seekTo' in player.video){
@@ -189,13 +172,15 @@ function setCurrentTime(time) {
     
 }
 
-function getCurrentTime() {
+function getCurrentTime(callback) {
     if(videoType === 'vimeo'){
-        console.log( vimeoPost('getCurrentTime') );
+        player.api('getCurrentTime', function(value) {
+            callback(value);
+        });
     } 
     else {
         if ('getCurrentTime' in player.video){
-            return player.video.getCurrentTime();
+            callback(player.video.getCurrentTime());
         }
     }
 }
@@ -234,23 +219,25 @@ function getComments(start) {
 
 $(document).on('submit','form',function(e){
     e.preventDefault();
-    console.log('fsddfs')
 
     var comment = {};
     comment.comment = $('#comment').val();
     comment.author = 'Jojo';
-    comment.uri = 'http://google.fr';
+    //comment.uri = 'http://google.fr';
 
+    getCurrentTime(function(seconds){
+        // the x-position of the avatar
+        var pos = width / duration * seconds;
+        comment.time = seconds;
+        comment.seconds = seconds;
+        comment.left = pos;
 
-    var seconds = getCurrentTime();
-    // the x-position of the avatar
-    var pos = width / duration * seconds;
-    comment.time = seconds;
-    comment.seconds = seconds;
-    comment.left = pos;
+        comments.push(comment);
+        localStorage.setItem('comments', JSON.stringify(comments));
 
-    comments.push(comment);
-    localStorage.setItem('comments', JSON.stringify(comments));
+    });
+
+    
 
 });
 
