@@ -1,0 +1,108 @@
+{
+ "kind": "youtube#playlistItemListResponse",
+ "etag": "\"QVyS2yjpsZ-tKkk4JvgYeO_YkzY/n_1KKya19re5MptbZdpfpqGzwMY\"",
+ "pageInfo": {
+  "totalResults": 2,
+  "resultsPerPage": 5
+ },
+ "items": [
+  {
+
+   "kind": "youtube#playlistItem",
+   "etag": "\"QVyS2yjpsZ-tKkk4JvgYeO_YkzY/uf-EJdjcdMoD88nzYEXatUpCXd8\"",
+   "id": "UUSJQkYjt2yF8jfJmzBNOhXqCccadD85Hf",
+   "snippet": {
+    "publishedAt": "2012-10-14T22:43:26.000Z",
+    "channelId": "UCbRX-3jdNlC95Ek6tr-e5ug",
+    "title": "MAJ Freebox 1.2.2",
+    "description": "",
+    "thumbnails": {
+     "default": {
+      "url": "https://i1.ytimg.com/s_vi/6XogDHXtLTw/default.jpg?sqp=CPSY8pwF&rs=AOn4CLCggW_VnolwPCqdjrqbGiMMgp5Q2Q",
+      "width": 120,
+      "height": 90
+     },
+     "medium": {
+      "url": "https://i1.ytimg.com/s_vi/6XogDHXtLTw/mqdefault.jpg?sqp=CPSY8pwF&rs=AOn4CLAMDjc1L94euoYDX1m23PdaHUUEcw",
+      "width": 320,
+      "height": 180
+     },
+     "high": {
+      "url": "https://i1.ytimg.com/s_vi/6XogDHXtLTw/hqdefault.jpg?sqp=CPSY8pwF&rs=AOn4CLCPyNuLXAG0-rBdffOhp9QAnopc0g",
+      "width": 480,
+      "height": 360
+     },
+     "standard": {
+      "url": "https://i1.ytimg.com/s_vi/6XogDHXtLTw/sddefault.jpg?sqp=CPSY8pwF&rs=AOn4CLD0mcZ0t0lHaX3AskiKBPvfJFbkfA",
+      "width": 640,
+      "height": 480
+     },
+     "maxres": {
+      "url": "https://i1.ytimg.com/s_vi/6XogDHXtLTw/maxresdefault.jpg?sqp=CPSY8pwF&rs=AOn4CLBK_ExlPQfzqzmTfXATK0Qcj7R8Fg",
+      "width": 1280,
+      "height": 720
+     }
+    },
+    "channelTitle": "Joël Galeran",
+    "playlistId": "UUbRX-3jdNlC95Ek6tr-e5ug",
+    "position": 0,
+    "resourceId": {
+     "kind": "youtube#video",
+     "videoId": "6XogDHXtLTw"
+    }
+   },
+   "status": {
+    "privacyStatus": "private"
+   }
+  },
+  {
+
+   "kind": "youtube#playlistItem",
+   "etag": "\"QVyS2yjpsZ-tKkk4JvgYeO_YkzY/b52CcFUJoBJtZ2l1Uk5zMteMOHQ\"",
+   "id": "UUSJQkYjt2yF-ka6MHQ8xwJQ8Mvy1C-uct",
+   "snippet": {
+    "publishedAt": "2011-06-22T11:17:38.000Z",
+    "channelId": "UCbRX-3jdNlC95Ek6tr-e5ug",
+    "title": "MacWay Promo Fail",
+    "description": "Produits Inexistants .... http://www.macway.com/",
+    "thumbnails": {
+     "default": {
+      "url": "https://i1.ytimg.com/s_vi/KlhAjqtmEC8/default.jpg?sqp=CPSY8pwF&rs=AOn4CLAUN-v8wTLes2c5n5MGn_dMM7LgAA",
+      "width": 120,
+      "height": 90
+     },
+     "medium": {
+      "url": "https://i1.ytimg.com/s_vi/KlhAjqtmEC8/mqdefault.jpg?sqp=CPSY8pwF&rs=AOn4CLAmX3sH_1p1gCleVP_yX5ICABVU9A",
+      "width": 320,
+      "height": 180
+     },
+     "high": {
+      "url": "https://i1.ytimg.com/s_vi/KlhAjqtmEC8/hqdefault.jpg?sqp=CPSY8pwF&rs=AOn4CLBzmEBgtbOFF9FJ7i2exZALjIUu6w",
+      "width": 480,
+      "height": 360
+     },
+     "standard": {
+      "url": "https://i1.ytimg.com/s_vi/KlhAjqtmEC8/sddefault.jpg?sqp=CPSY8pwF&rs=AOn4CLD-TvvWvV869ogxYrxRRBxbpvzclw",
+      "width": 640,
+      "height": 480
+     },
+     "maxres": {
+      "url": "https://i1.ytimg.com/s_vi/KlhAjqtmEC8/maxresdefault.jpg?sqp=CPSY8pwF&rs=AOn4CLBVrWPpW11DjgPqUB4YhGqO-t3tfA",
+      "width": 1280,
+      "height": 720
+     }
+    },
+    "channelTitle": "Joël Galeran",
+    "playlistId": "UUbRX-3jdNlC95Ek6tr-e5ug",
+    "position": 1,
+    "resourceId": {
+     "kind": "youtube#video",
+     "videoId": "KlhAjqtmEC8"
+    }
+   },
+   "status": {
+    "privacyStatus": "private"
+   }
+  }
+ ]
+}
