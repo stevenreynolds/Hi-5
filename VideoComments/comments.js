@@ -14,7 +14,7 @@ var player = {};     // the player element, so we can control it
 var videoType;
 
 var getDurationInterval;
-
+var getCommentsInterval;
 
 /**
  * Sets up the timeline based on the current video
@@ -82,7 +82,7 @@ $(function(){
 
             switch (data.method) {
                 case 'getDuration':
-                    console.log(data.value);
+                    duration = data.value;
                 break;
 
             }
@@ -147,7 +147,7 @@ function onPlayerReady() {
         pointer = container.insertBefore(pointer, timeline);
 
         // start gathering comments
-        getComments();
+        getCommentsInterval = setInterval(getComments, 50);  
     }
 }
 
@@ -174,11 +174,9 @@ function setCurrentTime(time) {
     //     }
     // }
     if(videoType === 'vimeo'){
-        console.log('sss')
         vimeoPost('seekTo', time);
     } 
     else {
-        console.log('sssqqq')
         if ('seekTo' in player.video){
             player.video.seekTo(time, true);
         }
@@ -205,41 +203,52 @@ $(document).on("click", ".avatar", function(e) {
  */
 function getComments(start) {
     // save the comment's data for later use
-    var comment = {};
-        comment.comment = 'Youpi';
-        comment.author = 'Jojo';
-        comment.uri = 'http://google.fr';
+    if(duration > 0) {
+        
+        clearInterval(getCommentsInterval); 
 
-        // time converted to seconds from the beginning
-        var seconds = 3;
-        // the x-position of the avatar
-        var pos = width / duration * seconds;
-        comment.time = seconds;
-        comment.seconds = seconds;
-        comment.left = pos;
+        var comment = {};
+            comment.comment = 'Youpi';
+            comment.author = 'Jojo';
+            comment.uri = 'http://google.fr';
 
-        // generate an avatar link and put it in timeline
-        generateAvatar("avatar" + comments.length, comment);
-        // save the comment data for later use
-        comments.push(comment);
+            // time converted to seconds from the beginning
+            var seconds = 3;
+            // the x-position of the avatar
+            var pos = width / duration * seconds;
+            comment.time = seconds;
+            comment.seconds = seconds;
+            comment.left = pos;
 
-    var comment = {};
-        comment.comment = 'Test';
-        comment.author = 'Lalilou';
-        comment.uri = 'http://lalilouuuuuu.fr';
+            // generate an avatar link and put it in timeline
+            generateAvatar("avatar" + comments.length, comment);
+            // save the comment data for later use
+            comments.push(comment);
 
-        // time converted to seconds from the beginning
-        var seconds = 42;
-        // the x-position of the avatar
-        var pos = width / duration * seconds;
-        comment.time = seconds;
-        comment.seconds = seconds;
-        comment.left = pos;
+        var comment = {};
+            comment.comment = 'Test';
+            comment.author = 'Lalilou';
+            comment.uri = 'http://lalilouuuuuu.fr';
 
-        // generate an avatar link and put it in timeline
-        generateAvatar("avatar" + comments.length, comment);
-        // save the comment data for later use
-        comments.push(comment);
+            // time converted to seconds from the beginning
+            var seconds = 42;
+            // the x-position of the avatar
+            var pos = width / duration * seconds;
+
+            console.log(width)
+            console.log(duration)
+            console.log(seconds)
+
+            comment.time = seconds;
+            comment.seconds = seconds;
+            comment.left = pos;
+
+            // generate an avatar link and put it in timeline
+            generateAvatar("avatar" + comments.length, comment);
+            // save the comment data for later use
+            comments.push(comment);
+
+    }
 }
 
 /**
