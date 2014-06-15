@@ -60,15 +60,12 @@ $(function(){
 
             player = $f(player_id);
 
+            onPlayerReady();
+
             function setupEventListeners() {
                 function onPlay() {
                     player.addEvent('play',
                     function(data) {
-
-                        player.api('getCurrentTime', function(value) {
-                            console.log(value)
-                        });
-                        
                         console.log('play event');
                     });
                 }
@@ -110,8 +107,7 @@ function onPlayerReady() {
         width = 570;
         videoid = player.video;
 
-        getDurationInterval = setInterval(getDuration, 50);       
-        getDuration();
+        getDurationInterval = setInterval(getDuration, 50);
         
         // the timeline element holds all the avatars
         timeline = document.createElement("div");
@@ -135,20 +131,22 @@ function onPlayerReady() {
 }
 
 function getDuration() {
-    if ('getDuration' in player.video){
-        //duration = ytTimeToSeconds(player.video.getDuration());
-        duration = player.video.getDuration();
-        if(duration != '') {
-            clearInterval(getDurationInterval);
-        }
-        return duration; 
-    } else {
+    if(videoType === 'vimeo'){
         clearInterval(getDurationInterval);
 
         player.api('getDuration', function(value) {
             duration = value;
             return duration;
         });
+    } else {
+        if ('getDuration' in player.video){
+            //duration = ytTimeToSeconds(player.video.getDuration());
+            duration = player.video.getDuration();
+            if(duration != '') {
+                clearInterval(getDurationInterval);
+            }
+            return duration; 
+        }
     }
 
 }
@@ -203,8 +201,7 @@ $(document).on("click", ".avatar", function(e) {
  * @param  {Integer} start  number of the comment to begin at
  */
 function getComments(start) {
-    // save the comment's data for later use
-    if(duration > 0) {
+    //if(duration > 0) {
 
         clearInterval(getCommentsInterval); 
 
@@ -214,7 +211,7 @@ function getComments(start) {
             generateAvatar("avatar" + index, comment);
         });
 
-    }
+    //}
 }
 
 $(document).on('submit','form',function(e){
@@ -231,13 +228,14 @@ $(document).on('submit','form',function(e){
         comment.time = seconds;
         comment.seconds = seconds;
         comment.left = pos;
+        comment.image = 'https://creativecommons.org/images/deed/cc-logo.jpg';
 
         comments.push(comment);
         localStorage.setItem('comments', JSON.stringify(comments));
 
-    });
+        getComments();
 
-    
+    });
 
 });
 
@@ -247,7 +245,7 @@ $(document).on('submit','form',function(e){
  * @param  {String} id      id of the avatar
  * @param  {Object} comment object containing comment data
  */
-function generateAvatar (id, c) {
+function generateAvatar(id, c) {
 
     // create the avatar element
     var link = document.createElement("a");
@@ -258,11 +256,9 @@ function generateAvatar (id, c) {
 
         link = timeline.appendChild(link);
 
-        var image = 'https://creativecommons.org/images/deed/cc-logo.jpg';
-
             // offset the avatar, so that it is below its referenced time
         $("#" + id).css("left", (c.left < 600 ? c.left : 600))
-            .css("background-image", "url('" + image + "')");
+            .css("background-image", "url('" + c.image + "')");
 }
 
 /**
