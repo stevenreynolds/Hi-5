@@ -2,7 +2,7 @@ var width;     // player width
 var videoid;   // id of the video
 var duration;  // duration of the video
 
-var comments = []; // array of all comments that reference time
+var comments = new Array(); // array of all comments that reference time
 
 var container;  // container of the video info section
 var panel;      // ui button panel, above which we insert the timeline
@@ -42,6 +42,11 @@ function onYouTubeIframeAPIReady() {
 }
 
 $(function(){
+    if(localStorage && localStorage.length > 0 && localStorage.getItem('comments')){
+        comments = JSON.parse(localStorage.getItem('comments'));
+    } else {
+        localStorage.setItem('comments', JSON.stringify(comments));
+    }
     
     if ( $("#video").hasClass('vimeo') ){
         videoType = 'vimeo';
@@ -184,6 +189,17 @@ function setCurrentTime(time) {
     
 }
 
+function getCurrentTime() {
+    if(videoType === 'vimeo'){
+        console.log( vimeoPost('getCurrentTime') );
+    } 
+    else {
+        if ('getCurrentTime' in player.video){
+            return player.video.getCurrentTime();
+        }
+    }
+}
+
 // add an onclick event to the avatar, so we can seek to the referenced time
 $(document).on("click", ".avatar", function(e) {
     e.preventDefault();
@@ -204,52 +220,39 @@ $(document).on("click", ".avatar", function(e) {
 function getComments(start) {
     // save the comment's data for later use
     if(duration > 0) {
-        
+
         clearInterval(getCommentsInterval); 
 
-        var comment = {};
-            comment.comment = 'Youpi';
-            comment.author = 'Jojo';
-            comment.uri = 'http://google.fr';
+        comments = JSON.parse(localStorage.getItem('comments'));
 
-            // time converted to seconds from the beginning
-            var seconds = 3;
-            // the x-position of the avatar
-            var pos = width / duration * seconds;
-            comment.time = seconds;
-            comment.seconds = seconds;
-            comment.left = pos;
-
-            // generate an avatar link and put it in timeline
-            generateAvatar("avatar" + comments.length, comment);
-            // save the comment data for later use
-            comments.push(comment);
-
-        var comment = {};
-            comment.comment = 'Test';
-            comment.author = 'Lalilou';
-            comment.uri = 'http://lalilouuuuuu.fr';
-
-            // time converted to seconds from the beginning
-            var seconds = 42;
-            // the x-position of the avatar
-            var pos = width / duration * seconds;
-
-            console.log(width)
-            console.log(duration)
-            console.log(seconds)
-
-            comment.time = seconds;
-            comment.seconds = seconds;
-            comment.left = pos;
-
-            // generate an avatar link and put it in timeline
-            generateAvatar("avatar" + comments.length, comment);
-            // save the comment data for later use
-            comments.push(comment);
+        $.each( comments, function( index, comment ){
+            generateAvatar("avatar" + index, comment);
+        });
 
     }
 }
+
+$(document).on('submit','form',function(e){
+    e.preventDefault();
+    console.log('fsddfs')
+
+    var comment = {};
+    comment.comment = $('#comment').val();
+    comment.author = 'Jojo';
+    comment.uri = 'http://google.fr';
+
+
+    var seconds = getCurrentTime();
+    // the x-position of the avatar
+    var pos = width / duration * seconds;
+    comment.time = seconds;
+    comment.seconds = seconds;
+    comment.left = pos;
+
+    comments.push(comment);
+    localStorage.setItem('comments', JSON.stringify(comments));
+
+});
 
 /**
  * Generates an avatar for the given id and comment, looks up the author's
