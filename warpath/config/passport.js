@@ -6,7 +6,8 @@ var TwitterStrategy = require('passport-twitter').Strategy;
 var VimeoStrategy = require('passport-vimeo').Strategy;
 var GoogleStrategy = require('passport-google-oauth').OAuth2Strategy;
 var OAuthStrategy = require('passport-oauth').OAuthStrategy; // Tumblr
-var OAuth2Strategy = require('passport-oauth').OAuth2Strategy; // Venmo, Foursquare
+var OAuth2Strategy = require('passport-oauth2').Strategy; // Venmo, Foursquare
+
 var User = require('../models/User');
 var secrets = require('./secrets');
 
@@ -143,7 +144,11 @@ passport.use(new TwitterStrategy(secrets.twitter, function(req, accessToken, tok
 
 // Sign in with Google.
 
-passport.use(new GoogleStrategy(secrets.google, function(req, accessToken, refreshToken, profile, done) {
+passport.use(new GoogleStrategy(secrets.google, function(req, accessToken, refreshToken, params, profile, done) {
+// console.log(accessToken)
+// console.log(refreshToken)
+// console.log(params)
+
   if (req.user) {
     User.findOne({ google: profile.id }, function(err, existingUser) {
       if (existingUser) {
@@ -187,7 +192,33 @@ passport.use(new GoogleStrategy(secrets.google, function(req, accessToken, refre
   }
 }));
 
-passport.use(new VimeoStrategy(secrets.vimeo, function(req, accessToken, tokenSecret, profile, done) {
+// passport.use('vimeo', new OAuth2Strategy({
+//     authorizationURL: 'https://api.vimeo.com/oauth/authorize',
+//     tokenURL: 'https://api.vimeo.com/oauth/access_token',
+//     clientID: secrets.vimeo.clientId,
+//     clientSecret: secrets.vimeo.clientSecret,
+//     callbackURL: secrets.vimeo.redirectUrl,
+//     passReqToCallback: true
+//   },
+//   function(req, accessToken, refreshToken, profile, done) {
+
+//     console.log(accessToken)
+// console.log(refreshToken)
+// console.log(profile)
+// console.log(done)
+
+
+//   }
+// ));
+
+
+passport.use(new VimeoStrategy(secrets.vimeo, function(req, accessToken, refreshToken, profile, done) {
+    
+    console.log(accessToken)
+console.log(refreshToken)
+console.log(profile)
+console.log(done)
+
   if (req.user) {
     User.findOne({ vimeo: profile.id }, function(err, existingUser) {
       if (existingUser) {
@@ -196,10 +227,10 @@ passport.use(new VimeoStrategy(secrets.vimeo, function(req, accessToken, tokenSe
       } else {
         User.findById(req.user.id, function(err, user) {
           user.vimeo = profile.id;
-          user.tokens.push({ kind: 'vimeo', accessToken: accessToken, tokenSecret: tokenSecret });
+          user.tokens.push({ kind: 'vimeo', accessToken: accessToken });
           user.profile.name = user.profile.name || profile.displayName;
-          user.profile.location = user.profile.location || profile.person._json.location;
-          user.profile.picture = user.profile.picture || profile._json.person.portraits.portrait[0]._content;
+          user.profile.location = user.profile.location || profile._json.location;
+          user.profile.picture = user.profile.picture || profile._json.pictures[0].link;
           user.save(function(err) {
             req.flash('info', { msg: 'Vimeo account has been linked.' });
             done(err, user);
@@ -217,17 +248,84 @@ passport.use(new VimeoStrategy(secrets.vimeo, function(req, accessToken, tokenSe
       // so we can "fake" a vimeo email address as follows:
       user.email = profile.username + "@vimeo.com";
       user.twitter = profile.id;
-      user.tokens.push({ kind: 'vimeo', accessToken: accessToken, tokenSecret: tokenSecret });
+      user.tokens.push({ kind: 'vimeo', accessToken: accessToken });
       user.profile.name = profile.displayName;
-      user.profile.location = profile.person._json.location;
-      user.profile.picture = profile._json.person.portraits.portrait[0]._content;
+      user.profile.location = profile._json.location;
+      user.profile.picture = profile._json.pictures[0].link;
       user.save(function(err) {
         done(err, user);
       });
     });
-  }    
+  } 
 
-}));
+  }
+));
+
+
+// passport.use('foursquare', new OAuth2Strategy({
+//     authorizationURL: 'https://foursquare.com/oauth2/authorize',
+//     tokenURL: 'https://foursquare.com/oauth2/access_token',
+//     clientID: secrets.foursquare.clientId,
+//     clientSecret: secrets.foursquare.clientSecret,
+//     callbackURL: secrets.foursquare.redirectUrl,
+//     passReqToCallback: true
+//   },
+//   function(req, accessToken, refreshToken, profile, done) {
+//     User.findById(req.user._id, function(err, user) {
+//       user.tokens.push({ kind: 'foursquare', accessToken: accessToken });
+//       user.save(function(err) {
+//         done(err, user);
+//       });
+//     });
+//   }
+// ));
+
+// passport.use(new VimeoStrategy(secrets.vimeo, function(req, accessToken, tokenSecret, profile, done) {
+//   console.log(accessToken)
+//   console.log(tokenSecret)
+//   console.log(profile)
+//   console.log(done)
+
+//   if (req.user) {
+//     User.findOne({ vimeo: profile.id }, function(err, existingUser) {
+//       if (existingUser) {
+//         req.flash('errors', { msg: 'There is already a Twitter account that belongs to you. Sign in with that account or delete it, then link it with your current account.' });
+//         done(err);
+//       } else {
+//         User.findById(req.user.id, function(err, user) {
+//           user.vimeo = profile.id;
+//           user.tokens.push({ kind: 'vimeo', accessToken: accessToken, tokenSecret: tokenSecret });
+//           user.profile.name = user.profile.name || profile.displayName;
+//           user.profile.location = user.profile.location || profile.person._json.location;
+//           user.profile.picture = user.profile.picture || profile._json.person.portraits.portrait[0]._content;
+//           user.save(function(err) {
+//             req.flash('info', { msg: 'Vimeo account has been linked.' });
+//             done(err, user);
+//           });
+//         });
+//       }
+//     });
+//   } else {
+//     User.findOne({ vimeo: profile.id }, function(err, existingUser) {
+//       if (existingUser) return done(null, existingUser);
+//       var user = new User();
+//       //https://stackoverflow.com/questions/14864827/using-everyauth-passport-js-to-authenticate-with-twitter-whilst-asking-for-usern
+//       // Twitter will not provide an email address.  Period.
+//       // But a person’s twitter username is guaranteed to be unique
+//       // so we can "fake" a vimeo email address as follows:
+//       user.email = profile.username + "@vimeo.com";
+//       user.twitter = profile.id;
+//       user.tokens.push({ kind: 'vimeo', accessToken: accessToken, tokenSecret: tokenSecret });
+//       user.profile.name = profile.displayName;
+//       user.profile.location = profile.person._json.location;
+//       user.profile.picture = profile._json.person.portraits.portrait[0]._content;
+//       user.save(function(err) {
+//         done(err, user);
+//       });
+//     });
+//   }    
+
+// }));
 
 // Login Required middleware.
 

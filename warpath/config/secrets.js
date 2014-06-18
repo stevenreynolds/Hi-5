@@ -61,6 +61,11 @@ module.exports = {
   vimeo: {
     consumerKey: process.env.VIMEO_ID || '72b9d5149a45dd2e174d1fc1a5bbe579f162f6bf',
     consumerSecret: process.env.VIMEO_SECRET || '7b40f1ae77cf4e41c823c378f10d11190267e48b',
+
+    clientID: process.env.VIMEO_ID || '72b9d5149a45dd2e174d1fc1a5bbe579f162f6bf',
+    clientSecret: process.env.VIMEO_SECRET || '7b40f1ae77cf4e41c823c378f10d11190267e48b',
+
+    redirectUrl: '/auth/vimeo/callback',
     callbackURL: '/auth/vimeo/callback',
     passReqToCallback: true
   },
