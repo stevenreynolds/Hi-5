@@ -11,7 +11,7 @@
        username: 'chibijoel',
        display_name: 'Joël Galeran',
        location: 'Paris, France',
-       url: [Object],
+       url: [""],
        bio: '',
        number_of_contacts: '20',
        number_of_uploads: '0',
@@ -23,6 +23,14 @@
        number_of_groups: '14',
        profileurl: 'http://vimeo.com/chibijoel',
        videosurl: 'http://vimeo.com/chibijoel/videos',
-       portraits: [Object] 
+       "portraits":{
+        "portrait":[
+            {"height":"30","width":"30","_content":"http:\\/\\/i.vimeocdn.com\\/portrait\\/4575027_30x30.jpg"},
+            {"height":"75","width":"75","_content":"http:\\/\\/i.vimeocdn.com\\/portrait\\/4575027_75x75.jpg"},
+            {"height":"100","width":"100","_content":"http:\\/\\/i.vimeocdn.com\\/portrait\\/4575027_100x100.jpg"},
+            {"height":"300","width":"300","_content":"http:\\/\\/i.vimeocdn.com\\/portrait\\/4575027_300x300.jpg"}
+            ]
+        }
+        
     } 
 } 
