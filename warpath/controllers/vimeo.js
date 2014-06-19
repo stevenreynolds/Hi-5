@@ -12,12 +12,10 @@ lib.access_token = "d0e78b824f1882b254d378a52054386c";
 
 
 lib.request(/*options*/{
-    // This is the path for the videos contained within the staff picks channels
-    path : '/channels/staffpicks/videos',
-    // This adds the parameters to request page two, and 10 items per page
+    path : '/me/videos',
     query : {
-        page : 2,
-        per_page : 10
+        page : 1,
+        per_page : 100
     }
 }, /*callback*/function (error, body, status_code, headers) {
     if (error) {
@@ -32,7 +30,36 @@ lib.request(/*options*/{
     console.log(status_code);
     console.log('headers');
     console.log(headers);
+
+
+    async.each(body.data, function( video, callback ) {
+        var videoId = video.uri.replace('/videos/','')
+
+        lib.request(/*options*/{
+                path : '/videos/'+videoId,
+            }, /*callback*/function (error, body, status_code, headers) {
+                if (error) {
+                    console.log('error');
+                    console.log(error);
+                } else {
+                    console.log('body');
+                    console.log(body);
+                    callback();
+                }
+
+                console.log('status code');
+                console.log(status_code);
+                console.log('headers');
+                console.log(headers);
+        });
+
+    }, function(err){
+        if( err ) {
+          console.log(err);
+        } else {
+          console.log('All videos have been processed successfully');
+        }
+    });
+
+
 });
-
-
-
