@@ -144,10 +144,12 @@ font-size: 18px;
 padding: 10px;
 border: 0;
 margin-top: 10px;
+opacity: 0.6;
 }
 
 #mc_embed_signup .button:hover{
 cursor: pointer;
+opacity: 1;
 }
 
 
