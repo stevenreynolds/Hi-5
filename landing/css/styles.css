@@ -5,7 +5,6 @@ html{
 }
 
 body {
-	font-family: 'Open Sans', sans-serif;
 	font-size: 14px;
 	line-height: 21px;
 	font-weight:400;
@@ -26,13 +25,24 @@ text-align: center;
 }
 
 h1, h2, h3, h4, h5, h6{
-	font-family: 'Coustard', serif;
 	color:#222c2b;
 	font-weight: normal;
 	letter-spacing: 1px;
 }
+
+h1{
+font-family: 'futura',sans-serif;
+font-weight: bold;
+}
+
+
+
 h1{font-size: 63px; line-height: 70px; padding: 0; margin: 0;}
 h5{font-size: 28px; line-height: 35px; padding: 0; margin: 0; color: #222c2b;}
+
+p, input {
+font-family: 'din_engschrift', sans-serif;
+}
 
 a {
 	color: #b7b7b7;
@@ -81,6 +91,10 @@ a:hover {text-decoration:underline;}
 	margin: 0 auto;
 }
 
+.description{
+margin: 0 auto;
+max-width: 50%	
+}
 #mail{
 	position: relative;
 	margin: 0 auto;
@@ -92,7 +106,21 @@ color: #222c2b;
 font-weight: bold;
 }
 
+::-webkit-input-placeholder {
+font-family: 'din_engschrift', sans-serif;
+}
+:-moz-placeholder { /* Firefox 18- */
+font-family: 'din_engschrift', sans-serif;
+}
+::-moz-placeholder {  /* Firefox 19+ */
+font-family: 'din_engschrift', sans-serif;
+}
+:-ms-input-placeholder {  
+font-family: 'din_engschrift', sans-serif; 
+}
+
 #mc_embed_signup #mce-EMAIL{
+
 font-size: 15px;
 text-align: center;
 min-width: 200px;
@@ -107,6 +135,7 @@ min-width: 90px;
 background-color: #222c2b;
 color: white;
 width: 25%;
+
 font-size: 18px;
 padding: 10px;
 border: 0;
@@ -174,3 +203,75 @@ button.full-screen:hover {opacity: 1;}
 #arrow_left {
 	right:95px;
 }
+
+
+@font-face {
+    font-family: 'futura';
+    src: url('../fonts/futura/futura-webfont.eot');
+    src: url('../fonts/futura/futura-webfont.eot?#iefix') format('embedded-opentype'),
+         url('../fonts/futura/futura-webfont.woff') format('woff'),
+         url('../fonts/futura/futura-webfont.ttf') format('truetype'),
+         url('../fonts/futura/futura-webfont.svg#futura_webfont') format('svg');
+    font-weight: normal;
+    font-style: normal;
+}
+
+@font-face {
+    font-family: 'futura';
+    src: url('../fonts/futura/futura-oblique-webfont.eot');
+    src: url('../fonts/futura/futura-oblique-webfont.eot?#iefix') format('embedded-opentype'),
+         url('../fonts/futura/futura-oblique-webfont.woff') format('woff'),
+         url('../fonts/futura/futura-oblique-webfont.ttf') format('truetype'),
+         url('../fonts/futura/futura-oblique-webfont.svg#futura_oblique_webfont') format('svg');
+    font-weight: normal;
+    font-style: italic;
+}
+
+@font-face {
+    font-family: 'futura';
+    src: url('../fonts/futura/futura-bold-webfont.eot');
+    src: url('../fonts/futura/futura-bold-webfont.eot?#iefix') format('embedded-opentype'),
+         url('../fonts/futura/futura-bold-webfont.woff') format('woff'),
+         url('../fonts/futura/futura-bold-webfont.ttf') format('truetype'),
+         url('../fonts/futura/futura-bold-webfont.svg#futura_bold_webfont') format('svg');
+    font-weight: bold;
+    font-style: normal;
+}
+
+
+@font-face {
+    font-family: 'futura_extrabold';
+    src: url('../fonts/futura/futura-extrabold-webfont.eot');
+    src: url('../fonts/futura/futura-extrabold-webfont.eot?#iefix') format('embedded-opentype'),
+         url('../fonts/futura/futura-extrabold-webfont.woff') format('woff'),
+         url('../fonts/futura/futura-extrabold-webfont.ttf') format('truetype'),
+         url('../fonts/futura/futura-extrabold-webfont.svg#futura_extrabold_webfont') format('svg');
+    font-weight: bold;
+    font-style: normal;
+}
+
+
+@font-face {
+    font-family: 'din_engschrift';
+    src: url('../fonts/din/dinengschrift-webfont.eot');
+    src: url('../fonts/din/dinengschrift-webfont.eot?#iefix') format('embedded-opentype'),
+         url('../fonts/din/dinengschrift-webfont.woff') format('woff'),
+         url('../fonts/din/dinengschrift-webfont.ttf') format('truetype'),
+         url('../fonts/din/dinengschrift-webfont.svg#dinengschrift_webfont') format('svg');
+    font-weight: normal;
+    font-style: normal;
+}
+
+@font-face {
+    font-family: 'din_regularalternate';
+    src: url('../fonts/din/din-regularalternate-webfont.eot');
+    src: url('../fonts/din/din-regularalternate-webfont.eot?#iefix') format('embedded-opentype'),
+         url('../fonts/din/din-regularalternate-webfont.woff') format('woff'),
+         url('../fonts/din/din-regularalternate-webfont.ttf') format('truetype'),
+         url('../fonts/din/din-regularalternate-webfont.svg#din-regularalternate_webfont') format('svg');
+    font-weight: normal;
+    font-style: normal;
+}
+
+
+
