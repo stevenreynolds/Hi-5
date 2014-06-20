@@ -1,3 +1,4 @@
+```
 API Credentials
 
 Google
@@ -48,3 +49,12 @@ Access token c1094fe4f480f60ae07233ad53127e8c
 Scope  public private upload
 Your authenticated authorization header
 Authorization : Bearer c1094fe4f480f60ae07233ad53127e8c
+
+
+Instagram
+CLIENT INFO
+CLIENT ID	0046d253f3e2482ca24f22c65a4ef016
+CLIENT SECRET	58ca6fdf09c44b928dd3b2124eecea69
+WEBSITE URL	http://www.wrpth.com
+REDIRECT URI	http://localhost:3000/auth/instagram/callback
+```
