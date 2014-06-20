@@ -201,7 +201,7 @@ passport.use(new GoogleStrategy(secrets.google, function(req, accessToken, refre
       } else {
         User.findById(req.user.id, function(err, user) {
           user.google = profile.id;
-          user.tokens.push({ kind: 'google', accessToken: accessToken });
+          user.tokens.push({ kind: 'google', accessToken: accessToken, refreshToken:refreshToken, expires_in:params.expires_in });
           user.profile.name = user.profile.name || profile.displayName;
           user.profile.gender = user.profile.gender || profile._json.gender;
           user.profile.picture = user.profile.picture || profile._json.picture;
@@ -223,7 +223,7 @@ passport.use(new GoogleStrategy(secrets.google, function(req, accessToken, refre
           var user = new User();
           user.email = profile._json.email;
           user.google = profile.id;
-          user.tokens.push({ kind: 'google', accessToken: accessToken });
+          user.tokens.push({ kind: 'google', accessToken: accessToken, refreshToken:refreshToken, expires_in:params.expires_in });
           user.profile.name = profile.displayName;
           user.profile.gender = profile._json.gender;
           user.profile.picture = profile._json.picture;
