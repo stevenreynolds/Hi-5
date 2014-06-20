@@ -138,8 +138,8 @@ app.post('/account/delete', passportConf.isAuthenticated, userController.postDel
 app.get('/account/unlink/:provider', passportConf.isAuthenticated, userController.getOauthUnlink);
 
 app.post('/account/import', passportConf.isAuthenticated, importController.importVideos);
-app.get('/import', youtubeController.getYoutube);
-//app.get('/import', vimeoController.getVimeo);
+//app.get('/import', youtubeController.getYoutube);
+app.get('/import', vimeoController.getVimeo);
 
 /**
  * API examples routes.
