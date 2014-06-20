@@ -8,6 +8,7 @@ var TokenProvider = require('refresh-token');
 var User = require('../models/User');
 var commentSchema = require('../models/Comment');
 var videoSchema = require('../models/Video');
+var videodataSchema = require('../models/VideoData');
 
 exports.getYoutube = function(req, res, callback) {
 
@@ -72,13 +73,6 @@ exports.getYoutube = function(req, res, callback) {
                             data.items.forEach(function(data) { 
                                 videos.push(data)
 
-                                // var MyModel = mongoose.model('ModelName', mySchema);
-                                // var instance = new MyModel();
-                                // instance.my.key = 'hello';
-                                // instance.save(function (err) {
-                                //   //
-                                // });
-
                                 var Video = mongoose.model('Video', videoSchema);
                                 var v = new Video();
                                 
@@ -88,6 +82,15 @@ exports.getYoutube = function(req, res, callback) {
                                 v.save(function (err) {
                                   if(err) console.log(err)
                                 });
+
+
+                                var VideoData = mongoose.model('VideoData', videodataSchema);
+                                var vd = new VideoData(data);
+
+                                vd.save(function (err) {
+                                  if(err) console.log(err)
+                                });
+
 
                             });
 

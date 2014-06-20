@@ -69,7 +69,7 @@ exports.getVimeo = function(req, res, callback) {
                               if(err) console.log(err)
                             });
 
-                            
+
                             
                             callback();
 
