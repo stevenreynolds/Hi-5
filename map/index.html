@@ -48,13 +48,7 @@
             properties: {
                 title: 'Washington, D.C.',
                 url: 'http://en.wikipedia.org/wiki/Washington,_D.C.',
-                "icon": {
-                    "iconUrl": "astronaut2.png",
-                    "iconSize": [100, 100],
-                    "iconAnchor": [50, 50],
-                    "popupAnchor": [0, -55],
-                    "className": "dot"
-                }
+                type: 'air',
             },
             geometry: {
                 type: 'Point',
@@ -66,13 +60,7 @@
             properties: {
                 title: 'Baltimore, MD',
                 url: 'http://en.wikipedia.org/wiki/Baltimore',
-                "icon": {
-                    "iconUrl": "astronaut2.png",
-                    "iconSize": [100, 100],
-                    "iconAnchor": [50, 50],
-                    "popupAnchor": [0, -55],
-                    "className": "dot"
-                }
+                type: 'snow',
             },
             geometry: {
                 type: 'Point',
@@ -85,8 +73,29 @@
     myLayer.on('layeradd', function(e) {
         var marker = e.layer,
             feature = marker.feature;
+        
+        var json_icon = {
+            "snow": {
+                "icon": {
+                    "iconUrl": "astronaut2.png",
+                    "iconSize": [100, 100],
+                    "iconAnchor": [50, 50],
+                    "popupAnchor": [0, -55],
+                    "className": "dot"
+                }
+            },
+            "air": {
+                "icon": {
+                    "iconUrl": "astronaut2.png",
+                    "iconSize": [10, 10],
+                    "iconAnchor": [50, 50],
+                    "popupAnchor": [0, -55],
+                    "className": "dot"
+                }
+            }
+        }
 
-        marker.setIcon(L.icon(feature.properties.icon));
+        marker.setIcon(L.icon(json_icon[feature.properties.type].icon));
     });
 
     // Pass features and a custom factory function to the map
@@ -120,7 +129,6 @@
         // map.featureLayer.on('click', function(e) {
         //     e.layer.getLatLng());
         // });
-
 
         marker = L.marker([e.latlng.lat, e.latlng.lng], {
             icon: L.mapbox.marker.icon({
@@ -187,13 +195,9 @@
         for (var i = 0; i < checkboxes.length; i++) {
           if (checkboxes[i].checked) enabled[checkboxes[i].id] = true;
         }
-        map.featureLayer.setFilter(function(feature) {
-          // If this symbol is in the list, return true. if not, return false.
-          // The 'in' operator in javascript does exactly that: given a string
-          // or number, it says if that is in a object.
-          // 2 in { 2: true } // true
-          // 2 in { } // false
-          return (feature.properties['marker-symbol'] in enabled);
+
+        myLayer.setFilter(function(feature) {
+          return (feature.properties['type'] in enabled);
         });
       }
     });
