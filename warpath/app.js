@@ -143,12 +143,18 @@ app.get('/api/facebook', passportConf.isAuthenticated, passportConf.isAuthorized
 app.get('/api/twitter', passportConf.isAuthenticated, passportConf.isAuthorized, apiController.getTwitter);
 app.post('/api/twitter', passportConf.isAuthenticated, passportConf.isAuthorized, apiController.postTwitter);
 //app.get('/api/vimeo', passportConf.isAuthenticated, passportConf.isAuthorized, apiController.getTwitter);
+app.get('/api/instagram', passportConf.isAuthenticated, passportConf.isAuthorized, apiController.getInstagram);
 
 /**
  * OAuth sign-in routes.
  */
 
-app.get('/auth/facebook', passport.authenticate('facebook', { scope: ['email', 'user_location'] }));
+app.get('/auth/instagram', passport.authenticate('instagram'));
+app.get('/auth/instagram/callback', passport.authenticate('instagram', { failureRedirect: '/login' }), function(req, res) {
+  res.redirect(req.session.returnTo || '/');
+});
+
+app.get('/auth/facebook', passport.authenticate('facebook', { scope: ['email', 'user_friends', 'public_profile'] }));
 app.get('/auth/facebook/callback', passport.authenticate('facebook', { failureRedirect: '/login' }), function(req, res) {
   res.redirect(req.session.returnTo || '/');
 });

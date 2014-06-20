@@ -92,3 +92,8 @@ block content
     p: a.text-danger(href='/account/unlink/vimeo') Unlink your Vimeo account
   else
     p: a(href='/auth/vimeo') Link your Vimeo account
+
+  if user.instagram
+    p: a.text-danger(href='/account/unlink/instagram') Unlink your Instagram account
+  else
+    p: a(href='/auth/instagram') Link your Instagram account

@@ -44,6 +44,13 @@ module.exports = {
     passReqToCallback: true
   },
 
+  instagram: {
+    clientID: process.env.INSTAGRAM_ID || '0046d253f3e2482ca24f22c65a4ef016',
+    clientSecret: process.env.INSTAGRAM_SECRET || '58ca6fdf09c44b928dd3b2124eecea69',
+    callbackURL: '/auth/instagram/callback',
+    passReqToCallback: true
+  },
+
   twitter: {
     consumerKey: process.env.TWITTER_KEY || 'caK4z7QF8m01u5XUHRyqNVPJW',
     consumerSecret: process.env.TWITTER_SECRET  || 'CJLMSYIBVXymXuV3hJYx8pfJrkfRDWGEldptbKAwBjtLnWktzr',
