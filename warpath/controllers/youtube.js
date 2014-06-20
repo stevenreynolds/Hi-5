@@ -2,7 +2,11 @@ var Youtube = require("youtube-api");
 var async = require("async");
 var secrets = require('../config/secrets');
 var _ = require('lodash');
+var mongoose = require('mongoose');
 //var refresh = require('google-token-refresh');
+
+var commentSchema = require('../models/Comment.js');
+var videoSchema = require('../models/Video.js');
 
 exports.getYoutube = function(req, res, callback) {
 
@@ -20,6 +24,15 @@ exports.getYoutube = function(req, res, callback) {
     //   handleRefreshedData(newAccessToken, expireAt);
     // });
 
+            var videos = [];
+            var Video = mongoose.model('Video', videoSchema);
+            var instance = new Video();
+            instance.id = '123425346';
+            instance.save(function (err) {
+              console.log(err)
+            });
+
+/*
     console.log(token.accessToken)
 
     Youtube.authenticate({
@@ -45,8 +58,6 @@ exports.getYoutube = function(req, res, callback) {
 
             //console.log(JSON.stringify(data))
 
-            var videos = [];
-
             async.each(data.items, function( video, callback ) {
                 var videoId = video.snippet.resourceId.videoId;
 
@@ -58,6 +69,14 @@ exports.getYoutube = function(req, res, callback) {
                     
                     data.items.forEach(function(video) { 
                         videos.push(video)
+
+                        var MyModel = mongoose.model('ModelName', mySchema);
+                        var instance = new MyModel();
+                        instance.my.key = 'hello';
+                        instance.save(function (err) {
+                          //
+                        });
+
                     });
 
                     callback();
@@ -79,7 +98,7 @@ exports.getYoutube = function(req, res, callback) {
     });
 
 
-
+*/
     // https://developers.google.com/youtube/v3/docs/videos/list
     // id,snippet,contentDetails,fileDetails,player,processingDetails,recordingDetails,statistics,status,suggestions,topicDetails
     // GET https://www.googleapis.com/youtube/v3/videos?part=id%2Csnippet%2CcontentDetails%2CfileDetails%2Cplayer%2CprocessingDetails%2CrecordingDetails%2Cstatistics%2Cstatus%2Csuggestions%2CtopicDetails&id=KlhAjqtmEC8&key={YOUR_API_KEY}

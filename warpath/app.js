@@ -29,6 +29,8 @@ var homeController = require('./controllers/home');
 var userController = require('./controllers/user');
 var apiController = require('./controllers/api');
 var contactController = require('./controllers/contact');
+
+var importController = require('./controllers/import');
 var youtubeController = require('./controllers/youtube');
 var vimeoController = require('./controllers/vimeo');
 
@@ -135,6 +137,7 @@ app.post('/account/password', passportConf.isAuthenticated, userController.postU
 app.post('/account/delete', passportConf.isAuthenticated, userController.postDeleteAccount);
 app.get('/account/unlink/:provider', passportConf.isAuthenticated, userController.getOauthUnlink);
 
+app.post('/account/import', passportConf.isAuthenticated, importController.importVideos);
 app.get('/import', youtubeController.getYoutube);
 //app.get('/import', vimeoController.getVimeo);
 

@@ -3,7 +3,7 @@ var async = require("async");
 
 Youtube.authenticate({
     type: "oauth",
-    token: "ya29.LgAn-D6Brb2-nx8AAAAgs2dt1K-QDgITUR7XnvTO3RYh3Z4XVlx5h05pmzjlYQ"
+    token: "ya29.LgDF7GxAyaJ0NhkAAAAta2z3MM7Q1OS_RGGeetv8EGNdscpVLA-eaTI1wZxNrA"
 });
 
 Youtube.channels.list({
