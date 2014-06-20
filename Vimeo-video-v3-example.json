@@ -1,0 +1,172 @@
+{
+    "uri": "\/videos\/72379146",
+    "name": "Jobs at Vimeo",
+    "description": "Vimeo, a video-sharing community for original creative work and the people who create it, is run by over 100 fun-loving Vimeans. What started with a few filmmaker friends in 2004 now reaches 130+ million people around the world every month.\n\nIt\u2019s our mission to help people share what they make, whether they\u2019re grizzled old pros or have never heard of a camera before. We do it by nurturing the most vibrant, constructive, respectful community around. But don\u2019t take our word for it:\n\n\u201cVimeo is the handsomest company in the world.\u201d\n\u2014Our Moms\n\nhttps:\/\/vimeo.com\/jobs\n\nhttps:\/\/twitter.com\/VimeoJobs\n\nhttps:\/\/www.linkedin.com\/company\/vimeo",
+    "link": "http:\/\/vimeo.dev\/72379146",
+    "duration": 55,
+    "width": 1280,
+    "height": 720,
+    "created_time": "2013-08-14T22:13:52+00:00",
+    "modified_time": "2014-02-20T04:08:12+00:00",
+    "content_rating": "unrated",
+    "license": null,
+    "privacy": {
+        "view": "anybody",
+        "embed": "public",
+        "download": true,
+        "add": true
+    },
+    "pictures": [
+        {
+            "type": "thumbnail",
+            "width": 1280,
+            "height": 720,
+            "link": "http:\/\/b.vimeocdn.com\/ts\/448\/504\/448504125_1280.jpg"
+        },
+        {
+            "type": "thumbnail",
+            "width": 960,
+            "height": 540,
+            "link": "http:\/\/b.vimeocdn.com\/ts\/448\/504\/448504125_960.jpg"
+        },
+        {
+            "type": "thumbnail",
+            "width": 640,
+            "height": 360,
+            "link": "http:\/\/b.vimeocdn.com\/ts\/448\/504\/448504125_640.jpg"
+        },
+        {
+            "type": "thumbnail",
+            "width": 295,
+            "height": 166,
+            "link": "http:\/\/b.vimeocdn.com\/ts\/448\/504\/448504125_295.jpg"
+        },
+        {
+            "type": "thumbnail",
+            "width": 200,
+            "height": 150,
+            "link": "http:\/\/b.vimeocdn.com\/ts\/448\/504\/448504125_200.jpg"
+        },
+        {
+            "type": "thumbnail",
+            "width": 150,
+            "height": 88,
+            "link": "http:\/\/b.vimeocdn.com\/ts\/448\/504\/448504125_150.jpg"
+        },
+        {
+            "type": "thumbnail",
+            "width": 100,
+            "height": 75,
+            "link": "http:\/\/b.vimeocdn.com\/ts\/448\/504\/448504125_100.jpg"
+        }
+    ],
+    "tags": [
+        {
+            "name": "jobsatvimeo",
+            "canonical": "jobsatvimeo"
+        },
+        {
+            "name": "amplePTO",
+            "canonical": "amplepto"
+        },
+        {
+            "name": "401kmatching",
+            "canonical": "401kmatching"
+        },
+        {
+            "name": "freesnacks",
+            "canonical": "freesnacks"
+        },
+        {
+            "name": "legitinsurance",
+            "canonical": "legitinsurance"
+        },
+        {
+            "name": "tuitionreimbursement",
+            "canonical": "tuitionreimbursement"
+        },
+        {
+            "name": "nyc",
+            "canonical": "nyc"
+        },
+        {
+            "name": "losangeles",
+            "canonical": "losangeles"
+        },
+        {
+            "name": "london",
+            "canonical": "london"
+        }
+    ],
+    "stats": {
+        "plays": 1680,
+        "likes": 77,
+        "comments": 7
+    },
+    "metadata": {
+        "connections": {
+            "credits": "\/videos\/72379146\/credits",
+            "likes": "\/videos\/72379146\/likes"
+        }
+    },
+    "review_link": "http:\/\/vimeo.dev\/staff\/review\/72379146\/bc4254e301",
+    "embed_presets": null,
+    "user": {
+        "uri": "\/users\/152184",
+        "name": "Vimeo Staff",
+        "link": "http:\/\/vimeo.dev\/staff",
+        "location": "New York City",
+        "bio": "This is where you will find videos and news updates from the staff.\n\nPlease note that we cannot answer help messages sent to this account.\nIf you need help using Vimeo please see our awesome help page here, vimeo.com\/help\n\nBig hugs and a high five,\n\nThe Vimeo Staff",
+        "created_time": "2007-01-18T16:40:11+00:00",
+        "account": "pro",
+        "pictures": [
+            {
+                "type": "portrait",
+                "width": 30,
+                "height": 30,
+                "link": "http:\/\/b.vimeocdn.com\/ps\/304\/713\/3047131_30.jpg"
+            },
+            {
+                "type": "portrait",
+                "width": 75,
+                "height": 75,
+                "link": "http:\/\/b.vimeocdn.com\/ps\/304\/713\/3047131_75.jpg"
+            },
+            {
+                "type": "portrait",
+                "width": 100,
+                "height": 100,
+                "link": "http:\/\/b.vimeocdn.com\/ps\/304\/713\/3047131_100.jpg"
+            },
+            {
+                "type": "portrait",
+                "width": 300,
+                "height": 300,
+                "link": "http:\/\/b.vimeocdn.com\/ps\/304\/713\/3047131_300.jpg"
+            }
+        ],
+        "websites": [
+
+        ],
+        "stats": [
+
+        ],
+        "metadata": {
+            "connections": {
+                "activities": "\/users\/152184\/activities",
+                "albums": "\/users\/152184\/albums",
+                "channels": "\/users\/152184\/channels",
+                "feed": "\/users\/152184\/feed",
+                "followers": "\/users\/152184\/followers",
+                "following": "\/users\/152184\/following",
+                "groups": "\/users\/152184\/groups",
+                "likes": "\/users\/152184\/likes",
+                "portfolios": "\/users\/152184\/portfolios",
+                "videos": "\/users\/152184\/videos",
+                "watchlater": "\/users\/152184\/watchlater",
+                "shared": "\/users\/152184\/shared\/videos"
+            }
+        }
+    },
+    "status": "available"
+}
