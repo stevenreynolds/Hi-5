@@ -3,102 +3,119 @@ var async = require("async");
 var secrets = require('../config/secrets');
 var _ = require('lodash');
 var mongoose = require('mongoose');
-//var refresh = require('google-token-refresh');
+var TokenProvider = require('refresh-token');
 
-var commentSchema = require('../models/Comment.js');
-var videoSchema = require('../models/Video.js');
+var User = require('../models/User');
+var commentSchema = require('../models/Comment');
+var videoSchema = require('../models/Video');
 
 exports.getYoutube = function(req, res, callback) {
 
     var token = _.find(req.user.tokens, { kind: 'google' });
 
-    // refresh(refreshToken, secrets.google.clientID, secrets.google.clientSecret, function (err, json, res) {
-    //   if (err) return handleError(err);
-    //   if (json.error) return handleError(new Error(res.statusCode + ': ' + json.error));
+    var GoogleTokenProvider = require('refresh-token').GoogleTokenProvider;
 
-    //   var newAccessToken = json.accessToken;
-    //   if (! accessToken) {
-    //     return handleError(new Error(res.statusCode + ': refreshToken error'));
-    //   }
-    //   var expireAt = new Date(+new Date + parseInt(json.expiresIn, 10));
-    //   handleRefreshedData(newAccessToken, expireAt);
-    // });
+    var tokenProvider = new GoogleTokenProvider({
+        refresh_token: token.refreshToken, 
+        client_id:     secrets.google.clientID, 
+        client_secret: secrets.google.clientSecret
+      });
 
+    tokenProvider.getToken(function (err, newToken) {
+        if (err) {
+            console.log(err);
+        }
+        else {
+
+            User.findById(req.user.id, function(err, user) {
+              user.tokens.push({ kind: 'google', accessToken: newToken, refreshToken:token.refreshToken, expires_in:3600 });
+              
+              user.save(function(err) {
+                 if(err) console.log(err);
+              });
+           });
+        
             var videos = [];
-            var Video = mongoose.model('Video', videoSchema);
-            var instance = new Video();
-            instance.id = '123425346';
-            instance.save(function (err) {
-              console.log(err)
+
+            Youtube.authenticate({
+                type: "oauth",
+                token: newToken
             });
 
-/*
-    console.log(token.accessToken)
+            Youtube.channels.list({
+                "part": "id,contentDetails",
+                "mine": true
+                //"maxResults": 50
+            }, function (err, data) {
+                if(err) console.log(err);
 
-    Youtube.authenticate({
-        type: "oauth",
-        token: token.accessToken
-    });
+                var uploadsId = data.items[0].contentDetails.relatedPlaylists.uploads;
+                console.log("uploadsId " + uploadsId)
 
-    Youtube.channels.list({
-        "part": "id,contentDetails",
-        "mine": true
-        //"maxResults": 50
-    }, function (err, data) {
-        if(err) console.log(err);
-
-        var uploadsId = data.items[0].contentDetails.relatedPlaylists.uploads;
-        console.log("uploadsId " + uploadsId)
-
-        Youtube.playlistItems.list({
-            "part": "id,snippet,status",
-            "playlistId": uploadsId
-        }, function (err, data) {
-            if(err) console.log(err);
-
-            //console.log(JSON.stringify(data))
-
-            async.each(data.items, function( video, callback ) {
-                var videoId = video.snippet.resourceId.videoId;
-
-                Youtube.videos.list({
-                    "part": "id,snippet,contentDetails,fileDetails,player,processingDetails,recordingDetails,statistics,status,suggestions,topicDetails",
-                    "id": videoId
+                Youtube.playlistItems.list({
+                    "part": "id,snippet,status",
+                    "playlistId": uploadsId
                 }, function (err, data) {
-                    console.log(err, data);
-                    
-                    data.items.forEach(function(video) { 
-                        videos.push(video)
+                    if(err) console.log(err);
 
-                        var MyModel = mongoose.model('ModelName', mySchema);
-                        var instance = new MyModel();
-                        instance.my.key = 'hello';
-                        instance.save(function (err) {
-                          //
+                    //console.log(JSON.stringify(data))
+
+                    async.each(data.items, function( video, callback ) {
+                        var videoId = video.snippet.resourceId.videoId;
+
+                        Youtube.videos.list({
+                            "part": "id,snippet,contentDetails,fileDetails,player,processingDetails,recordingDetails,statistics,status,suggestions,topicDetails",
+                            "id": videoId
+                        }, function (err, data) {
+                            console.log(err, data);
+                            
+                            data.items.forEach(function(data) { 
+                                videos.push(data)
+
+                                // var MyModel = mongoose.model('ModelName', mySchema);
+                                // var instance = new MyModel();
+                                // instance.my.key = 'hello';
+                                // instance.save(function (err) {
+                                //   //
+                                // });
+
+                                var Video = mongoose.model('Video', videoSchema);
+                                var v = new Video();
+                                
+                                v.id = data.id;
+                                v.platform = 'youtube';
+
+                                v.save(function (err) {
+                                  if(err) console.log(err)
+                                });
+
+                            });
+
+                            callback();
                         });
 
+                    }, function(err){
+                        if( err ) {
+                          console.log(err);
+                        } else {
+
+                          console.log('All videos have been processed successfully');
+                          res.send(videos)
+                        }
                     });
 
-                    callback();
+                    
                 });
 
-            }, function(err){
-                if( err ) {
-                  console.log(err);
-                } else {
-
-                  console.log('All videos have been processed successfully');
-                  res.send(videos)
-                }
             });
 
-            
-        });
 
+
+        }
     });
 
 
-*/
+
     // https://developers.google.com/youtube/v3/docs/videos/list
     // id,snippet,contentDetails,fileDetails,player,processingDetails,recordingDetails,statistics,status,suggestions,topicDetails
     // GET https://www.googleapis.com/youtube/v3/videos?part=id%2Csnippet%2CcontentDetails%2CfileDetails%2Cplayer%2CprocessingDetails%2CrecordingDetails%2Cstatistics%2Cstatus%2Csuggestions%2CtopicDetails&id=KlhAjqtmEC8&key={YOUR_API_KEY}
