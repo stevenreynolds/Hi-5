@@ -31,14 +31,14 @@ h1, h2, h3, h4, h5, h6{
 }
 
 h1,h5{
-font-family: 'futura',sans-serif;
+font-family: 'din_engschrift',sans-serif;
 font-weight: bold;
 }
 
 
 
-h1{font-size: 63px; line-height: 70px; padding: 0; margin: 0;}
-h5{font-size: 28px; line-height: 35px; padding: 0; margin: 0; color: #222c2b;}
+h1{font-size: 75px; line-height: 70px; padding: 0; margin: 0;}
+h5{font-size: 32px; line-height: 35px; padding: 0; margin: 10px; color: #222c2b;}
 
 p, input {
 font-family: 'din_engschrift', sans-serif;
@@ -49,6 +49,7 @@ a {
 	text-decoration:none;
 	font-weight: normal;
 }
+
 a:hover {text-decoration:underline;}
 
 
@@ -84,20 +85,15 @@ a:hover {text-decoration:underline;}
 	background: url('../images/logo.png') no-repeat ;
 	font-size: 49px;
 	position:relative;
-	width:271px;
-	height: 270px;
+	width:200px;
+	height: 200px;
 	z-index:1000;
 	color: #fff;
 	margin: 0 auto;
+	margin-top: 50px;
 }
 
-.description{
-margin: 10px auto;
-max-width: 50%;
-font-size: 18px;
-background-color: rgba(255,255,255,0.5);
-padding:5px;
-}
+
 #mail{
 	position: relative;
 	margin: 0 auto;
@@ -108,6 +104,7 @@ font-family: "din_regularalternate",sans-serif;
 font-size: 20px;
 color: #222c2b;
 font-weight: bold;
+	margin-bottom: 0;
 }
 
 ::-webkit-input-placeholder {
@@ -130,6 +127,7 @@ text-align: center;
 min-width: 200px;
 width: 50%;
 padding: 10px;
+margin-top: 5px;
 }
 
 
