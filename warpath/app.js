@@ -29,6 +29,8 @@ var homeController = require('./controllers/home');
 var userController = require('./controllers/user');
 var apiController = require('./controllers/api');
 var contactController = require('./controllers/contact');
+var youtubeController = require('./controllers/youtube');
+var vimeoController = require('./controllers/vimeo');
 
 /**
  * API keys and Passport configuration.
@@ -133,6 +135,9 @@ app.post('/account/password', passportConf.isAuthenticated, userController.postU
 app.post('/account/delete', passportConf.isAuthenticated, userController.postDeleteAccount);
 app.get('/account/unlink/:provider', passportConf.isAuthenticated, userController.getOauthUnlink);
 
+app.get('/import', youtubeController.getYoutube);
+//app.get('/import', vimeoController.getVimeo);
+
 /**
  * API examples routes.
  */
@@ -159,7 +164,11 @@ app.get('/auth/facebook/callback', passport.authenticate('facebook', { failureRe
   res.redirect(req.session.returnTo || '/');
 });
 
-app.get('/auth/google', passport.authenticate('google', { scope: 'profile email https://www.googleapis.com/auth/youtube.readonly https://www.googleapis.com/auth/yt-analytics.readonly' }));
+app.get('/auth/google', passport.authenticate('google', { 
+      scope: 'profile email https://www.googleapis.com/auth/youtube.readonly https://www.googleapis.com/auth/yt-analytics.readonly', 
+      accessType: 'offline',
+      approvalPrompt: 'force'
+}));
 app.get('/auth/google/callback', passport.authenticate('google', { failureRedirect: '/login' }), function(req, res) {
   res.redirect(req.session.returnTo || '/');
 });
@@ -173,7 +182,6 @@ app.get('/auth/vimeo', passport.authenticate('vimeo'));
 app.get('/auth/vimeo/callback', passport.authenticate('vimeo', { failureRedirect: '/login' }), function(req, res) {
   res.redirect(req.session.returnTo || '/');
 });
-
 
 /**
  * OAuth authorization routes for API examples.
