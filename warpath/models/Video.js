@@ -10,6 +10,11 @@ var videoSchema = new mongoose.Schema({
 
   _creator: { type: Schema.Types.ObjectId, ref: 'User' },
 
+  location: {
+    lat: { type: Number, default: 0 },
+    lng: { type: Number, default: 0 },
+  },
+
   comments: [Comment],
 
   importedAt: Date,

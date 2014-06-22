@@ -59,7 +59,7 @@ exports.importYoutube = function(req, res) {
 
 
 /**
- * GET /account/import/YouTube
+ * GET /account/import
  *  page.
  */
 exports.importSelected = function(req, res) {
@@ -104,12 +104,35 @@ exports.importSelected = function(req, res) {
     });
 
 
-
   });
 
-  
-
-
-
   //res.send('ok')
+};
+
+
+/**
+ * GET /account/import_complete
+ *  page.
+ */
+exports.importComplete = function(req, res) {
+  console.log(req.body);
+  
+  locations = JSON.parse(req.body.locations)
+  console.log(locations);
+
+  locations.forEach(function(data) { 
+    var videoID = data.id;
+
+    Video.update({_id: videoID}, {
+        location: {lat: data.lat, lng: data.lng} 
+    }, function(err, numberAffected, rawResponse) {
+        if(err) console.log(err)
+
+        req.flash('success', { msg: 'Videos imported!' });
+        return res.redirect('/account');
+    })
+      
+  });
+
+  //res.send('Saved')
 };

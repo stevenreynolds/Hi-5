@@ -23,9 +23,10 @@ block content
     //- });
   
 
-  form(method='POST')
+  form(method='POST' action='/account/import_complete')
     legend Choose Videos
     input(type='hidden', name='_csrf', value=_csrf)
+    input(type='hidden', name='locations', value='')
     ul
       each video in data
         li.form-group(id="#{video._id}")
@@ -60,6 +61,8 @@ block content
      
 
   script(type="text/javascript").
+    var locations = [];
+
     //https://www.mapbox.com/mapbox.js/example/v1.0.0/
     //see https://www.mapbox.com/mapbox.js/example/v1.0.0/divicon/
     var marker;
@@ -73,14 +76,23 @@ block content
 
     $('#myModal').on('click',function(){
         var m = marker.getLatLng();
-
-        $('#' + $(this).data('target')).data('lat', m.lat).data('lng', m.lng);
+        
+        var data = {
+            id: $(this).data('target'),
+            lat: m.lat,
+            lng: m.lng
+        }
+        locations.push(data);
 
         $(this).modal('hide');
     });
 
     $('.geocode').on('click',function(){
       $('#myModal').data('target', $(this).closest('li').attr('id')).modal('show')
+    });
+
+    $('form').submit(function() {
+        $('[name=locations]').val(JSON.stringify(locations));
     });
 
     var myLayer2 = L.mapbox.featureLayer().addTo(map);

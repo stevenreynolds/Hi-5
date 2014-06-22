@@ -138,6 +138,8 @@ app.post('/account/delete', passportConf.isAuthenticated, userController.postDel
 app.get('/account/unlink/:provider', passportConf.isAuthenticated, userController.getOauthUnlink);
 
 app.get('/account/import', passportConf.isAuthenticated, importController.importVideos);
+app.post('/account/import_complete', passportConf.isAuthenticated, importController.importComplete);
+
 app.get('/account/import/vimeo', passportConf.isAuthenticated, importController.importVimeo);
 app.post('/account/import/vimeo', passportConf.isAuthenticated, importController.importSelected);
 
