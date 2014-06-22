@@ -1,5 +1,12 @@
 extends ../layout
 
+block append head
+  script(src='https://api.tiles.mapbox.com/mapbox.js/v1.6.4/mapbox.js')
+  link(rel='stylesheet', href='https://api.tiles.mapbox.com/mapbox.js/v1.6.4/mapbox.css')
+  style.
+    .modal-body { margin:0; padding:0; }
+    #map { height:300px; width:100%;}
+
 block content
 
   script(type="text/javascript").
@@ -21,13 +28,28 @@ block content
     input(type='hidden', name='_csrf', value=_csrf)
     ul
       each video in data
-        li.form-group(id="vimeo_#{video._id}")
+        li.form-group(id="#{video._id}")
           a(target='_blank' href="#{video.link}") Link
           h3 #{video.name}
           p #{video.description}
           img(src='#{video.pictures[5].link}')
           input(type='hidden', name='location_#{video._id}', value='')
-          a.btn.btn-primary(href='#') Geolocate this video
+          //- a.btn.btn-primary(href='#') Geolocate this video
+
+          a.btn.btn-primary.btn-lg.geocode
+            | Launch demo modal
+
+          #myModal.modal.fade(tabindex='-1', role='dialog', aria-labelledby='myModalLabel', aria-hidden='true')
+            .modal-dialog.modal-lg
+              .modal-content
+                .modal-header
+                  button.close(type='button', data-dismiss='modal', aria-hidden='true') ×
+                  h4#myModalLabel.modal-title Modal title
+                .modal-body
+                  div(id="map")
+                .modal-footer
+                  button.btn.btn-default(type='button', data-dismiss='modal') Close
+                  button.btn.btn-primary(type='button') Save changes
 
     .form-group
       button.btn.btn-primary.btn-submit(type='submit')
@@ -35,4 +57,85 @@ block content
         | Next Step
         
 
-   
+     
+
+  script(type="text/javascript").
+    //https://www.mapbox.com/mapbox.js/example/v1.0.0/
+    //see https://www.mapbox.com/mapbox.js/example/v1.0.0/divicon/
+    var marker;
+    var map = L.mapbox.map('map', 'warpath.ii84a1lh')
+            .addControl(L.mapbox.geocoderControl('warpath.ii84a1lh'));
+      //.setView([39.12367, -76.81229], 9);
+
+    $('#myModal').on('shown.bs.modal', function () { // chooseLocation is the id of the modal.
+      map.invalidateSize();
+    });
+
+    $('#myModal').on('click',function(){
+        var m = marker.getLatLng();
+
+        $('#' + $(this).data('target')).data('lat', m.lat).data('lng', m.lng);
+
+        $(this).modal('hide');
+    });
+
+    $('.geocode').on('click',function(){
+      $('#myModal').data('target', $(this).closest('li').attr('id')).modal('show')
+    });
+
+    var myLayer2 = L.mapbox.featureLayer().addTo(map);
+
+    // This uses the HTML5 geolocation API, which is available on
+    // most mobile browsers and modern browsers, but not in Internet Explorer
+    //
+    // See this chart of compatibility for details:
+    // http://caniuse.com/#feat=geolocation
+    if (!navigator.geolocation) {
+        console.log('Geolocation is not available');
+    } else {
+        map.locate();
+    }
+
+    // Once we've got a position, zoom and center the map
+    // on it, and add a single marker.
+    map.on('locationfound', function(e) {
+        //map.fitBounds(e.bounds);
+        //console.log(e.bounds)
+        //map.panTo([e.latlng.lat, e.latlng.lng]);
+        // map.featureLayer.on('click', function(e) {
+        //     e.layer.getLatLng());
+        // });
+
+        marker = L.marker([e.latlng.lat, e.latlng.lng], {
+            icon: L.mapbox.marker.icon({
+              'marker-color': '#f86767'
+            }),
+            draggable: true
+        })
+        .bindPopup('This marker is draggable! Move it around.')
+        .addTo(map);
+
+        //map.panTo([e.latlng.lat, e.latlng.lng]);
+        map.setView([e.latlng.lat, e.latlng.lng], 7);
+
+        // every time the marker is dragged, update the coordinates container
+        marker.on('dragend', ondragend);
+
+        // Set the initial marker coordinate on load.
+        ondragend();
+
+    });
+
+    // If the user chooses not to allow their location
+    // to be shared, display an error message.
+    map.on('locationerror', function() {
+        console.log('Position could not be found');
+    });
+
+    function ondragend() {
+        var m = marker.getLatLng();
+        console.log(m)
+        //- $.getJSON('http://api.tiles.mapbox.com/v3/warpath.ii84a1lh/geocode/' + m.lng + ',' + m.lat + '.json', function(data){
+        //-     console.log(data)
+        //- })
+    }
