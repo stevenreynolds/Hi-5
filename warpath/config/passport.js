@@ -55,7 +55,7 @@ passport.use(new InstagramStrategy(secrets.instagram,function(req, accessToken, 
       // Similar to Twitter API, assigns a temporary e-mail address
       // to get on with the registration process. It can be changed later
       // to a valid e-mail address in Profile Management.
-      user.email = profile.username + "@instagram.com";
+      //user.email = profile.username + "@instagram.com";
       user.profile.website = profile._json.data.website;
       user.profile.picture = profile._json.data.profile_picture;
       user.save(function(err) {
@@ -173,7 +173,7 @@ passport.use(new TwitterStrategy(secrets.twitter, function(req, accessToken, tok
       // Twitter will not provide an email address.  Period.
       // But a person’s twitter username is guaranteed to be unique
       // so we can "fake" a twitter email address as follows:
-      user.email = profile.username + "@twitter.com";
+      //user.email = profile.username + "@twitter.com";
       user.twitter = profile.id;
       user.tokens.push({ kind: 'twitter', accessToken: accessToken, tokenSecret: tokenSecret });
       user.profile.name = profile.displayName;
@@ -290,8 +290,8 @@ console.log(done)
       // Twitter will not provide an email address.  Period.
       // But a person’s twitter username is guaranteed to be unique
       // so we can "fake" a vimeo email address as follows:
-      user.email = profile.username + "@vimeo.com";
-      user.twitter = profile.id;
+      //user.email = profile.username + "@vimeo.com";
+      user.vimeo = profile.id;
       user.tokens.push({ kind: 'vimeo', accessToken: accessToken });
       user.profile.name = profile.displayName;
       user.profile.location = profile._json.location;

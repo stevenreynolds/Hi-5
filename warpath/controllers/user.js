@@ -378,3 +378,51 @@ exports.postForgot = function(req, res, next) {
     res.redirect('/forgot');
   });
 };
+
+
+
+/**
+ * GET /account/complete-profile
+ * Complete profile page.
+ */
+
+exports.completeProfile = function(req, res) {
+  if (req.user && req.user.email) return res.redirect('/');
+  res.render('account/complete-profile', {
+    title: 'Complete Your Profile'
+  });
+};
+
+
+/**
+ * POST /account/complete-profile
+ * Verify Data
+ */
+
+exports.postCompleteProfile = function(req, res, next) {
+  req.assert('email', 'Email is not valid').isEmail();
+
+  var errors = req.validationErrors();
+
+  if (errors) {
+    req.flash('errors', errors);
+    return res.redirect('/account/complete-profile');
+  }
+
+  User.findOne({ email: req.body.email }, function(err, existingUser) {
+    if (existingUser) {
+      req.flash('errors', { msg: 'Account with that email address already exists.' });
+      return res.redirect('/account/complete-profile');
+    }
+
+    User.update({_id: req.user.id}, {
+      email: req.body.email
+    }, function(err, numberAffected, rawResponse) {
+        if (err) console.log(err)
+
+        req.flash('success', { msg: 'Account OK!' });
+        return res.redirect('/');
+    })
+
+  });
+};

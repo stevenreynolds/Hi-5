@@ -137,6 +137,9 @@ app.post('/account/password', passportConf.isAuthenticated, userController.postU
 app.post('/account/delete', passportConf.isAuthenticated, userController.postDeleteAccount);
 app.get('/account/unlink/:provider', passportConf.isAuthenticated, userController.getOauthUnlink);
 
+app.get('/account/complete-profile', passportConf.isAuthenticated, userController.completeProfile);
+app.post('/account/complete-profile', passportConf.isAuthenticated, userController.postCompleteProfile);
+
 app.get('/account/import', passportConf.isAuthenticated, importController.importVideos);
 app.post('/account/import_complete', passportConf.isAuthenticated, importController.importComplete);
 
@@ -167,7 +170,8 @@ app.get('/api/instagram', passportConf.isAuthenticated, passportConf.isAuthorize
 
 app.get('/auth/instagram', passport.authenticate('instagram'));
 app.get('/auth/instagram/callback', passport.authenticate('instagram', { failureRedirect: '/login' }), function(req, res) {
-  res.redirect(req.session.returnTo || '/');
+  if(!req.user.email) res.redirect('/account/complete-profile');
+  else res.redirect(req.session.returnTo || '/');
 });
 
 app.get('/auth/facebook', passport.authenticate('facebook', { scope: ['email', 'user_friends', 'public_profile'] }));
@@ -186,12 +190,14 @@ app.get('/auth/google/callback', passport.authenticate('google', { failureRedire
 
 app.get('/auth/twitter', passport.authenticate('twitter'));
 app.get('/auth/twitter/callback', passport.authenticate('twitter', { failureRedirect: '/login' }), function(req, res) {
-  res.redirect(req.session.returnTo || '/');
+  if(!req.user.email) res.redirect('/account/complete-profile');
+  else res.redirect(req.session.returnTo || '/');
 });
 
 app.get('/auth/vimeo', passport.authenticate('vimeo'));
 app.get('/auth/vimeo/callback', passport.authenticate('vimeo', { failureRedirect: '/login' }), function(req, res) {
-  res.redirect(req.session.returnTo || '/');
+  if(!req.user.email) res.redirect('/account/complete-profile');
+  else res.redirect(req.session.returnTo || '/');
 });
 
 /**
