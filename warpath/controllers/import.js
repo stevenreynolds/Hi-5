@@ -6,6 +6,7 @@ var passport = require('passport');
 
 var mongoose = require('mongoose');
 var User = require('../models/User');
+var Video = require('../models/Video');
 
 var secrets = require('../config/secrets');
 
@@ -66,20 +67,51 @@ exports.importSelected = function(req, res) {
   console.log(req.body)
 
   User.findById(req.user.id, function(err, user) {
-    user.videos.push({ 
-      id: videos,
-      platform: 'test'
+
+    var Video = mongoose.model('Video', Video);
+    var v = new Video();
+    
+    v._creator = user._id;
+    v._id = req.body.video;
+    v.platform = 'vimeo';
+
+    v.save(function (err) {
+      if(err) console.log(err)
+
+        Video
+        .findOne({ platform: 'vimeo' })
+        .populate('_creator')
+        .exec(function (err, story) {
+          if (err) return handleError(err);
+          console.log('The creator is %s', story._creator.email);
+          // prints "The creator is Aaron"
+        })
     });
 
-    user.save(function(err) {
-      if (err) console.log(err);
+    user.videos.push(v);
+    user.save();
 
-      res.render('account/import_modify', {
-        title: 'Add Data'
-      });
-    });
+
+    
+
+  //   user.videos.push({ 
+  //     id: videos,
+  //     platform: 'test'
+  //   });
+
+  //   user.save(function(err) {
+  //     if (err) console.log(err);
+
+  //     res.render('account/import_modify', {
+  //       title: 'Add Data'
+  //     });
+  //   });
 
   });
+
+  
+
+
 
   //res.send('ok')
 };

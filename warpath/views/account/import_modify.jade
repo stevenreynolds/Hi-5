@@ -1,0 +1,36 @@
+extends ../layout
+
+block content
+
+  script(type="text/javascript").
+    //var data = !{JSON.stringify(data)};
+    //console.log(data)
+    //- $(function(){
+    //-   $('.btn-submit').on('click', function(e){
+    //-     var videos = [];
+    //-     $('[type=checkbox]:checked').each(function(el){
+    //-       videos.push(el.id);
+    //-     })
+    //-     console.log(videos)
+    //-   });
+    //- });
+  
+
+  form(method='POST')
+    legend Choose Videos
+    input(type='hidden', name='_csrf', value=_csrf)
+    ul
+      each video in data
+        li.form-group(id="vimeo_#{video.uri.replace('/videos/', '')}")
+          a(target='_blank' href='#{video.link}') Link
+          h3 #{video.name}
+          p #{video.description}
+          img(src='#{video.pictures[5].link}')
+          input.form-control.checkbox(name='video' value="vimeo_#{video.uri.replace('/videos/', '')}" type='checkbox', checked=false)
+    .form-group
+      button.btn.btn-primary.btn-submit(type='submit')
+        i.fa.fa-keyboard-o
+        | Next Step
+        
+
+  

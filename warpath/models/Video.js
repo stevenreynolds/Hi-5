@@ -1,11 +1,16 @@
-var mongoose = require('mongoose');
-var commentSchema = require('./Comment').schema;
+var mongoose = require('mongoose')
+    , Schema = mongoose.Schema;
+var Comment  = require('./Comment').schema;
+var User     = require('./User');
 
 var videoSchema = new mongoose.Schema({
-  id: { type: String, unique: true, lowercase: true },
-  platform: String,
+  _id       : String,
+  id        : { type: String, unique: true, lowercase: true },
+  platform  : String,
 
-  comments  : [commentSchema],
+  _creator: { type: Schema.Types.ObjectId, ref: 'User' },
+
+  comments: [Comment],
 
   importedAt: Date,
   modifiedAt: Date

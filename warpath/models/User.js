@@ -1,32 +1,35 @@
-var mongoose = require('mongoose');
+var mongoose = require('mongoose')
+    , Schema = mongoose.Schema;
+
 var bcrypt = require('bcrypt-nodejs');
 var crypto = require('crypto');
-var videoSchema = require('./Video').schema;
+var Video = require('./Video');
 
 var userSchema = new mongoose.Schema({
-  email: { type: String, unique: true, lowercase: true },
-  password: String,
+  email       : { type: String, unique: true, lowercase: true },
+  password    : String,
 
-  facebook: String,
-  twitter: String,
-  google: String,
-  vimeo: String,
-  instagram: String,
-  tokens: Array,
+  facebook    : String,
+  twitter     : String,
+  google      : String,
+  vimeo       : String,
+  instagram   : String,
+  tokens      : Array,
 
   profile: {
-    name: { type: String, default: '' },
-    gender: { type: String, default: '' },
-    location: { type: String, default: '' },
-    website: { type: String, default: '' },
-    picture: { type: String, default: '' }
+    name      : { type: String, default: '' },
+    gender    : { type: String, default: '' },
+    location  : { type: String, default: '' },
+    website   : { type: String, default: '' },
+    picture   : { type: String, default: '' }
   },
 
-  videos  : [videoSchema],
+  videos: [{ type: String, ref: 'Video' }],
 
-  resetPasswordToken: String,
-  resetPasswordExpires: Date
+  resetPasswordToken    : String,
+  resetPasswordExpires  : Date
 });
+
 
 /**
  * Hash the password for security.

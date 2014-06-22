@@ -56,18 +56,17 @@ exports.getVimeo = function(req, res, callback) {
                             console.log(body);
 
                             videos.push(body)
-
-
-
-                            var Video = mongoose.model('Video', videoSchema);
-                            var v = new Video();
                             
-                            v.id = videoId
-                            v.platform = 'vimeo';
 
-                            v.save(function (err) {
-                              if(err) console.log(err)
-                            });
+                            // var Video = mongoose.model('Video', videoSchema);
+                            // var v = new Video();
+                            
+                            // v.id = videoId
+                            // v.platform = 'vimeo';
+
+                            // v.save(function (err) {
+                            //   if(err) console.log(err)
+                            // });
 
 
                             
