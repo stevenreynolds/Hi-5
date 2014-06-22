@@ -85,7 +85,7 @@ exports.getVimeo = function(req, res, callback) {
                   console.log(err);
                 } else {
                   console.log('All videos have been processed successfully');
-                  res.send(videos)
+                  callback(videos)
                 }
             });
 

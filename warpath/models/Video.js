@@ -1,5 +1,5 @@
 var mongoose = require('mongoose');
-var commentSchema = require('./Comment.js');
+var commentSchema = require('./Comment').schema;
 
 var videoSchema = new mongoose.Schema({
   id: { type: String, unique: true, lowercase: true },

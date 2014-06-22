@@ -139,6 +139,8 @@ app.get('/account/unlink/:provider', passportConf.isAuthenticated, userControlle
 
 app.get('/account/import', passportConf.isAuthenticated, importController.importVideos);
 app.get('/account/import/vimeo', passportConf.isAuthenticated, importController.importVimeo);
+app.post('/account/import/vimeo', passportConf.isAuthenticated, importController.importSelected);
+
 app.get('/account/import/google', passportConf.isAuthenticated, importController.importYoutube);
 
 

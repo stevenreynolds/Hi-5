@@ -10,7 +10,7 @@ var commentSchema = require('../models/Comment');
 var videoSchema = require('../models/Video');
 var videodataSchema = require('../models/VideoData');
 
-exports.getYoutube = function(req, res, callback) {
+exports.getYoutube = function(callback) {
 
     var token = _.find(req.user.tokens, { kind: 'google' });
 
@@ -103,7 +103,7 @@ exports.getYoutube = function(req, res, callback) {
                         } else {
 
                           console.log('All videos have been processed successfully');
-                          res.send(videos)
+                          callback(videos)
                         }
                     });
 

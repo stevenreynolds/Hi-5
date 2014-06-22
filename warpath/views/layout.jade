@@ -9,6 +9,7 @@ html
     meta(name='author', content='')
     title #{title} | Warpath
     != css('styles')
+    != js('application')
   body
     include partials/navbar
 
@@ -17,5 +18,3 @@ html
       block content
 
     include partials/footer
-
-    != js('application')
