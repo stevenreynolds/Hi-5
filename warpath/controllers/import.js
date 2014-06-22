@@ -7,6 +7,7 @@ var passport = require('passport');
 var mongoose = require('mongoose');
 var User = require('../models/User');
 var Video = require('../models/Video');
+var VideoData = require('../models/VideoData');
 
 var secrets = require('../config/secrets');
 
@@ -91,21 +92,18 @@ exports.importSelected = function(req, res) {
     user.videos.push(v);
     user.save();
 
+    VideoData.find({
+      '_id': { $in: [
+          videos
+      ]}
+    }).lean().exec(function(err, docs){
+         res.render('account/import_modify', {
+            title: 'Add Data',
+            data: docs
+          });
+    });
 
-    
 
-  //   user.videos.push({ 
-  //     id: videos,
-  //     platform: 'test'
-  //   });
-
-  //   user.save(function(err) {
-  //     if (err) console.log(err);
-
-  //     res.render('account/import_modify', {
-  //       title: 'Add Data'
-  //     });
-  //   });
 
   });
 

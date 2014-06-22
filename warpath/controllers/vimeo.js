@@ -1,12 +1,12 @@
-var Vimeo = require('vimeo-api').Vimeo;
-var async = require("async");
-var secrets = require('../config/secrets');
-var _ = require('lodash');
-var mongoose = require('mongoose');
-
-var User = require('../models/User');
-var commentSchema = require('../models/Comment');
-var videoSchema = require('../models/Video');
+var Vimeo           = require('vimeo-api').Vimeo;
+var async           = require("async");
+var secrets         = require('../config/secrets');
+var _               = require('lodash');
+var mongoose        = require('mongoose');
+var User            = require('../models/User');
+var commentSchema   = require('../models/Comment');
+var videoSchema     = require('../models/Video');
+var VideoData       = require('../models/VideoData');
 
 exports.getVimeo = function(req, res, callback) {
 
@@ -56,7 +56,7 @@ exports.getVimeo = function(req, res, callback) {
                             console.log(body);
 
                             videos.push(body)
-                            
+
 
                             // var Video = mongoose.model('Video', videoSchema);
                             // var v = new Video();
@@ -68,7 +68,12 @@ exports.getVimeo = function(req, res, callback) {
                             //   if(err) console.log(err)
                             // });
 
+                            var vd = new VideoData(body);
 
+                            vd._id = 'vimeo_' + videoId;
+                            vd.save(function (err) {
+                              if(err) console.log(err)
+                            });
                             
                             callback();
 

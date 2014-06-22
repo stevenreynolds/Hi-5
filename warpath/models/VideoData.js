@@ -1,7 +1,8 @@
 var mongoose = require('mongoose');
 
 var videodataSchema = new mongoose.Schema({
-  id: { type: String, unique: true, lowercase: true },
+  _id       : String,
+  id        : String,
 }, { strict: false });
 
 module.exports = mongoose.model('VideoData', videodataSchema);

@@ -1,6 +1,198 @@
 extends layout
 
+block append head
+  script(src='https://api.tiles.mapbox.com/mapbox.js/v1.6.4/mapbox.js')
+  link(rel='stylesheet', href='https://api.tiles.mapbox.com/mapbox.js/v1.6.4/mapbox.css')
+  style.
+    body { margin:0; padding:0; }
+    #map { position:absolute; top:0; bottom:0; width:100%; }
+    .filter-ui {
+      background:#fff;
+      position:absolute;
+      top:10px;
+      right:10px;
+      z-index:100;
+      padding:10px;
+      border-radius:3px;
+      }
+
 block content
-  h1 WELCOME
-  p.lead
-    | Hey.
+  
+  nav(id='filters' class='filter-ui')
+  div(id="map")
+
+  script(type="text/javascript").
+    //https://www.mapbox.com/mapbox.js/example/v1.0.0/
+    //see https://www.mapbox.com/mapbox.js/example/v1.0.0/divicon/
+    var marker;
+    var map = L.mapbox.map('map', 'warpath.ii84a1lh')
+            .addControl(L.mapbox.geocoderControl('warpath.ii84a1lh'));
+      //.setView([39.12367, -76.81229], 9);
+
+    var myLayer = L.mapbox.featureLayer().addTo(map);
+
+    // The GeoJSON representing the two point features
+    var geojson = {
+        type: 'FeatureCollection',
+        features: [{
+            type: 'Feature',
+            properties: {
+                title: 'Washington, D.C.',
+                url: 'http://en.wikipedia.org/wiki/Washington,_D.C.',
+                type: 'air',
+            },
+            geometry: {
+                type: 'Point',
+                coordinates: [-77.03201, 38.90065]
+            }
+        },
+        {
+            type: 'Feature',
+            properties: {
+                title: 'Baltimore, MD',
+                url: 'http://en.wikipedia.org/wiki/Baltimore',
+                type: 'snow',
+            },
+            geometry: {
+                type: 'Point',
+                coordinates: [-76.60767, 39.28755]
+            }
+        }]
+    };
+
+    // Set a custom icon on each marker based on feature properties.
+    myLayer.on('layeradd', function(e) {
+        var marker = e.layer,
+            feature = marker.feature;
+        
+        var json_icon = {
+            "snow": {
+                "icon": {
+                    "iconUrl": "astronaut2.png",
+                    "iconSize": [100, 100],
+                    "iconAnchor": [50, 50],
+                    "popupAnchor": [0, -55],
+                    "className": "dot"
+                }
+            },
+            "air": {
+                "icon": {
+                    "iconUrl": "astronaut2.png",
+                    "iconSize": [10, 10],
+                    "iconAnchor": [50, 50],
+                    "popupAnchor": [0, -55],
+                    "className": "dot"
+                }
+            }
+        }
+
+        marker.setIcon(L.icon(json_icon[feature.properties.type].icon));
+    });
+
+    // Pass features and a custom factory function to the map
+    myLayer.setGeoJSON(geojson);
+    myLayer.on('click', function(e) {
+        e.layer.unbindPopup();
+        window.open(e.layer.feature.properties.url);
+    });
+
+    ////////////////////////////////////////////
+
+    var myLayer2 = L.mapbox.featureLayer().addTo(map);
+
+    // This uses the HTML5 geolocation API, which is available on
+    // most mobile browsers and modern browsers, but not in Internet Explorer
+    //
+    // See this chart of compatibility for details:
+    // http://caniuse.com/#feat=geolocation
+    if (!navigator.geolocation) {
+        console.log('Geolocation is not available');
+    } else {
+        map.locate();
+    }
+
+    // Once we've got a position, zoom and center the map
+    // on it, and add a single marker.
+    map.on('locationfound', function(e) {
+        //map.fitBounds(e.bounds);
+        //console.log(e.bounds)
+        //map.panTo([e.latlng.lat, e.latlng.lng]);
+        // map.featureLayer.on('click', function(e) {
+        //     e.layer.getLatLng());
+        // });
+
+        marker = L.marker([e.latlng.lat, e.latlng.lng], {
+            icon: L.mapbox.marker.icon({
+              'marker-color': '#f86767'
+            }),
+            draggable: true
+        })
+        .bindPopup('This marker is draggable! Move it around.')
+        .addTo(map);
+
+        //map.panTo([e.latlng.lat, e.latlng.lng]);
+        map.setView([e.latlng.lat, e.latlng.lng], 7);
+
+        // every time the marker is dragged, update the coordinates container
+        marker.on('dragend', ondragend);
+
+        // Set the initial marker coordinate on load.
+        ondragend();
+
+    });
+
+    // If the user chooses not to allow their location
+    // to be shared, display an error message.
+    map.on('locationerror', function() {
+        console.log('Position could not be found');
+    });
+
+    function ondragend() {
+        var m = marker.getLatLng();
+        console.log(m)
+        //- $.getJSON('http://api.tiles.mapbox.com/v3/warpath.ii84a1lh/geocode/' + m.lng + ',' + m.lat + '.json', function(data){
+        //-     console.log(data)
+        //- })
+    }
+
+
+    // Wait until the marker layer is loaded in order to build a list of possible
+    // types. If you are doing this with another featureLayer, you should change
+    // map.featureLayer to the variable you have assigned to your featureLayer.
+    map.featureLayer.on('ready', function() {
+      var types = ['snow', 'air'];
+
+      var checkboxes = [];
+      // Create a filter interface.
+      for (var i = 0; i < types.length; i++) {
+        // Create an an input checkbox and label inside.
+        var item = filters.appendChild(document.createElement('div'));
+        var checkbox = item.appendChild(document.createElement('input'));
+        var label = item.appendChild(document.createElement('label'));
+        checkbox.type = 'checkbox';
+        checkbox.id = types[i];
+        checkbox.checked = true;
+        // create a label to the right of the checkbox with explanatory text
+        label.innerHTML = types[i];
+        label.setAttribute('for', types[i]);
+        // Whenever a person clicks on this checkbox, call the update().
+        checkbox.addEventListener('change', update);
+        checkboxes.push(checkbox);
+      }
+
+      // This function is called whenever someone clicks on a checkbox and changes
+      // the selection of markers to be displayed.
+      function update() {
+        var enabled = {};
+        // Run through each checkbox and record whether it is checked. If it is,
+        // add it to the object of types to display, otherwise do not.
+        for (var i = 0; i < checkboxes.length; i++) {
+          if (checkboxes[i].checked) enabled[checkboxes[i].id] = true;
+        }
+
+        myLayer.setFilter(function(feature) {
+          return (feature.properties['type'] in enabled);
+        });
+      }
+    });
+
