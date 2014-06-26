@@ -1,9 +1,11 @@
-var mongoose = require('mongoose')
-    , Schema = mongoose.Schema;
+var mongoose      = require('mongoose')
+    , slug        = require('slug')
+    , Schema      = mongoose.Schema;
 
 var bcrypt = require('bcrypt-nodejs');
 var crypto = require('crypto');
 var Video = require('./Video');
+
 
 var userSchema = new mongoose.Schema({
   email       : { type: String, unique: true, lowercase: true },
@@ -17,6 +19,7 @@ var userSchema = new mongoose.Schema({
   tokens      : Array,
 
   profile: {
+    slug      : { type: String, unique: true },
     name      : { type: String, default: '' },
     gender    : { type: String, default: '' },
     location  : { type: String, default: '' },
@@ -30,7 +33,6 @@ var userSchema = new mongoose.Schema({
   resetPasswordExpires  : Date
 });
 
-
 /**
  * Hash the password for security.
  * "Pre" is a Mongoose middleware that executes before each user.save() call.
@@ -38,6 +40,8 @@ var userSchema = new mongoose.Schema({
 
 userSchema.pre('save', function(next) {
   var user = this;
+
+  user.profile.slug = slug(user.profile.name);
 
   if (!user.isModified('password')) return next();
 
