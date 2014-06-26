@@ -9,7 +9,7 @@
 @gray-darker:            lighten(#000, 13.5%); // #222
 @gray-dark:              lighten(#000, 20%);   // #333
 @gray:                   lighten(#000, 33.5%); // #555
-@gray-light:             #4E5D6C;   // #999
+@gray-light:             #4E5D6C; // #999
 @gray-lighter:           #EBEBEB; // #eee
 
 @brand-primary:         #DF691A;
@@ -48,7 +48,7 @@
 @font-family-serif:       Georgia, "Times New Roman", Times, serif;
 @font-family-monospace:   Menlo, Monaco, Consolas, "Courier New", monospace;
 @font-family-base:        'din_regularalternate', Arial, sans-serif;
-
+@font-family-headings:    'din_engschrift', Arial, sans-serif;
 
 @font-size-base:          15px;
 @font-size-large:         ceil((@font-size-base * 1.25)); // ~18px
@@ -67,7 +67,7 @@
 @line-height-computed:    floor((@font-size-base * @line-height-base)); // ~20px
 
 //** By default, this inherits from the `<body>`.
-@headings-font-family:    @font-family-sans-serif;
+@headings-font-family:    @font-family-headings;
 @headings-font-weight:    300;
 @headings-line-height:    1.1;
 @headings-color:          inherit;
@@ -446,7 +446,7 @@
 
 @pager-bg:                             @pagination-bg;
 @pager-border:                         @pagination-border;
-@pager-border-radius:                  15px;
+@pager-border-radius:                  0;
 
 @pager-hover-bg:                       @pagination-hover-bg;
 
@@ -722,7 +722,7 @@
 //
 //##
 
-@well-bg:                     @table-border-color;
+@well-bg:                     darken(@body-bg, 5%);//@table-border-color;
 @well-border:                 transparent;
 
 
@@ -742,7 +742,7 @@
 
 @badge-font-weight:           300;
 @badge-line-height:           1;
-@badge-border-radius:         10px;
+@badge-border-radius:         0;
 
 
 //== Breadcrumbs

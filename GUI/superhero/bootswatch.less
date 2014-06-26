@@ -34,7 +34,7 @@
 // Easily pump out default styles, as well as :hover, :focus, :active,
 // and disabled options for all buttons
 .button-variant(@color; @background;) {
-  color: @color;
+  color: #222C2B;
   //background-color: @background;
   border-color: @background;
 
@@ -43,13 +43,11 @@
   &:active,
   &.active,
   .open .dropdown-toggle & {
-    color: @color;
-    
+    color: #fff;
     border-color:@background;
-
-
-    background-color: darken(@background, 8%);
-        //border-color: darken(@border, 12%);
+    background-color: @background;
+    //background-color: darken(@background, 8%);
+    //border-color: darken(@border, 12%);
   }
   &:active,
   &.active,
@@ -121,14 +119,15 @@
 
 
 .btn {
-
+  font-family: @font-family-sans-serif;
   font-weight: 300;
-  border-width: 3px;
+  border-width: 4px;
   border-style: solid;
   border-color: #222C2B;
   margin: 2px;
   background: none;
   text-transform: uppercase;
+  font-weight: bold;
 
   &-default {
      .button-variant(@btn-default-color; @btn-default-bg;);
