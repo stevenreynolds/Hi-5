@@ -9,7 +9,7 @@
 @gray-darker:            lighten(#000, 13.5%); // #222
 @gray-dark:              lighten(#000, 20%);   // #333
 @gray:                   lighten(#000, 33.5%); // #555
-@gray-light:             #4E5D6C;   // #999
+@gray-light:             #4E5D6C; // #999
 @gray-lighter:           #EBEBEB; // #eee
 
 @brand-primary:         #DF691A;
@@ -24,9 +24,9 @@
 // ## Settings for some of the most global styles.
 
 //** Background color for `<body>`.
-@body-bg:               #2B3E50;
+@body-bg:               #636B6B; //#2B3E50;
 //** Global text color on `<body>`.
-@text-color:            @gray-lighter;
+@text-color:            #222C2B; //@gray-lighter;
 
 //** Global textual link color.
 @link-color:            @brand-primary;
@@ -48,7 +48,7 @@
 @font-family-serif:       Georgia, "Times New Roman", Times, serif;
 @font-family-monospace:   Menlo, Monaco, Consolas, "Courier New", monospace;
 @font-family-base:        'din_regularalternate', Arial, sans-serif;
-
+@font-family-headings:    'din_engschrift', Arial, sans-serif;
 
 @font-size-base:          15px;
 @font-size-large:         ceil((@font-size-base * 1.25)); // ~18px
@@ -67,7 +67,7 @@
 @line-height-computed:    floor((@font-size-base * @line-height-base)); // ~20px
 
 //** By default, this inherits from the `<body>`.
-@headings-font-family:    @font-family-sans-serif;
+@headings-font-family:    @font-family-headings;
 @headings-font-weight:    300;
 @headings-line-height:    1.1;
 @headings-color:          inherit;
@@ -174,12 +174,12 @@
 //##
 
 //** `<input>` background color
-@input-bg:                       #fff;
+@input-bg:                       transparent;
 //** `<input disabled>` background color
-@input-bg-disabled:              @gray-lighter;
+@input-bg-disabled:              transparent;
 
 //** Text color for `<input>`s
-@input-color:                    @body-bg;
+@input-color:                    #fff; //@body-bg;
 //** `<input>` border color
 @input-border:                   transparent;
 //** `<input>` border radius
@@ -446,7 +446,7 @@
 
 @pager-bg:                             @pagination-bg;
 @pager-border:                         @pagination-border;
-@pager-border-radius:                  15px;
+@pager-border-radius:                  0;
 
 @pager-hover-bg:                       @pagination-hover-bg;
 
@@ -722,7 +722,7 @@
 //
 //##
 
-@well-bg:                     @table-border-color;
+@well-bg:                     darken(@body-bg, 5%);//@table-border-color;
 @well-border:                 transparent;
 
 
@@ -742,7 +742,7 @@
 
 @badge-font-weight:           300;
 @badge-line-height:           1;
-@badge-border-radius:         10px;
+@badge-border-radius:         0;
 
 
 //== Breadcrumbs

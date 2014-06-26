@@ -15,6 +15,10 @@
           a(href='/api') API Examples
         li(class=title=='Contact'?'active':undefined)
           a(href='/contact') Contact
+        li(class='search')
+          input#search(type='text', placeholder='search')
+
+         
       ul.nav.navbar-nav.navbar-right
         if !user
           li(class=title=='Login'?'active':undefined)

@@ -29,6 +29,7 @@ var homeController = require('./controllers/home');
 var userController = require('./controllers/user');
 var apiController = require('./controllers/api');
 var contactController = require('./controllers/contact');
+var searchController = require('./controllers/search');
 
 var importController = require('./controllers/import');
 var youtubeController = require('./controllers/youtube');
@@ -115,10 +116,17 @@ app.use(function(req, res, next) {
 });
 app.use(express.static(path.join(__dirname, 'public'), { maxAge: week }));
 
+app.use(function(req, res, next) {
+  //If Email is not set force redirect to the page to complete the profile
+  if (req.url != '/account/complete-profile' && !req.user.email) {
+      req.flash('errors', { msg: 'Hey your email is empty !' });
+      return res.redirect('/account/complete-profile');
+  }
+  next();
+});
 /**
  * Main routes.
  */
-
 app.get('/', homeController.index);
 app.get('/login', userController.getLogin);
 app.post('/login', userController.postLogin);
@@ -131,6 +139,9 @@ app.get('/signup', userController.getSignup);
 app.post('/signup', userController.postSignup);
 app.get('/contact', contactController.getContact);
 app.post('/contact', contactController.postContact);
+
+app.get('/search', searchController.search);
+
 app.get('/account', passportConf.isAuthenticated, userController.getAccount);
 app.post('/account/profile', passportConf.isAuthenticated, userController.postUpdateProfile);
 app.post('/account/password', passportConf.isAuthenticated, userController.postUpdatePassword);
@@ -149,7 +160,7 @@ app.post('/account/import/vimeo', passportConf.isAuthenticated, importController
 app.get('/account/import/google', passportConf.isAuthenticated, importController.importYoutube);
 
 
-app.get('/import', youtubeController.getYoutube);
+//app.get('/import', youtubeController.getYoutube);
 //app.get('/import', vimeoController.getVimeo);
 
 /**

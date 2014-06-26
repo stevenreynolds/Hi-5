@@ -1,9 +1,11 @@
-var mongoose = require('mongoose')
-    , Schema = mongoose.Schema;
+var mongoose      = require('mongoose')
+    , slug        = require('slug')
+    , Schema      = mongoose.Schema;
 
 var bcrypt = require('bcrypt-nodejs');
 var crypto = require('crypto');
 var Video = require('./Video');
+
 
 var userSchema = new mongoose.Schema({
   email       : { type: String, unique: true, lowercase: true },
@@ -17,6 +19,7 @@ var userSchema = new mongoose.Schema({
   tokens      : Array,
 
   profile: {
+    slug      : { type: String, unique: true },
     name      : { type: String, default: '' },
     gender    : { type: String, default: '' },
     location  : { type: String, default: '' },
@@ -30,26 +33,41 @@ var userSchema = new mongoose.Schema({
   resetPasswordExpires  : Date
 });
 
-
 /**
  * Hash the password for security.
  * "Pre" is a Mongoose middleware that executes before each user.save() call.
  */
+var TheUser = mongoose.model('User', userSchema);
 
 userSchema.pre('save', function(next) {
   var user = this;
 
-  if (!user.isModified('password')) return next();
+  //Generate Slug
+  if(!user.profile.slug) {
+    TheUser.count({ 'profile.slug': new RegExp('^' + slug(user.profile.name) + '$', 'i') }, function(err, count) {
+      if (err) console.log(err);
+      console.log(count)
+      if(count == 0)
+        user.profile.slug = slug(user.profile.name);
+      else
+        user.profile.slug = slug(user.profile.name + (count-1) );
 
-  bcrypt.genSalt(5, function(err, salt) {
-    if (err) return next(err);
 
-    bcrypt.hash(user.password, salt, null, function(err, hash) {
-      if (err) return next(err);
-      user.password = hash;
-      next();
-    });
-  });
+        if (!user.isModified('password')) return next();
+
+        bcrypt.genSalt(5, function(err, salt) {
+          if (err) return next(err);
+
+          bcrypt.hash(user.password, salt, null, function(err, hash) {
+            if (err) return next(err);
+            user.password = hash;
+            next();
+          });
+        });
+
+    }); 
+  }
+
 });
 
 /**
