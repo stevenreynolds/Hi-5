@@ -116,10 +116,17 @@ app.use(function(req, res, next) {
 });
 app.use(express.static(path.join(__dirname, 'public'), { maxAge: week }));
 
+app.use(function(req, res, next) {
+  //If Email is not set force redirect to the page to complete the profile
+  if (req.url != '/account/complete-profile' && !req.user.email) {
+      req.flash('errors', { msg: 'Hey your email is empty !' });
+      return res.redirect('/account/complete-profile');
+  }
+  next();
+});
 /**
  * Main routes.
  */
-
 app.get('/', homeController.index);
 app.get('/login', userController.getLogin);
 app.post('/login', userController.postLogin);
