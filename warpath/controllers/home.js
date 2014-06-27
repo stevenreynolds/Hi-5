@@ -36,7 +36,7 @@ exports.index = function(req, res) {
 };
 
 
-generateGeoJSON = function(videos, callback){
+var generateGeoJSON = function(videos, callback){
     var geoJSON = {
         type: 'FeatureCollection',
         features: []
@@ -48,8 +48,8 @@ generateGeoJSON = function(videos, callback){
             type: 'Feature',
             properties: {
                 title: data._video_data.name,
-                url: data._video_data.link,
-                type: 'snow',
+                url: '/video/' + data._id.replace('vimeo_','').replace('youtube_',''),
+                type: 'water',
             },
             geometry: {
                 type: 'Point',

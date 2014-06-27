@@ -9,20 +9,6 @@ block append head
 
 block content
 
-  script(type="text/javascript").
-    //var data = !{JSON.stringify(data)};
-    //console.log(data)
-    //- $(function(){
-    //-   $('.btn-submit').on('click', function(e){
-    //-     var videos = [];
-    //-     $('[type=checkbox]:checked').each(function(el){
-    //-       videos.push(el.id);
-    //-     })
-    //-     console.log(videos)
-    //-   });
-    //- });
-  
-
   form(method='POST' action='/account/import_complete')
     legend Choose Videos
     input(type='hidden', name='_csrf', value=_csrf)
@@ -38,7 +24,7 @@ block content
           //- a.btn.btn-primary(href='#') Geolocate this video
 
           a.btn.btn-primary.btn-lg.geocode
-            | Launch demo modal
+            | Géolocalisation
 
           #myModal.modal.fade(tabindex='-1', role='dialog', aria-labelledby='myModalLabel', aria-hidden='true')
             .modal-dialog.modal-lg

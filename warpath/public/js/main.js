@@ -2,6 +2,8 @@ $(document).ready(function() {
 
   $("#search").autocomplete({
     source: function (request, response) {
+        request.type = $('#search-type').val();
+
         $.ajax({
             url: "/search",
             type: "GET",
@@ -9,10 +11,18 @@ $(document).ready(function() {
             success: function (data) {
                 // Map response values to fiedl label and value
                 response($.map(data, function (el) {
-                  return {
-                    label: el.profile.name,
-                    value: el.profile.slug,
-                  };
+                  if(request.type == 'User') {
+                    return {
+                      label: el.profile.name,
+                      value: el.profile.slug,
+                    };
+                  }
+                  if(request.type == 'Video') {
+                    return {
+                      label: el.name,
+                      value: '/video/' + el._id.replace('vimeo_','').replace('youtube',''),
+                    };
+                  }
                 }));
             }
         });
@@ -29,9 +39,9 @@ $(document).ready(function() {
      },
      select: function (event, ui) {
         // Prevent value from being put in the input:
-        this.value = ui.item.label;
+        // this.value = ui.item.label;
         // Set the id to the next input hidden field
-        $(this).next("input").val(ui.item.value); 
+        // $(this).next("input").val(ui.item.value); 
         // Prevent other event from not being execute            
         event.preventDefault();
         // optionnal: submit the form after field has been filled up
