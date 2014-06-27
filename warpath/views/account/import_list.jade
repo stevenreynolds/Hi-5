@@ -2,20 +2,6 @@ extends ../layout
 
 block content
 
-  script(type="text/javascript").
-    //var data = !{JSON.stringify(data)};
-    //console.log(data)
-    //- $(function(){
-    //-   $('.btn-submit').on('click', function(e){
-    //-     var videos = [];
-    //-     $('[type=checkbox]:checked').each(function(el){
-    //-       videos.push(el.id);
-    //-     })
-    //-     console.log(videos)
-    //-   });
-    //- });
-  
-
   form(method='POST')
     legend Choose Videos
     input(type='hidden', name='_csrf', value=_csrf)

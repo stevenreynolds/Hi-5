@@ -22,7 +22,6 @@ exports.index = function(req, res) {
       if (err) console.log(err);
 
       //console.log(videos);
-
       generateGeoJSON(videos, function(geoJSON){
         
         res.render('home', {
