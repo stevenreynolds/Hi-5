@@ -371,6 +371,22 @@ console.log(done)
 
 // }));
 
+// TODO
+// generateSlug = function(){
+//   //Generate Slug
+//   if(!user.profile.slug) {
+//     User.count({ 'profile.slug': new RegExp('^' + slug(user.profile.name) + '$', 'i') }, function(err, count) {
+//       if (err) console.log(err);
+      
+//       console.log(count)
+//       if(count == 0)
+//         user.profile.slug = slug(user.profile.name);
+//       else
+//         user.profile.slug = slug(user.profile.name + (count-1) );
+//     }); 
+//   }
+// }
+
 // Login Required middleware.
 
 exports.isAuthenticated = function(req, res, next) {

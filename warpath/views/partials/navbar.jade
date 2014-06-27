@@ -9,16 +9,9 @@
       a.navbar-brand(href='/') WARPATH
     .collapse.navbar-collapse
       ul.nav.navbar-nav
-        li(class=title=='Home'?'active':undefined)
-          a(href='/') Home
-        li(class=title=='API Examples'?'active':undefined)
-          a(href='/api') API Examples
-        li(class=title=='Contact'?'active':undefined)
-          a(href='/contact') Contact
         li(class='search')
-          input#search(type='text', placeholder='search')
+          input#search.form-control.col-lg-8(type='text', placeholder='search')
 
-         
       ul.nav.navbar-nav.navbar-right
         if !user
           li(class=title=='Login'?'active':undefined)

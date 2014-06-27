@@ -118,7 +118,7 @@ app.use(express.static(path.join(__dirname, 'public'), { maxAge: week }));
 
 app.use(function(req, res, next) {
   //If Email is not set force redirect to the page to complete the profile
-  if (req.url != '/account/complete-profile' && !req.user.email) {
+  if (req.url != '/account/complete-profile' && req.user && !req.user.email) {
       req.flash('errors', { msg: 'Hey your email is empty !' });
       return res.redirect('/account/complete-profile');
   }

@@ -66,11 +66,18 @@ module.exports = {
   },
 
   vimeo: {
-    consumerKey: process.env.VIMEO_ID || '72b9d5149a45dd2e174d1fc1a5bbe579f162f6bf',
-    consumerSecret: process.env.VIMEO_SECRET || '7b40f1ae77cf4e41c823c378f10d11190267e48b',
+    // consumerKey: process.env.VIMEO_ID || '72b9d5149a45dd2e174d1fc1a5bbe579f162f6bf',
+    // consumerSecret: process.env.VIMEO_SECRET || '7b40f1ae77cf4e41c823c378f10d11190267e48b',
 
-    clientID: process.env.VIMEO_ID || '72b9d5149a45dd2e174d1fc1a5bbe579f162f6bf',
-    clientSecret: process.env.VIMEO_SECRET || '7b40f1ae77cf4e41c823c378f10d11190267e48b',
+    // clientID: process.env.VIMEO_ID || '72b9d5149a45dd2e174d1fc1a5bbe579f162f6bf',
+    // clientSecret: process.env.VIMEO_SECRET || '7b40f1ae77cf4e41c823c378f10d11190267e48b',
+
+
+    consumerKey: process.env.VIMEO_ID || '3d350c9960a700cdfb619f5d77fe5a7fb29b281d',
+    consumerSecret: process.env.VIMEO_SECRET || '9279513670fb60061d48fa50e4228b36b3fde4c3',
+
+    clientID: process.env.VIMEO_ID || '3d350c9960a700cdfb619f5d77fe5a7fb29b281d',
+    clientSecret: process.env.VIMEO_SECRET || '9279513670fb60061d48fa50e4228b36b3fde4c3',
 
     redirectUrl: '/auth/vimeo/callback',
     callbackURL: '/auth/vimeo/callback',

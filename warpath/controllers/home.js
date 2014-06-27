@@ -1,10 +1,69 @@
+var _ = require('lodash');
+var async = require('async');
+
+var mongoose = require('mongoose');
+var User = require('../models/User');
+var Video = require('../models/Video');
+var VideoData = require('../models/VideoData');
+
+
 /**
  * GET /
- * Home page.
+ * Home page with Videos.
  */
 
 exports.index = function(req, res) {
-  res.render('home', {
-    title: 'Home'
-  });
+  Video
+    .find({})
+    .lean() //Very Important !
+    .populate('_video_data')
+    .populate('_creator')
+    .exec(function (err, videos) {
+      if (err) console.log(err);
+
+      //console.log(videos);
+
+      generateGeoJSON(videos, function(geoJSON){
+        
+        res.render('home', {
+            title: 'Home',
+            geoJSON_videos: JSON.stringify(geoJSON)
+        });
+
+      })
+
+    })
+  
 };
+
+
+generateGeoJSON = function(videos, callback){
+    var geoJSON = {
+        type: 'FeatureCollection',
+        features: []
+    };
+
+    videos.forEach(function(data) {
+
+        var point = {
+            type: 'Feature',
+            properties: {
+                title: data._video_data.name,
+                url: data._video_data.link,
+                type: 'air',
+            },
+            geometry: {
+                type: 'Point',
+                coordinates: [data.location.lng, data.location.lat]
+            }
+        }
+
+        geoJSON.features.push(point);
+
+    });
+
+    console.log(geoJSON.features)
+
+    callback(geoJSON);
+
+}

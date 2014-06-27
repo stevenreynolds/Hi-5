@@ -54,7 +54,9 @@
     "passport-oauth": "^1.0.0",
     "passport-oauth2": "^1.1.2",
     "passport-twitter": "^1.0.2",
-    "passport-vimeo" : "^0.1.2",
+
+    "passport-vimeo" : "https://github.com/ChibiJoel/passport-vimeo/tarball/1.0.1",
+
     "request": "^2.36.0",
     "stripe": "^2.6.3",
     "tumblr.js": "^0.0.4",

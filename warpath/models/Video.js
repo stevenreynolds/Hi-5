@@ -2,6 +2,7 @@ var mongoose = require('mongoose')
     , Schema = mongoose.Schema;
 var Comment  = require('./Comment').schema;
 var User     = require('./User');
+var VideoData     = require('./VideoData');
 
 var videoSchema = new mongoose.Schema({
   _id       : String,
@@ -9,6 +10,7 @@ var videoSchema = new mongoose.Schema({
   platform  : String,
 
   _creator: { type: Schema.Types.ObjectId, ref: 'User' },
+  _video_data: { type: String, ref: 'VideoData' },
 
   location: {
     lat: { type: Number, default: 0 },
@@ -19,6 +21,13 @@ var videoSchema = new mongoose.Schema({
 
   importedAt: Date,
   modifiedAt: Date
+});
+
+videoSchema.pre('save', function(next) {
+  var video = this;
+  video._video_data = video._id;
+  
+  next();
 });
 
 module.exports = mongoose.model('Video', videoSchema);
