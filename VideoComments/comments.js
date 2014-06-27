@@ -25,6 +25,7 @@ function onYouTubeIframeAPIReady() {
 
     if( $("#video").hasClass('youtube') ) {
         videoType = 'youtube';
+        console.log('Youtube reeeeeeady')
 
         player.video = new YT.Player('video', {
           height: '390',
@@ -110,10 +111,12 @@ function onPlayerReady() {
         getDurationInterval = setInterval(getDuration, 50);
         
         // the timeline element holds all the avatars
-        timeline = document.createElement("div");
-        timeline.id = "timeline";
-        timeline.className = "timeline";
-        timeline = container.insertBefore(timeline, iframe.nextSibling);
+        // timeline = document.createElement("div");
+        // timeline.id = "timeline";
+        // timeline.className = "timeline";
+        // timeline = container.insertBefore(timeline, iframe.nextSibling);
+
+        timeline = document.getElementById("timeline");
 
         // the comment element displays the author's name and the comment
         comment = document.createElement("div");

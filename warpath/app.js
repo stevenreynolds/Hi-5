@@ -25,17 +25,18 @@ var connectAssets = require('connect-assets');
  * Controllers (route handlers).
  */
 
-var homeController = require('./controllers/home');
-var userController = require('./controllers/user');
-var apiController = require('./controllers/api');
+var homeController    = require('./controllers/home');
+var userController    = require('./controllers/user');
+var apiController     = require('./controllers/api');
 var contactController = require('./controllers/contact');
+var pageController    = require('./controllers/page');
 
-var videoController = require('./controllers/video');
-var searchController = require('./controllers/search');
+var videoController   = require('./controllers/video');
+var searchController  = require('./controllers/search');
 
-var importController = require('./controllers/import');
+var importController  = require('./controllers/import');
 var youtubeController = require('./controllers/youtube');
-var vimeoController = require('./controllers/vimeo');
+var vimeoController   = require('./controllers/vimeo');
 
 /**
  * API keys and Passport configuration.
@@ -141,6 +142,8 @@ app.get('/signup', userController.getSignup);
 app.post('/signup', userController.postSignup);
 app.get('/contact', contactController.getContact);
 app.post('/contact', contactController.postContact);
+
+app.get('/legal-notice', pageController.legalNotice);
 
 app.get('/search', searchController.search);
 
