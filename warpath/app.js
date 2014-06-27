@@ -41,8 +41,17 @@ var vimeoController   = require('./controllers/vimeo');
 /**
  * API keys and Passport configuration.
  */
+switch(process.env.NODE_ENV){
+    case 'development':
+        var secrets = require('./config/secrets');
+    case 'production':
+        var secrets = require('./config/secrets_beta');
+    case 'beta':
+        var secrets = require('./config/secrets_beta');
+    default:
+        var secrets = require('./config/secrets');
+}
 
-var secrets = require('./config/secrets');
 var passportConf = require('./config/passport');
 
 /**

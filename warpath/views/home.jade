@@ -78,40 +78,11 @@ block container
     var map = L.mapbox.map('map', 'warpath.ik58n87j', {
             minZoom: 3
         })
-            .addControl(L.mapbox.geocoderControl('warpath.ik58n87j'));
-      //.setView([39.12367, -76.81229], 9);
+        .addControl(L.mapbox.geocoderControl('warpath.ik58n87j'));
 
     var myLayer = L.mapbox.featureLayer().addTo(map);
 
     // The GeoJSON representing the two point features
-    //- var geojson = {
-    //-     type: 'FeatureCollection',
-    //-     features: [{
-    //-         type: 'Feature',
-    //-         properties: {
-    //-             title: 'Washington, D.C.',
-    //-             url: 'http://en.wikipedia.org/wiki/Washington,_D.C.',
-    //-             type: 'air',
-    //-         },
-    //-         geometry: {
-    //-             type: 'Point',
-    //-             coordinates: [-77.03201, 38.90065]
-    //-         }
-    //-     },
-    //-     {
-    //-         type: 'Feature',
-    //-         properties: {
-    //-             title: 'Baltimore, MD',
-    //-             url: 'http://en.wikipedia.org/wiki/Baltimore',
-    //-             type: 'snow',
-    //-         },
-    //-         geometry: {
-    //-             type: 'Point',
-    //-             coordinates: [-76.60767, 39.28755]
-    //-         }
-    //-     }]
-    //- };
-
     var geojson = !{geoJSON_videos};
     console.log(geojson)
 
