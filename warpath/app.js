@@ -241,6 +241,12 @@ app.get('/auth/vimeo/callback', passport.authenticate('vimeo', { failureRedirect
 
 app.use(errorHandler());
 
+
+//The 404 Route (ALWAYS Keep this as the last route)
+app.get('*', function(req, res){
+  res.send('what???', 404);
+});
+
 /**
  * Start Express server.
  */
