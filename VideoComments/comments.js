@@ -186,7 +186,6 @@ function getCurrentTime(callback) {
 // add an onclick event to the avatar, so we can seek to the referenced time
 $(document).on("click", ".avatar", function(e) {
     e.preventDefault();
-
     // get the comment to which this avatar is linked
     var c = comments[e.target.id.substr(6)];
     // move the video to the desired time

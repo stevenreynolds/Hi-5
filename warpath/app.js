@@ -29,6 +29,8 @@ var homeController = require('./controllers/home');
 var userController = require('./controllers/user');
 var apiController = require('./controllers/api');
 var contactController = require('./controllers/contact');
+
+var videoController = require('./controllers/video');
 var searchController = require('./controllers/search');
 
 var importController = require('./controllers/import');
@@ -158,6 +160,8 @@ app.get('/account/import/vimeo', passportConf.isAuthenticated, importController.
 app.post('/account/import/vimeo', passportConf.isAuthenticated, importController.importSelected);
 
 app.get('/account/import/google', passportConf.isAuthenticated, importController.importYoutube);
+
+app.get('/video/:id', videoController.getVideo);
 
 
 //app.get('/import', youtubeController.getYoutube);

@@ -6,31 +6,39 @@ var User = require('../models/User');
 var Video = require('../models/Video');
 var VideoData = require('../models/VideoData');
 
+var moment = require('moment');
+moment.lang('fr');
 
 /**
- * GET /
- * Home page with Videos.
+ * GET /video/:id
+ * Video.
  */
+exports.getVideo = function(req, res) {
+   var videoID = req.params.id;
 
-exports.index = function(req, res) {
   Video
-    .find({})
+    //.findOne({ _id: videoID })
+    //not perfect but collision between vimeo id and youtube id will be rare like 1 in 1 billion
+    .findOne({'_id': {'$regex': videoID} })
     .lean() //Very Important !
     .populate('_video_data')
     .populate('_creator')
-    .exec(function (err, videos) {
+    .exec(function (err, video) {
       if (err) console.log(err);
 
-      //console.log(videos);
+      if(video.platform == 'vimeo'){
+        console.log(video._video_data.created_time)
+        var date = moment(video._video_data.created_time)
+      } else {
 
-      generateGeoJSON(videos, function(geoJSON){
-        
-        res.render('home', {
-            title: 'Home',
-            geoJSON_videos: JSON.stringify(geoJSON)
-        });
+      }
+      //console.log(video);
 
-      })
+      res.render('video', {
+        title: 'Video',
+        video: video,
+        date: date.format('DD MMM YYYY')
+      });
 
     })
   

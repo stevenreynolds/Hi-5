@@ -1,0 +1,46 @@
+extends layout
+
+block prepend head
+  != js('comments')
+
+block append head
+  script(type="text/javascript" src="http://www.youtube.com/player_api")
+  script(src="http://a.vimeocdn.com/js/froogaloop2.min.js")
+
+block content
+  div#video-content(class="vimeo_#{video._video_data.uri.replace('/videos/', '')}")
+    //- a(target='_blank' href='#{video.link}') Link
+    //- h3 #{video._video_data.name}
+    //- p #{video._video_data.description}
+
+    if video.type == 'youtube'
+      iframe#video.youtube(type="text/html" width="570" height="321" src="http://www.youtube.com/embed/4B36Lr0Unp4?enablejsapi=1" frameborder="0")
+    else  
+      iframe#video.vimeo(src="http://player.vimeo.com/video/#{video._video_data.uri.replace('/videos/', '')}?api=1&amp;player_id=video" width="570" height="321" frameborder="0" webkitAllowFullScreen mozallowfullscreen allowFullScreen)
+    
+    form#form
+        input#comment(type='text', placeholder='Your comment')
+        input#submitComment(type='submit', value='Submit')
+
+    div.who
+      span C'est qui ?
+      span #{video._creator.profile.name}
+    div.what
+      span De quoi ?
+      span #{video.type}
+    div.when
+      span Quand ça ?
+      span #{date}
+    div.where
+      span Où ça ?
+      img(src="http://api.tiles.mapbox.com/v3/warpath.ik58n87j/pin-s+cc4422(#{video.location.lng},#{video.location.lat},3)/#{video.location.lng},#{video.location.lat},1/200x100.png") 
+
+    div
+      h5 Grouille toi de regarder ce qu'il se passe par ici
+      ul
+        li video
+
+
+    //- #video-content
+      //- iframe id="video" class="youtube" type="text/html" width="570" height="321" src="http://www.youtube.com/embed/4B36Lr0Unp4?enablejsapi=1" frameborder="0"></iframe>
+      //- iframe#video.vimeo(src='http://player.vimeo.com/video/22439234?api=1&player_id=video', width='570', height='321', frameborder='0', webkitallowfullscreen='webkitAllowFullScreen', mozallowfullscreen='mozallowfullscreen', allowfullscreen='allowFullScreen')
