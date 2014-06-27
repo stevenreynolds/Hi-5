@@ -4,12 +4,35 @@
 
 @import url("//fonts.googleapis.com/css?family=Lato:300,400,700");
 
+/* Sticky footer styles
+-------------------------------------------------- */
+html {
+  position: relative;
+  min-height: 100%;
+}
+body {
+  /* Margin bottom by footer height */
+  margin-bottom: 60px;
+}
+.footer {
+  position: absolute;
+  bottom: 0;
+  width: 100%;
+  /* Set the fixed height of the footer here */
+  height: 40px;
+  background-color: rgba(0,0,0,0.6);
+}
+.footer .container{
+  max-width: 300px;
+}
+
 // Navbar =====================================================================
 
 .navbar {
   .box-shadow(none);
   border: none;
   font-size: 12px;
+  background-color: rgba(0,0,0,0.6);
 
   &-default {
   
@@ -125,7 +148,7 @@
   border-style: solid;
   border-color: #222C2B;
   margin: 2px;
-  background: none;
+  background: #919594;
   text-transform: uppercase;
   font-weight: bold;
 
