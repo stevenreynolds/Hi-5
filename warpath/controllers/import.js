@@ -117,7 +117,8 @@ exports.importSelected = function(req, res) {
 exports.importComplete = function(req, res) {
   console.log(req.body);
   
-  locations = JSON.parse(req.body.locations)
+  var locations = JSON.parse(req.body.locations);
+
   console.log(locations);
 
   locations.forEach(function(data) { 
@@ -128,11 +129,10 @@ exports.importComplete = function(req, res) {
     }, function(err, numberAffected, rawResponse) {
         if(err) console.log(err)
 
-        req.flash('success', { msg: 'Videos imported!' });
+        //req.flash('success', { msg: 'Videos imported!' });
         return res.redirect('/account');
     })
       
   });
 
-  //res.send('Saved')
 };
