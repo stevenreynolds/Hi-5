@@ -156,10 +156,10 @@ var beta = {
 
 }
 
-
+console.log(process.env.NODE_ENV)
 switch(process.env.NODE_ENV){
     case 'development': module.exports = development; break;
-    case 'production':  module.exports = development; break;
+    case 'production':  module.exports = beta;        break;
     case 'beta':        module.exports = beta;        break;
     default:            module.exports = development;
 }
