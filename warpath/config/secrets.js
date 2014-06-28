@@ -111,28 +111,28 @@ var beta = {
   facebook: {
     clientID: process.env.FACEBOOK_ID || '1444959329093692',
     clientSecret: process.env.FACEBOOK_SECRET || '3d94ac73bfef0818fe3215e62ae66f57',
-    callbackURL: '/auth/facebook/callback',
+    callbackURL: 'http://beta.wrpth.com/auth/facebook/callback',
     passReqToCallback: true
   },
 
   instagram: {
     clientID: process.env.INSTAGRAM_ID || 'f670b0b4f957496cbfe3a3feef3d5fe3',
     clientSecret: process.env.INSTAGRAM_SECRET || 'ee857e4e2aa145a8b9e86a035543b2fc',
-    callbackURL: '/auth/instagram/callback',
+    callbackURL: 'http://beta.wrpth.com/auth/instagram/callback',
     passReqToCallback: true
   },
 
   twitter: {
     consumerKey: process.env.TWITTER_KEY || 'caK4z7QF8m01u5XUHRyqNVPJW',
     consumerSecret: process.env.TWITTER_SECRET  || 'CJLMSYIBVXymXuV3hJYx8pfJrkfRDWGEldptbKAwBjtLnWktzr',
-    callbackURL: '/auth/twitter/callback',
+    callbackURL: 'http://beta.wrpth.com/auth/twitter/callback',
     passReqToCallback: true
   },
 
   google: {
     clientID: process.env.GOOGLE_ID || '538310333639-u9qkn7ej4s9kv4fri3jrbsghpo69kjhn.apps.googleusercontent.com',
     clientSecret: process.env.GOOGLE_SECRET || 'EqidctuY0D_m4m4hFGwfRFUk',
-    callbackURL: '/auth/google/callback',
+    callbackURL: 'http://beta.wrpth.com/auth/google/callback',
     passReqToCallback: true
   },
 
@@ -143,8 +143,8 @@ var beta = {
     clientID: process.env.VIMEO_ID || 'b8ee7e5bce433c38cfa2a5fdce394b28947f0a78',
     clientSecret: process.env.VIMEO_SECRET || '19f27b0df64c0bb53a3a619214688424501ea510',
 
-    redirectUrl: '/auth/vimeo/callback',
-    callbackURL: '/auth/vimeo/callback',
+    redirectUrl: 'http://beta.wrpth.com/auth/vimeo/callback',
+    callbackURL: 'http://beta.wrpth.com/auth/vimeo/callback',
     passReqToCallback: true
   },
 
