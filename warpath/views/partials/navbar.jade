@@ -4,9 +4,9 @@
       a.navbar-brand(href='/') 
         span WARPATH
     .collapse.navbar-collapse
-      ul.nav.navbarnav.col-lg-8.col-lg-offset-2
+      ul.nav.navbarnav.col-lg-7.col-lg-offset-2
         li.col-lg-12(class='search')
-          input#search.form-control(type='text', placeholder='search')
+          input#search.form-control(type='text', placeholder='WHAT I WANT TO SEE...')
           select#search-type.form-control
             option(value='Video') Videos
             option(value='User') Users
@@ -15,9 +15,9 @@
       ul.nav.navbar-nav.navbar-right
         if !user
           li(class=title=='Login'?'active':undefined)
-            a.btn(href='/login') Login
+            a.btn.btn-connect(href='/login') Connect
           li(class=title=='Create Account'?'active':undefined)
-            a.btn(href='/signup') Create Account
+            a.btn.btn-signup(href='/signup') Signup
         else
           li.dropdown(class=title=='Account Management'?'active':undefined)
             a.dropdown-toggle(href='#', data-toggle='dropdown')
