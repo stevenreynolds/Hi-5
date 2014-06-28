@@ -5,6 +5,7 @@ var bcrypt = require('bcrypt-nodejs');
 var crypto = require('crypto');
 var Video = require('./Video');
 
+var slug = require('slug');
 
 var userSchema = new mongoose.Schema({
   email       : { type: String, unique: true, lowercase: true },
@@ -23,13 +24,21 @@ var userSchema = new mongoose.Schema({
     gender    : { type: String, default: '' },
     location  : { type: String, default: '' },
     website   : { type: String, default: '' },
-    picture   : { type: String, default: '' }
+    picture   : { type: String, default: '' },
+
+    city      : { type: String, default: '' },
+    country   : { type: String, default: '' },
+    birthdate : { type: Date,   default: Date.now },
+    motivation: { type: Boolean, default: 0 },
   },
 
   videos: [{ type: String, ref: 'Video' }],
 
   resetPasswordToken    : String,
-  resetPasswordExpires  : Date
+  resetPasswordExpires  : Date,
+
+  updated: { type: Date, default: Date.now },
+  created: { type: Date, default: Date.now }
 });
 
 /**
@@ -39,6 +48,8 @@ var userSchema = new mongoose.Schema({
 
 userSchema.pre('save', function(next) {
   var user = this;
+
+  user.generateSlug();
 
   if (!user.isModified('password')) return next();
 
@@ -79,6 +90,33 @@ userSchema.methods.gravatar = function(size) {
 
   var md5 = crypto.createHash('md5').update(this.email).digest('hex');
   return 'https://gravatar.com/avatar/' + md5 + '?s=' + size + '&d=retro';
+};
+
+userSchema.methods.generateSlug = function() {
+  var user = this;
+  if (user.profile && user.profile.name && !user.profile.slug) {
+
+    var slugname = slug(user.profile.name);
+    mongoose.model('User', userSchema)
+      .count({ 'profile.slug': new RegExp('^' + slugname + '$', 'i') })
+      .lean()
+      .exec(function(err, count) {
+      if (err) console.log(err);
+      
+      console.log(slugname)
+      console.log(count)
+
+      if(count == 0)
+        user.profile.slug = slugname;
+      else
+        user.profile.slug = slugname + (count-1)
+
+      user.save();
+
+    });
+
+  }
+
 };
 
 module.exports = mongoose.model('User', userSchema);

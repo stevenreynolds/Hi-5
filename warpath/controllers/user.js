@@ -6,6 +6,8 @@ var passport = require('passport');
 var User = require('../models/User');
 var secrets = require('../config/secrets');
 
+var moment = require('moment');
+
 /**
  * GET /login
  * Login page.
@@ -82,7 +84,12 @@ exports.getSignup = function(req, res) {
 exports.postSignup = function(req, res, next) {
   req.assert('email', 'Email is not valid').isEmail();
   req.assert('password', 'Password must be at least 4 characters long').len(4);
-  req.assert('confirmPassword', 'Passwords do not match').equals(req.body.password);
+  // req.assert('confirmPassword', 'Passwords do not match').equals(req.body.password);
+
+  req.assert('city', 'City is not valid').notEmpty();
+  req.assert('country', 'Country is not valid').notEmpty();
+  req.assert('birthdate', 'BirthDate is not valid').notEmpty();
+  req.assert('name', 'Donne ton blaze !').notEmpty();
 
   var errors = req.validationErrors();
 
@@ -91,9 +98,18 @@ exports.postSignup = function(req, res, next) {
     return res.redirect('/signup');
   }
 
+  var birthDate = moment(req.body.birthdate);
+
   var user = new User({
-    email: req.body.email,
-    password: req.body.password
+    email:              req.body.email,
+    password:           req.body.password,
+
+    'profile.name':       req.body.name,
+    'profile.city':       req.body.city,
+    'profile.country':    req.body.country,
+    'profile.motivation': req.body.motivation,
+    'profile.birthdate':   birthDate,
+
   });
 
   User.findOne({ email: req.body.email }, function(err, existingUser) {
@@ -135,6 +151,7 @@ exports.postUpdateProfile = function(req, res, next) {
     user.profile.gender = req.body.gender || '';
     user.profile.location = req.body.location || '';
     user.profile.website = req.body.website || '';
+    user.updated = new Date;
 
     user.save(function(err) {
       if (err) return next(err);
@@ -152,7 +169,7 @@ exports.postUpdateProfile = function(req, res, next) {
 
 exports.postUpdatePassword = function(req, res, next) {
   req.assert('password', 'Password must be at least 4 characters long').len(4);
-  req.assert('confirmPassword', 'Passwords do not match').equals(req.body.password);
+  // req.assert('confirmPassword', 'Passwords do not match').equals(req.body.password);
 
   var errors = req.validationErrors();
 
