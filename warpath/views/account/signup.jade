@@ -35,14 +35,21 @@ block content
         input.form-control(type='text', name='country', id='country', placeholder='France, Etat-Unis, Allemange ...')
 
     .form-group
-      label.col-sm-4.control-label(for='email') à ou t'es joignable :
+      label.col-sm-4.control-label(for='email') Là ou t'es joignable :
       .col-sm-6
         input.form-control(type='email', name='email', id='email', placeholder='looser@ducrew.com')
+
     .form-group
       label.col-sm-4.control-label(for='password') Histoire de protéger tout ca :
       .col-sm-6
-        input.form-control(type='password', name='password', id='password', placeholder='Password')
+        input.form-control(type='password', name='password', id='password', placeholder='Mot de passe, code secret, tout sauf 0000 quoi!')
         a.show-pass Show !
+
+    .form-group#company-field
+      label.col-sm-4.control-label(for='company') Tu bosses pour qui ?
+      .col-sm-6
+        input.form-control(type='text', name='company', id='company', placeholder='Nike, Redbull, le boulanger')
+
 
     .form-group
       .col-sm-offset-4.col-sm-6
@@ -53,6 +60,15 @@ block content
 
     script.
       $(function(){
+        $('input:radio').change(
+            function(){
+                if($(this).val() == 1){
+                  $('#company-field').show();
+                } else {
+                  $('#company-field').hide();
+                }
+            }
+        );   
 
         $(".show-pass").on('click', function(){
             var type = $('#password').attr('type');

@@ -23,7 +23,10 @@ body {
   background-color: rgba(0,0,0,0.6);
 }
 .footer .container{
-  max-width: 300px;
+  max-width: 400px;
+  a {
+    color: #fff;
+  }
 }
 
 // Navbar =====================================================================
@@ -57,18 +60,19 @@ body {
 // Easily pump out default styles, as well as :hover, :focus, :active,
 // and disabled options for all buttons
 .button-variant(@color; @background;) {
-  color: #222C2B;
+  color: #fff;
   //background-color: @background;
   border-color: @background;
+  background-color: @background;
 
   &:hover,
   &:focus,
   &:active,
   &.active,
   .open .dropdown-toggle & {
-    color: #fff;
+    color: #222C2B;
     border-color:@background;
-    background-color: @background;
+    background: #919594;
     //background-color: darken(@background, 8%);
     //border-color: darken(@border, 12%);
   }

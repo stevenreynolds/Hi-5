@@ -30,6 +30,7 @@ var userSchema = new mongoose.Schema({
     country   : { type: String, default: '' },
     birthdate : { type: Date,   default: Date.now },
     motivation: { type: Boolean, default: 0 },
+    company   : { type: String, default: '' },
   },
 
   videos: [{ type: String, ref: 'Video' }],

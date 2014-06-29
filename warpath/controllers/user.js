@@ -104,17 +104,18 @@ exports.postSignup = function(req, res, next) {
     email:              req.body.email,
     password:           req.body.password,
 
-    'profile.name':       req.body.name,
-    'profile.city':       req.body.city,
-    'profile.country':    req.body.country,
+    'profile.name'      : req.body.name,
+    'profile.city'      : req.body.city,
+    'profile.country'   : req.body.country,
     'profile.motivation': req.body.motivation,
-    'profile.birthdate':   birthDate,
+    'profile.company'   : req.body.company,
+    'profile.birthdate' : birthDate,
 
   });
 
   User.findOne({ email: req.body.email }, function(err, existingUser) {
     if (existingUser) {
-      req.flash('errors', { msg: 'Account with that email address already exists.' });
+      req.flash('errors', { msg: 'On a déjà un gars avec cette adresse email !' });
       return res.redirect('/signup');
     }
     user.save(function(err) {
