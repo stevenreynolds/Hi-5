@@ -59,11 +59,11 @@ exports.getVideo = function(req, res) {
             console.log(video_data.created_time)
             var date = moment(video_data.created_time)
             date = date.format('DD MMM YYYY');
-            
+
             var likes = video_data.stats.likes;
             var views = video_data.stats.plays;
 
-            var videoID = video.uri.replace('/videos/', '');
+            var videoID = video._video_data.uri.replace('/videos/', '');
 
             var video = {
                   id:           videoID

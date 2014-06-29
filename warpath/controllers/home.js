@@ -61,7 +61,7 @@ var generateGeoJSON = function(videos, callback){
         }
 
         if(platform == 'vimeo'){
-          var videoID = video.uri.replace('/videos/', '');
+          var videoID = video._video_data.uri.replace('/videos/', '');
           var thevideo = {
               id:           videoID
             , platform:     'vimeo'

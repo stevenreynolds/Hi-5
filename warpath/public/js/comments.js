@@ -244,8 +244,6 @@ function generateAvatar(id, c) {
         link.innerHTML = "<div><span>" + c.body + '</span></div>';
         link = timeline.appendChild(link);
 
-        c.image = 'https://creativecommons.org/images/deed/cc-logo.jpg';
-
         var pos = 100 / duration * c.timestamp;
         $("#" + id).css({"left":pos+'%', "background-image":"url('" + c.image + "')"});
 }

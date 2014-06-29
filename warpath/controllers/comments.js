@@ -1,6 +1,6 @@
 var _ = require('lodash');
 var async = require('async');
-
+var crypto = require('crypto');
 var mongoose = require('mongoose');
 var User = require('../models/User');
 var Video = require('../models/Video');
@@ -19,11 +19,23 @@ exports.getComments = function(req, res) {
 
   Video
     .findOne({'_id': {'$regex': videoID} })
+    .populate('_creator')
+    .lean()
     .exec(function (err, video) {
       if (err) console.log(err);
 
+      var oldComments = video.comments;
+      var comments = [];
+
+      oldComments.forEach(function(comment){
+        var md5 = crypto.createHash('md5').update(video._creator.email).digest('hex');
+        comment.image = 'https://gravatar.com/avatar/' + md5 + '?s=' + 200 + '&d=retro';
+        
+        comments.push(comment);
+      })
+
       if(video)
-        res.send(video.comments);
+        res.send(comments);
       else
         res.send([]);
     })
