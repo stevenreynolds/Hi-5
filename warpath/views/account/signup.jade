@@ -6,45 +6,62 @@ block content
     legend On s’active pour s’inscrire !
 
     .form-group
-      label.col-sm-3.control-label(for='name') Commence déjà par donner ton blaze :
-      .col-sm-7
+      label.col-sm-4.control-label(for='name') Commence déjà par donner ton blaze :
+      .col-sm-6
         input.form-control(type='text', name='name', id='name', placeholder='Pierre, Paul ou Jacques', autofocus)
     
     .form-group
-      label.col-sm-3.control-label(for='name') Ensuite pour t'es venu ici ?
-      .col-sm-7
-        label.col-sm-4.control-label(for='motivation1') Je suis un sportif mec !
+      label.col-sm-4.control-label(for='name') Ensuite pour t'es venu ici ?
+      .col-sm-6
+        label.col-sm-6.control-label(for='motivation1') Je suis un sportif mec !
         input.form-control(type='radio', name='motivation', id='motivation1', value='0', checked)
 
-        label.col-sm-4.control-label(for='motivation2') Je suis là pour donner du taf !
+        label.col-sm-6.control-label(for='motivation2') Je suis là pour donner du taf !
         input.form-control(type='radio', name='motivation', id='motivation2', value='1', checked=false)
     
     .form-group
-      label.col-sm-3.control-label(for='birthdate') Puis quand t’es venu au monde ?
-      .col-sm-7
+      label.col-sm-4.control-label(for='birthdate') Puis quand t’es venu au monde ?
+      .col-sm-6
         input.form-control(type='date', name='birthdate', id='birthdate', placeholder='JJ/MM/AAAA')
     
     .form-group
-      label.col-sm-3.control-label(for='city') Tu crèches où ? (La ville ! Le reste je m’en fou.. )
-      .col-sm-7
+      label.col-sm-4.control-label(for='city') Tu crèches où ? (La ville ! Le reste je m’en fou.. )
+      .col-sm-6
         input.form-control(type='text', name='city', id='city', placeholder='Paris, L.A, Berlin ...')
     
     .form-group
-      label.col-sm-3.control-label(for='country') C’est dans quel pays ça ? 
-      .col-sm-7
+      label.col-sm-4.control-label(for='country') C’est dans quel pays ça ? 
+      .col-sm-6
         input.form-control(type='text', name='country', id='country', placeholder='France, Etat-Unis, Allemange ...')
 
     .form-group
-      label.col-sm-3.control-label(for='email') à ou t'es joignable :
-      .col-sm-7
+      label.col-sm-4.control-label(for='email') à ou t'es joignable :
+      .col-sm-6
         input.form-control(type='email', name='email', id='email', placeholder='looser@ducrew.com')
     .form-group
-      label.col-sm-3.control-label(for='password') Histoire de protéger tout ca :
-      .col-sm-7
+      label.col-sm-4.control-label(for='password') Histoire de protéger tout ca :
+      .col-sm-6
         input.form-control(type='password', name='password', id='password', placeholder='Password')
+        a.show-pass Show !
 
     .form-group
-      .col-sm-offset-3.col-sm-7
+      .col-sm-offset-4.col-sm-6
         button.btn.btn-success(type='submit')
           i.fa.fa-check
           | J’ai fini avec tes questions, laisse moi commencer !
+
+
+    script.
+      $(function(){
+
+        $(".show-pass").on('click', function(){
+            var type = $('#password').attr('type');
+            if(type == 'password'){
+              $('#password').attr('type', 'text');
+            } else {
+              $('#password').attr('type', 'password');
+            }
+
+        });
+
+      });
