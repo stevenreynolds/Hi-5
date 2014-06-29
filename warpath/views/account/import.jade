@@ -5,9 +5,9 @@ block content
     h3 Linked Accounts
 
   if user.google
-    p: a.text(href='/account/import/google') Import from Youtube
+    p: a.text(href='/account/import/youtube') Import from Youtube
   else
-    p: a(href='/auth/google') Link your Google account
+    p: a(href='/auth/google') Link your Google/YouTube account
 
   if user.vimeo
     p: a.text(href='/account/import/vimeo') Import from Vimeo

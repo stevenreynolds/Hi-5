@@ -162,8 +162,8 @@ app.post('/account/import_complete', passportConf.isAuthenticated, importControl
 
 app.get('/account/import/vimeo', passportConf.isAuthenticated, importController.importVimeo);
 app.post('/account/import/vimeo', passportConf.isAuthenticated, importController.importSelected);
-app.get('/account/import/google', passportConf.isAuthenticated, importController.importYoutube);
-app.post('/account/import/google', passportConf.isAuthenticated, importController.importSelected);
+app.get('/account/import/youtube', passportConf.isAuthenticated, importController.importYoutube);
+app.post('/account/import/youtube', passportConf.isAuthenticated, importController.importSelected);
 
 app.get('/video/:id', videoController.getVideo);
 

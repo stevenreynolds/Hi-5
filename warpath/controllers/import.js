@@ -29,19 +29,32 @@ exports.importVideos = function(req, res) {
  * GET /account/import/vimeo
  */
 exports.importVimeo = function(req, res) {
-  vimeoController.getVimeo(req, res, function(data){
+  vimeoController.getVimeo(req, res, function(videos){
     //If no Video
-    if(data.length === 0){
+    if(videos.length === 0){
       req.flash('errors', { msg: 'No Video to import' });
       return res.redirect('/account/import');
     }
 
-    //data = _.map(_.sortBy(data, 'stats.plays'), _.values);
-
-    res.render('account/import_list', {
+    var data = {
       title: 'Import from Vimeo',
-      data: data
+      videos: []
+    }
+
+    videos.forEach(function(video) { 
+      var videoID = video.uri.replace('/videos/', '');
+      var video = {
+          id:           videoID
+        , platform:     'vimeo'
+        , link:         video.link
+        , title:        video.name
+        , description:  video.description
+        , image:        video.pictures[5].link
+      }
+      data.videos.push(video);
     });
+
+    res.render('account/import_list', data);
 
   });
 };
@@ -50,19 +63,37 @@ exports.importVimeo = function(req, res) {
  * GET /account/import/youtube
  */
 exports.importYoutube = function(req, res) {
-  youtubeController.getYoutube(req, res, function(data){
+  youtubeController.getYoutube(req, res, function(videos){
     //If no Video
-    if(data.length === 0){
+    if(videos.length === 0){
       req.flash('errors', { msg: 'No Video to import' });
       return res.redirect('/account/import');
     }
 
-    //data = _.map(_.sortBy(data, 'stats.plays'), _.values);
+    //video = _.map(_.sortBy(video, 'stats.plays'), _.values);
+    console.log('____________________________________________________________')
+    console.log(videos)
+    console.log('____________________________________________________________')
 
-    res.render('account/import_list', {
+
+    var data = {
       title: 'Import from YouTube',
-      data: data
+      videos: []
+    }
+
+    videos.forEach(function(video) { 
+      var video = {
+          id:           video.id
+        , platform:     'youtube'
+        , link:         'http://youtu.be/' + video.id
+        , title:        video.snippet.title
+        , description:  video.snippet.description
+        , image:        'http://img.youtube.com/vi/' + video.id + '/default.jpg'
+      }
+      data.videos.push(video);
     });
+
+    res.render('account/import_list', data);
 
   });
 };

@@ -10,7 +10,7 @@ var commentSchema = require('../models/Comment');
 var videoSchema = require('../models/Video');
 var videodataSchema = require('../models/VideoData');
 
-exports.getYoutube = function(callback) {
+exports.getYoutube = function(req, res, callback) {
 
     var token = _.find(req.user.tokens, { kind: 'google' });
 
