@@ -38,6 +38,8 @@ var importController  = require('./controllers/import');
 var youtubeController = require('./controllers/youtube');
 var vimeoController   = require('./controllers/vimeo');
 
+var commentsController   = require('./controllers/comments');
+
 /**
  * API keys and Passport configuration.
  */
@@ -67,7 +69,7 @@ var week = day * 7;
  * CSRF whitelist.
  */
 
-var csrfExclude = ['/url1', '/url2'];
+var csrfExclude = ['/comments'];
 
 /**
  * Express configuration.
@@ -164,6 +166,9 @@ app.post('/account/import/vimeo', passportConf.isAuthenticated, importController
 app.get('/account/import/google', passportConf.isAuthenticated, importController.importYoutube);
 
 app.get('/video/:id', videoController.getVideo);
+
+app.get('/comments/:id', commentsController.getComments);
+app.post('/comments', commentsController.addComment);
 
 
 //app.get('/import', youtubeController.getYoutube);
