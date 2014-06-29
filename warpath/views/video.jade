@@ -28,10 +28,10 @@ block content
             form#comment-form.form-horizontal.col-lg-8(method='POST')
               input(type='hidden', name='_csrf', value=_csrf)
               .form-group
-                input#comment(type='text', placeholder='Your comment')
+                input#comment(type='text', placeholder='Ton com\'')
                 button#submitComment.btn.btn.btn-primary(type='submit')
-                  i.fa
-                    | Submit
+                  i
+                    | Balance!
           else
             a.btn.col-lg-8(href="/signup") Tu veux donner ton avis ? Inscris-toi !
           
@@ -53,9 +53,6 @@ block content
             span.title Où ça ?
             img(src="http://api.tiles.mapbox.com/v3/warpath.ik58n87j/pin-s+cc4422(#{video.location.lng},#{video.location.lat},3)/#{video.location.lng},#{video.location.lat},1/100x50.png") 
           div.clear
-
-
-        
 
 
       div.related

@@ -39,6 +39,9 @@ exports.addComment = function(req, res) {
   var comment = req.body;
   var videoID = comment.id;
 
+  if(!videoID)
+    return res.send({'error':'No Video ID'});
+
   if(req.user && req.user.id)
     console.log(req.user.id)
 
@@ -56,26 +59,25 @@ exports.addComment = function(req, res) {
   //   return res.send(errors);
   // }
 
-
   Video
     .findOne({'_id': {'$regex': videoID} })
     .exec(function (err, video) {
       if (err) console.log(err);
 
-      video.comments.push(comment);
+      if(video){
+        video.comments.push(comment);
 
-      video.save(function(err) {
-        if (err) console.log(err);
-      })
+        video.save(function(err) {
+          if (err) console.log(err);
+        })
 
-      console.log(video);
+        console.log(video);
 
-      if(video)
         res.send(video)
-      else
-        res.send({'error':'No Video Found'})
-
         
+      } else{
+        res.send({'error':'No Video Found'})
+      }
     })
   
 };

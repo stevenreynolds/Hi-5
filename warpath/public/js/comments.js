@@ -205,30 +205,27 @@ function getComments(start) {
 
 }
 
-// $(document).on('submit','form',function(e){
-//     e.preventDefault();
+$(document).on('submit','#comment-form',function(e){
+    e.preventDefault();
 
-//     var comment = {};
-//     comment.comment = $('#comment').val();
-//     comment.author = 'Jojo';
-//     //comment.uri = 'http://google.fr';
+    getCurrentTime(function(seconds){
 
-//     getCurrentTime(function(seconds){
-//         // the x-position of the avatar
-//         var pos = width / duration * seconds;
-//         comment.time = seconds;
-//         comment.seconds = seconds;
-//         comment.left = pos;
-//         comment.image = 'https://creativecommons.org/images/deed/cc-logo.jpg';
+        var comment = {};
+        comment.id = $('#video-content').data('video');
+        comment.body = $('#comment').val();
+        comment.timestamp = seconds;
 
-//         comments.push(comment);
-//         localStorage.setItem('comments', JSON.stringify(comments));
+        console.log(comment)
 
-//         getComments();
+        $.post("/comments", comment, function(data) {
+            console.log(data)
+        });
 
-//     });
+        getComments();
 
-// });
+    });
+
+});
 
 /**
  * Generates an avatar for the given id and comment, looks up the author's
