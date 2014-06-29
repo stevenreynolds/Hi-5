@@ -127,7 +127,7 @@ function getDuration(callback) {
         player.api('getDuration', function(value) {
             duration = value;
 
-            if(callback)
+            if(callback && value)
                 callback(value);
             else
                 return duration;

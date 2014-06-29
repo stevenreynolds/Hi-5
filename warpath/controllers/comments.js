@@ -42,12 +42,13 @@ exports.addComment = function(req, res) {
   if(!videoID)
     return res.send({'error':'No Video ID'});
 
-  if(req.user && req.user.id)
-    console.log(req.user.id)
+  if(!req.user || !req.user.id)
+    return res.send({'error':'No User ID'});
 
   comment = {
     body      : comment.body,
     timestamp : comment.timestamp,
+    _creator  : req.user.id
   }
 
   // req.assert('videoID', 'VideoID empty').notEmpty();
@@ -74,7 +75,7 @@ exports.addComment = function(req, res) {
         console.log(video);
 
         res.send(video)
-        
+
       } else{
         res.send({'error':'No Video Found'})
       }
