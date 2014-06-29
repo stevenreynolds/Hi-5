@@ -22,7 +22,7 @@ $(document).ready(function() {
                   if(request.type == 'Video') {
                     return {
                       label: el.name,
-                      value: '/video/' + el._id.replace('vimeo_','').replace('youtube',''),
+                      value: '/video/' + el._id.replace('vimeo_','').replace('youtube_',''),
                     };
                   }
                 }));

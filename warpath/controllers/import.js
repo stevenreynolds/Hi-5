@@ -127,6 +127,7 @@ exports.importSelected = function(req, res) {
       
       v._id = lavideo;
       v.id = lavideo;
+      //v.id = temp[1];
       v._creator = user._id;
       v.platform = platform;
 

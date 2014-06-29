@@ -219,9 +219,9 @@ $(document).on('submit','#comment-form',function(e){
 
         $.post("/comments", comment, function(data) {
             console.log(data)
-        });
 
-        getComments();
+            getComments();
+        });
 
     });
 

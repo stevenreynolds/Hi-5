@@ -10,16 +10,16 @@ block append head
 block content
   .col-lg-offset-2.col-lg-8.background
 
-    #video-content(class="col-lg-12", data-video="vimeo_#{video._video_data.uri.replace('/videos/', '')}")
+    #video-content(class="col-lg-12", data-video="#{video.platform}_#{video.id}")
       //- a(target='_blank' href='#{video.link}') Link
-      h1 #{video._video_data.name}
+      h1 #{video.title}
       //- p #{video._video_data.description}
       
       div.video-block
-        if video.type == 'youtube'
-          iframe#video.youtube(type="text/html" src="http://www.youtube.com/embed/4B36Lr0Unp4?enablejsapi=1" frameborder="0")
+        if video.platform == 'youtube'
+          iframe#video.youtube(type="text/html" src="http://www.youtube.com/embed/#{video.id}?enablejsapi=1" frameborder="0")
         else  
-          iframe#video.vimeo(src="http://player.vimeo.com/video/#{video._video_data.uri.replace('/videos/', '')}?api=1&amp;player_id=video" frameborder="0" webkitAllowFullScreen mozallowfullscreen allowFullScreen)
+          iframe#video.vimeo(src="http://player.vimeo.com/video/#{video.id}?api=1&amp;player_id=video" frameborder="0" webkitAllowFullScreen mozallowfullscreen allowFullScreen)
         
         div#timeline.timeline.col-lg-12
         
@@ -36,8 +36,8 @@ block content
             a.btn.col-lg-8(href="/signup") Tu veux donner ton avis ? Inscris-toi !
           
           .stats.col-lg-3
-            .views #{views} vues
-            .likes #{likes} likes
+            .views #{video.views} vues
+            .likes #{video.likes} likes
 
         div.infos
           div.who
@@ -48,7 +48,7 @@ block content
             span #{video.type} truc
           div.when
             span.title Quand ça ?
-            span #{date}
+            span #{video.date}
           div.where
             span.title Où ça ?
             img(src="http://api.tiles.mapbox.com/v3/warpath.ik58n87j/pin-s+cc4422(#{video.location.lng},#{video.location.lat},3)/#{video.location.lng},#{video.location.lat},1/100x50.png") 
