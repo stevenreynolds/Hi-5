@@ -86,8 +86,8 @@ exports.getYoutube = function(req, res, callback) {
 
                                 var VideoData = mongoose.model('VideoData', videodataSchema);
                                 var vd = new VideoData(data);
-                                vd._id          = 'vimeo_' + videoId;
-                                vd._video       = 'vimeo_' + videoId;
+                                vd._id          = 'youtube_' + videoId;
+                                vd._video       = 'youtube_' + videoId;
 
                                 vd.save(function (err) {
                                   if(err) console.log(err)

@@ -7,12 +7,12 @@ block content
     input(type='hidden', name='_csrf', value=_csrf)
     ul
       each video in videos
-        li.form-group(id="#{video.platform}#{video.id}")
+        li.form-group(id="#{video.platform}_#{video.id}")
           a(target='_blank' href='#{video.url}')
             h3 #{video.title}
           p #{video.description}
           img(src='#{video.image}')
-          input.form-control.checkbox(name='video' value="#{video.platform}#{video.id}" type='checkbox', checked=false)
+          input.form-control.checkbox(name='video' value="#{video.platform}_#{video.id}" type='checkbox', checked=false)
     .form-group
       button.btn.btn-primary.btn-submit(type='submit')
         i.fa.fa-keyboard-o

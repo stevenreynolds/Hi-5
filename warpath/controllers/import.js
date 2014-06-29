@@ -102,9 +102,6 @@ exports.importYoutube = function(req, res) {
  * POST /account/import/vimeo
  */
 exports.importSelected = function(req, res) {
-  var temp = req.body.video.split("_");
-  var platform = temp[1];
-
   var videos = req.body.video;
 
   console.log('importSelected')
@@ -113,41 +110,89 @@ exports.importSelected = function(req, res) {
   User.findById(req.user.id, function(err, user) {
 
     var Video = mongoose.model('Video', Video);
-    var v = new Video();
-    
-    v._creator = user._id;
-    v._id = req.body.video;
-    v.platform = platform;
 
-    v.save(function (err) {
-      if(err) console.log(err)
+    videos.forEach(function(video) { 
 
-        // Video
-        // .findOne({ platform: 'vimeo' })
-        // .populate('_creator')
-        // .exec(function (err, story) {
-        //   if (err) console.log(err);
-        //   console.log('The creator is %s', story._creator.email);
-        //   // prints "The creator is Aaron"
-        // })
+      var temp = video.split("_");
+      var platform = temp[0];
+
+      var v = new Video();
+      
+      v._creator = user._id;
+      v._id = video;
+      v.platform = platform;
+
+      v.save(function (err) {
+        if(err) console.log(err)
+
+          // Video
+          // .findOne({ platform: 'vimeo' })
+          // .populate('_creator')
+          // .exec(function (err, story) {
+          //   if (err) console.log(err);
+          //   console.log('The creator is %s', story._creator.email);
+          //   // prints "The creator is Aaron"
+          // })
+
+      });
+
+      user.videos.push(v);
 
     });
 
-    user.videos.push(v);
     user.save();
+
+    console.log(videos)
 
     VideoData
       .find({
-        '_id': { $in: [
-            videos
-        ]}
+        '_id': { $in: videos }
       })
       .lean()
       .exec(function(err, docs){
+
+      var videos_data = [];
+      docs.forEach(function(video) { 
+
+        console.log('fffffffffffffffffffffffffffffffff')
+        console.log(video)
+
+        var temp = video._id.split("_");
+        var platform = temp[0];
+
+        console.log(platform)
+
+
+        if(platform == 'youtube'){
+          var video = {
+              id:           video.id
+            , platform:     'youtube'
+            , link:         'http://youtu.be/' + video.id
+            , title:        video.snippet.title
+            , description:  video.snippet.description
+            , image:        'http://img.youtube.com/vi/' + video.id + '/default.jpg'
+          }
+        }
+
+        if(platform == 'vimeo'){
+          var videoID = video.uri.replace('/videos/', '');
+          var video = {
+              id:           videoID
+            , platform:     'vimeo'
+            , link:         video.link
+            , title:        video.name
+            , description:  video.description
+            , image:        video.pictures[5].link
+          }
+        }
+
+        videos_data.push(video);
+      });
+
       
       res.render('account/import_modify', {
         title: 'Add Data',
-        data: docs
+        data: videos_data
       });
 
     });

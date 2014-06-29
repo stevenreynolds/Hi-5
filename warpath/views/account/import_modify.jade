@@ -15,12 +15,12 @@ block content
     input(type='hidden', name='locations', value='')
     ul
       each video in data
-        li.form-group(id="#{video._id}")
+        li.form-group(id="#{video.id}")
           a(target='_blank' href="#{video.link}") Link
-          h3 #{video.name}
+          h3 #{video.title}
           p #{video.description}
-          img(src='#{video.pictures[5].link}')
-          input(type='hidden', name='location_#{video._id}', value='')
+          img(src='#{video.image}')
+          input(type='hidden', name='location_#{video.id}', value='')
           //- a.btn.btn-primary(href='#') Geolocate this video
 
           a.btn.btn-primary.btn-lg.geocode
