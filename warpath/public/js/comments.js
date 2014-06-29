@@ -113,9 +113,10 @@ function onPlayerReady() {
         getDuration(function(val){
             if(val)
                 duration = val;
+
+            getComments();
         })
         
-        getComments();
     }
 }
 
@@ -243,12 +244,13 @@ function generateAvatar(id, c) {
         //link.href = "/watch?v=" + videoid + "&t=" + comment.time;
         link.id = id;
         //link.innerHTML = "<span><strong>" + c.author + "</strong><br> " + c.comment + '</span>';
-        link.innerHTML = "<span>" + c.body + '</span>';
+        link.innerHTML = "<div><span>" + c.body + '</span></div>';
         link = timeline.appendChild(link);
 
+        c.image = 'https://creativecommons.org/images/deed/cc-logo.jpg';
+
         var pos = 100 / duration * c.timestamp;
-        $("#" + id).css("left", pos+'%')
-            //.css("background-image", "url('" + c.image + "')");
+        $("#" + id).css({"left":pos+'%', "background-image":"url('" + c.image + "')"});
 }
 
 /**

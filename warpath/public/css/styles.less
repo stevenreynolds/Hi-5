@@ -8,8 +8,7 @@
 @import "../../../GUI/superhero/bootswatch";
 
 @import "./hopscotch.css.less";
-
-@import "./comments.css.less";
+@import "./comments.less";
 
 
 input, input:focus {
@@ -51,15 +50,11 @@ footer {
 .video-block{
   position: relative;
   background: #fff;
+  padding-bottom: 20px;
 
   iframe{
-      // position: absolute;
-      // top: 0;
-      // left: 0;
-      // width: 100%;
-
     max-width: 100%;
-    }
+  }
 }
 
 #video-content{
@@ -67,8 +62,9 @@ footer {
 }
 
 .infos{
-  margin: 10px 0;
+  margin: 10px auto;
   .who, .when, .what, .where {
+    text-align: center;
     float:left;
     width: 25%;
     .title{

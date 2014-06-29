@@ -26,23 +26,28 @@ exports.getVideo = function(req, res) {
     .exec(function (err, video) {
       if (err) console.log(err);
 
+      var video_data = video._video_data
+
       if(video.platform == 'vimeo'){
-        console.log(video._video_data.created_time)
-        var date = moment(video._video_data.created_time)
+        console.log(video_data.created_time)
+        var date = moment(video_data.created_time)
+        var likes = video_data.stats.likes;
+        var views = video_data.stats.plays;
       } else {
 
       }
       //console.log(video);
 
       var isConnected = 0;
-      if(req.user && req.user.id)
-        isConnected = 1;
-
+      if(req.user && req.user.id) isConnected = 1;
+      
       res.render('video', {
         title: 'Video',
         video: video,
         date: date.format('DD MMM YYYY'),
-        isConnected: isConnected
+        isConnected: isConnected,
+        likes: likes,
+        views: views
       });
 
     })
