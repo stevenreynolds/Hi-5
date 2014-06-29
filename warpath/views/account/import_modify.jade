@@ -24,19 +24,18 @@ block content
           //- a.btn.btn-primary(href='#') Geolocate this video
 
           a.btn.btn-primary.btn-lg.geocode
-            | Géolocalisation
+            | C'est où cette vidéo ?
 
           #myModal.modal.fade(tabindex='-1', role='dialog', aria-labelledby='myModalLabel', aria-hidden='true')
             .modal-dialog.modal-lg
               .modal-content
                 .modal-header
                   button.close(type='button', data-dismiss='modal', aria-hidden='true') ×
-                  h4#myModalLabel.modal-title Modal title
+                  h4#myModalLabel.modal-title Géoloc
                 .modal-body
                   div(id="map")
                 .modal-footer
-                  button.btn.btn-default(type='button', data-dismiss='modal') Close
-                  button.btn.btn-primary(type='button') Save changes
+                  button.btn.btn-primary(type='button') C'est bon ?
 
     .form-group
       button.btn.btn-primary.btn-submit(type='submit')
@@ -44,33 +43,31 @@ block content
         | Next Step
         
 
-     
-
   script(type="text/javascript").
     var locations = [];
 
     //https://www.mapbox.com/mapbox.js/example/v1.0.0/
     //see https://www.mapbox.com/mapbox.js/example/v1.0.0/divicon/
     var marker;
-    var map = L.mapbox.map('map', 'warpath.ii84a1lh')
-            .addControl(L.mapbox.geocoderControl('warpath.ii84a1lh'));
-      //.setView([39.12367, -76.81229], 9);
+    var map = L.mapbox.map('map', 'warpath.ik58n87j')
+            .addControl(L.mapbox.geocoderControl('warpath.ik58n87j'))
+            .setView([40.687596, -36.482732], 2);
 
-    $('#myModal').on('shown.bs.modal', function () { // chooseLocation is the id of the modal.
+    $('#myModal').on('shown.bs.modal', function() { // chooseLocation is the id of the modal.
       map.invalidateSize();
     });
 
-    $('#myModal').on('click',function(){
+    $('body').on('click', '#myModal .btn-primary', function(){
         var m = marker.getLatLng();
         
         var data = {
-            id: $(this).data('target'),
+            id: $('#myModal').data('target'),
             lat: m.lat,
             lng: m.lng
         }
         locations.push(data);
 
-        $(this).modal('hide');
+        $('#myModal').modal('hide');
     });
 
     $('.geocode').on('click',function(){
@@ -94,26 +91,20 @@ block content
         map.locate();
     }
 
-    // Once we've got a position, zoom and center the map
-    // on it, and add a single marker.
-    map.on('locationfound', function(e) {
-        //map.fitBounds(e.bounds);
-        //console.log(e.bounds)
-        //map.panTo([e.latlng.lat, e.latlng.lng]);
-        // map.featureLayer.on('click', function(e) {
-        //     e.layer.getLatLng());
-        // });
-
-        marker = L.marker([e.latlng.lat, e.latlng.lng], {
+    var marker = L.marker([40.687596, -36.482732], {
             icon: L.mapbox.marker.icon({
               'marker-color': '#f86767'
             }),
             draggable: true
         })
-        .bindPopup('This marker is draggable! Move it around.')
+        .bindPopup('Bouge le marqueur!')
         .addTo(map);
 
-        //map.panTo([e.latlng.lat, e.latlng.lng]);
+    // Once we've got a position, zoom and center the map
+    // on it, and add a single marker.
+    map.on('locationfound', function(e) {
+        
+        marker.setLatLng([e.latlng.lat, e.latlng.lng]);
         map.setView([e.latlng.lat, e.latlng.lng], 7);
 
         // every time the marker is dragged, update the coordinates container

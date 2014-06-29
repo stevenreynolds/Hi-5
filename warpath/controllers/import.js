@@ -26,8 +26,7 @@ exports.importVideos = function(req, res) {
 };
 
 /**
- * GET /account/import/Vimeo
- *  page.
+ * GET /account/import/vimeo
  */
 exports.importVimeo = function(req, res) {
   vimeoController.getVimeo(req, res, function(data){
@@ -48,23 +47,36 @@ exports.importVimeo = function(req, res) {
 };
 
 /**
- * GET /account/import/YouTube
- *  page.
+ * GET /account/import/youtube
  */
 exports.importYoutube = function(req, res) {
-  res.render('account/import/youtube', {
-    title: 'Import from YouTube'
+  youtubeController.getYoutube(req, res, function(data){
+    //If no Video
+    if(data.length === 0){
+      req.flash('errors', { msg: 'No Video to import' });
+      return res.redirect('/account/import');
+    }
+
+    //data = _.map(_.sortBy(data, 'stats.plays'), _.values);
+
+    res.render('account/import_list', {
+      title: 'Import from YouTube',
+      data: data
+    });
+
   });
 };
 
-
 /**
- * GET /account/import
- *  page.
+ * POST /account/import/vimeo
  */
 exports.importSelected = function(req, res) {
+  var temp = req.body.video.split("_");
+  var platform = temp[1];
+
   var videos = req.body.video;
 
+  console.log('importSelected')
   console.log(req.body)
 
   User.findById(req.user.id, function(err, user) {
@@ -74,33 +86,39 @@ exports.importSelected = function(req, res) {
     
     v._creator = user._id;
     v._id = req.body.video;
-    v.platform = 'vimeo';
+    v.platform = platform;
 
     v.save(function (err) {
       if(err) console.log(err)
 
-        Video
-        .findOne({ platform: 'vimeo' })
-        .populate('_creator')
-        .exec(function (err, story) {
-          if (err) return handleError(err);
-          console.log('The creator is %s', story._creator.email);
-          // prints "The creator is Aaron"
-        })
+        // Video
+        // .findOne({ platform: 'vimeo' })
+        // .populate('_creator')
+        // .exec(function (err, story) {
+        //   if (err) console.log(err);
+        //   console.log('The creator is %s', story._creator.email);
+        //   // prints "The creator is Aaron"
+        // })
+
     });
 
     user.videos.push(v);
     user.save();
 
-    VideoData.find({
-      '_id': { $in: [
-          videos
-      ]}
-    }).lean().exec(function(err, docs){
-         res.render('account/import_modify', {
-            title: 'Add Data',
-            data: docs
-          });
+    VideoData
+      .find({
+        '_id': { $in: [
+            videos
+        ]}
+      })
+      .lean()
+      .exec(function(err, docs){
+      
+      res.render('account/import_modify', {
+        title: 'Add Data',
+        data: docs
+      });
+
     });
 
 
@@ -111,8 +129,7 @@ exports.importSelected = function(req, res) {
 
 
 /**
- * GET /account/import_complete
- *  page.
+ * POST /account/import_complete
  */
 exports.importComplete = function(req, res) {
   console.log(req.body);
