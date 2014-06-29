@@ -42,8 +42,28 @@ footer {
   height: 90px;
 }
 
+.background{
+  background: rgba(0,0,0,0.2);
+  margin-top: -20px;
+  margin-bottom: -40px;
+}
+
 .video-block{
-  background: #fff
+  position: relative;
+  background: #fff;
+
+  iframe{
+      // position: absolute;
+      // top: 0;
+      // left: 0;
+      // width: 100%;
+
+    max-width: 100%;
+    }
+}
+
+#video-content{
+    position: relative;
 }
 
 .infos{
@@ -81,7 +101,7 @@ footer {
 .navbar-nav img {
   width: 30px;
   height: 30px;
-  margin: -15px 15px -15px;
+  margin: 0 15px 0;
 }
 
 .navbar-brand {

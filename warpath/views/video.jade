@@ -8,46 +8,51 @@ block append head
   script(src="http://a.vimeocdn.com/js/froogaloop2.min.js")
 
 block content
-  div#video-content(class="vimeo_#{video._video_data.uri.replace('/videos/', '')}")
-    //- a(target='_blank' href='#{video.link}') Link
-    h1 #{video._video_data.name}
-    //- p #{video._video_data.description}
-    
-    div.video-block
-      if video.type == 'youtube'
-        iframe#video.youtube(type="text/html" width="570" height="321" src="http://www.youtube.com/embed/4B36Lr0Unp4?enablejsapi=1" frameborder="0")
-      else  
-        iframe#video.vimeo(src="http://player.vimeo.com/video/#{video._video_data.uri.replace('/videos/', '')}?api=1&amp;player_id=video" width="570" height="321" frameborder="0" webkitAllowFullScreen mozallowfullscreen allowFullScreen)
+  .col-lg-offset-2.col-lg-8.background
+
+    div#video-content(class="col-lg-10 col-lg-offset-1 vimeo_#{video._video_data.uri.replace('/videos/', '')}")
+      //- a(target='_blank' href='#{video.link}') Link
+      h1 #{video._video_data.name}
+      //- p #{video._video_data.description}
       
-      div#timeline.timeline
+      div.video-block
+        if video.type == 'youtube'
+          iframe#video.youtube(type="text/html" src="http://www.youtube.com/embed/4B36Lr0Unp4?enablejsapi=1" frameborder="0")
+        else  
+          iframe#video.vimeo(src="http://player.vimeo.com/video/#{video._video_data.uri.replace('/videos/', '')}?api=1&amp;player_id=video" width="570" height="321" frameborder="0" webkitAllowFullScreen mozallowfullscreen allowFullScreen)
+        
+        div#timeline.timeline
 
-      form#form.form-horizontal
-        .form-group
-          input#comment(type='text', placeholder='Your comment')
-          button#submitComment.btn.btn.btn-primary(type='submit')
-            i.fa
-              | Submit
+        if isConnected
+          form#form.form-horizontal
+            .form-group
+              input#comment(type='text', placeholder='Your comment')
+              button#submitComment.btn.btn.btn-primary(type='submit')
+                i.fa
+                  | Submit
+        else
+          a.btn(href="/signup") Tu veux donner ton avis ? Inscris-toi !
 
-      div.infos
-        div.who
-          span.title C'est qui ?
-          span #{video._creator.profile.name}
-        div.what
-          span.title De quoi ?
-          span #{video.type} truc
-        div.when
-          span.title Quand ça ?
-          span #{date}
-        div.where
-          span.title Où ça ?
-          img(src="http://api.tiles.mapbox.com/v3/warpath.ik58n87j/pin-s+cc4422(#{video.location.lng},#{video.location.lat},3)/#{video.location.lng},#{video.location.lat},1/100x50.png") 
-      
+        div.infos
+          div.who
+            span.title C'est qui ?
+            span #{video._creator.profile.name}
+          div.what
+            span.title De quoi ?
+            span #{video.type} truc
+          div.when
+            span.title Quand ça ?
+            span #{date}
+          div.where
+            span.title Où ça ?
+            img(src="http://api.tiles.mapbox.com/v3/warpath.ik58n87j/pin-s+cc4422(#{video.location.lng},#{video.location.lat},3)/#{video.location.lng},#{video.location.lat},1/100x50.png") 
+        
 
 
-      div.clear
+        div.clear
 
 
-    div.related
-      h5 Grouille toi de regarder ce qu'il se passe par ici
-      ul
-        li video
+      div.related
+        h5 Grouille toi de regarder ce qu'il se passe par ici
+        ul
+          li video

@@ -1,5 +1,7 @@
 $(document).ready(function() {
 
+  $(".video-block").fitVids();
+
   $("#search").autocomplete({
     source: function (request, response) {
         request.type = $('#search-type').val();

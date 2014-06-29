@@ -34,10 +34,15 @@ exports.getVideo = function(req, res) {
       }
       //console.log(video);
 
+      var isConnected = 0;
+      if(req.user && req.user.id)
+        isConnected = 1;
+
       res.render('video', {
         title: 'Video',
         video: video,
-        date: date.format('DD MMM YYYY')
+        date: date.format('DD MMM YYYY'),
+        isConnected: isConnected
       });
 
     })
