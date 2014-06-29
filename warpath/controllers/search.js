@@ -17,7 +17,8 @@ exports.search = function(req, res) {
         var query = User.find({'profile.name': regex}, { '_id': 0, 'profile': 1 }).limit(20);
     }
     else if(type == 'Video'){
-        var query = VideoData.find({'name': regex}).limit(20);
+        var find = { $or: [ { 'name': regex }, { 'snippet.title': regex } ] };
+        var query = VideoData.find(find).limit(20);
     }
 
     // Execute query in a callback and return users list
