@@ -5,6 +5,7 @@ block content
   form(method='POST')
     legend C'est l'heure de choisir
     input(type='hidden', name='_csrf', value=_csrf)
+    input(type='hidden', name='videos', value="")
     ul
       each video in videos
         li.form-group(id="#{video.platform}_#{video.id}")
@@ -12,9 +13,30 @@ block content
             h3 #{video.title}
           p #{video.description}
           img(src='#{video.image}')
-          input.form-control.checkbox(name='video' value="#{video.platform}_#{video.id}" type='checkbox', checked=false)
+          input.form-control.checkbox(value="#{video.platform}_#{video.id}" type='checkbox', checked=false)
+
     .form-group
       button.btn.btn-primary.btn-submit(type='submit')
         i.fa.fa-keyboard-o
         | Une dernière étape et c'est bon !
+
+
+  script(type="text/javascript").
+    $(function(){
+
+      $('form').submit(function(e) {
+        e.preventDefault();
+
+        var videos = [];
+
+        $('.checkbox:checked').each(function(index, el){
+          videos.push($(el).val());  
+        });
+
+        $('[name=videos]').val(JSON.stringify(videos));
+
+        $('form')[0].submit();
+      });
+
+    });
         

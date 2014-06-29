@@ -42,18 +42,46 @@ var generateGeoJSON = function(videos, callback){
         features: []
     };
 
-    videos.forEach(function(data) {
+    _(videos).forEach(function(video) { 
+
+        var temp = video._id.split("_");
+        var platform = temp[0];
+
+        console.log(video._id)
+
+        if(platform == 'youtube'){
+          var thevideo = {
+              id:           video.id
+            , platform:     'youtube'
+            , link:         'http://youtu.be/' + video.id
+            , title:        video._video_data.snippet.title
+            , description:  video._video_data.snippet.description
+            , image:        'http://img.youtube.com/vi/' + video.id + '/default.jpg'
+          }
+        }
+
+        if(platform == 'vimeo'){
+          var videoID = video.uri.replace('/videos/', '');
+          var thevideo = {
+              id:           videoID
+            , platform:     'vimeo'
+            , link:         video._video_data.link
+            , title:        video._video_data.name
+            , description:  video._video_data.description
+            , image:        video._video_data.pictures[5].link
+          }
+        }
 
         var point = {
             type: 'Feature',
             properties: {
-                title: data._video_data.name,
-                url: '/video/' + data._id.replace('vimeo_','').replace('youtube_',''),
+                title: thevideo.title,
+                url: '/video/' + video.id,
                 type: 'water',
             },
             geometry: {
                 type: 'Point',
-                coordinates: [data.location.lng, data.location.lat]
+                coordinates: [video.location.lng, video.location.lat]
             }
         }
 

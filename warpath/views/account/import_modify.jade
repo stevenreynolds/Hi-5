@@ -15,27 +15,26 @@ block content
     input(type='hidden', name='locations', value='')
     ul
       each video in data
-        li.form-group(id="#{video.id}")
+        li.form-group(id="#{video.platform}_#{video.id}")
           a(target='_blank' href="#{video.link}") Link
           h3 #{video.title}
           p #{video.description}
           img(src='#{video.image}')
-          input(type='hidden', name='location_#{video.id}', value='')
           //- a.btn.btn-primary(href='#') Geolocate this video
 
           a.btn.btn-primary.btn-lg.geocode
             | C'est où cette vidéo ?
 
-          #myModal.modal.fade(tabindex='-1', role='dialog', aria-labelledby='myModalLabel', aria-hidden='true')
-            .modal-dialog.modal-lg
-              .modal-content
-                .modal-header
-                  button.close(type='button', data-dismiss='modal', aria-hidden='true') ×
-                  h4#myModalLabel.modal-title Géoloc
-                .modal-body
-                  div(id="map")
-                .modal-footer
-                  button.btn.btn-primary(type='button') C'est bon ?
+    #myModal.modal.fade(tabindex='-1', role='dialog', aria-labelledby='myModalLabel', aria-hidden='true')
+      .modal-dialog.modal-lg
+        .modal-content
+          .modal-header
+            button.close(type='button', data-dismiss='modal', aria-hidden='true') ×
+            h4#myModalLabel.modal-title Géoloc
+          .modal-body
+            div(id="map")
+          .modal-footer
+            button.btn.btn-primary(type='button') C'est bon ?
 
     .form-group
       button.btn.btn-primary.btn-submit(type='submit')
@@ -65,13 +64,15 @@ block content
             lat: m.lat,
             lng: m.lng
         }
+
+        //Not Perfect
         locations.push(data);
 
         $('#myModal').modal('hide');
     });
 
     $('.geocode').on('click',function(){
-      $('#myModal').data('target', $(this).closest('li').attr('id')).modal('show')
+      $('#myModal').data('target', $(this).closest('li').attr('id')).modal('show');
     });
 
     $('form').submit(function() {

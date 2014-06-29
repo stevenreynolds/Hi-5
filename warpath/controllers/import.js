@@ -70,11 +70,9 @@ exports.importYoutube = function(req, res) {
       return res.redirect('/account/import');
     }
 
-    //video = _.map(_.sortBy(video, 'stats.plays'), _.values);
     console.log('____________________________________________________________')
     console.log(videos)
     console.log('____________________________________________________________')
-
 
     var data = {
       title: 'Import from YouTube',
@@ -99,10 +97,13 @@ exports.importYoutube = function(req, res) {
 };
 
 /**
- * POST /account/import/vimeo
+ * POST /account/import/vimeo || /account/import/youtube
  */
 exports.importSelected = function(req, res) {
-  var videos = req.body.video;
+  var videos = req.body.videos;
+  if(videos)
+    videos = JSON.parse(videos);
+  //if(videos.length == 0) res.redirect('/');
 
   console.log('importSelected')
   console.log(req.body)
@@ -111,19 +112,32 @@ exports.importSelected = function(req, res) {
 
     var Video = mongoose.model('Video', Video);
 
-    videos.forEach(function(video) { 
+    console.log(videos)
+    console.log('_________________________-----------------_________________________')
 
-      var temp = video.split("_");
+
+    async.eachSeries(videos, function( lavideo, callback) {
+
+      console.log(lavideo)
+
+      var temp = lavideo.split("_");
       var platform = temp[0];
 
       var v = new Video();
       
+      v._id = lavideo;
+      v.id = lavideo;
       v._creator = user._id;
-      v._id = video;
       v.platform = platform;
+
+      console.log(v)
 
       v.save(function (err) {
         if(err) console.log(err)
+          console.log('++++++++++++++++++++++++++++++++++++++++++++++')
+
+        user.videos.push(v);
+        callback();
 
           // Video
           // .findOne({ platform: 'vimeo' })
@@ -135,12 +149,18 @@ exports.importSelected = function(req, res) {
           // })
 
       });
+    }, function(err){
+        // if any of the file processing produced an error, err would equal that error
+        if( err ) {
+          // One of the iterations produced an error.
+          // All processing will now stop.
+          console.log('A file failed to process');
+        } else {
 
-      user.videos.push(v);
-
+          user.save();
+          console.log('All files have been processed successfully');
+        }
     });
-
-    user.save();
 
     console.log(videos)
 
@@ -150,9 +170,18 @@ exports.importSelected = function(req, res) {
       })
       .lean()
       .exec(function(err, docs){
+        if(err) console.log(err)
+
 
       var videos_data = [];
-      docs.forEach(function(video) { 
+
+      console.log('----------------------------docs----------------------------------------------')
+      console.log(videos)
+      console.log(docs)
+      console.log('----------------------------docs----------------------------------------------')
+
+
+      _(docs).forEach(function(video) { 
 
         console.log('fffffffffffffffffffffffffffffffff')
         console.log(video)
@@ -161,7 +190,6 @@ exports.importSelected = function(req, res) {
         var platform = temp[0];
 
         console.log(platform)
-
 
         if(platform == 'youtube'){
           var video = {
@@ -189,7 +217,10 @@ exports.importSelected = function(req, res) {
         videos_data.push(video);
       });
 
-      
+      console.log('----------------------------videos_data----------------------------------------------')
+      console.log(videos_data)
+      console.log('----------------------------videos_data----------------------------------------------')
+
       res.render('account/import_modify', {
         title: 'Add Data',
         data: videos_data
@@ -214,17 +245,18 @@ exports.importComplete = function(req, res) {
 
   console.log(locations);
 
-  locations.forEach(function(data) { 
+  _(locations).forEach(function(data) { 
+
     var videoID = data.id;
 
     Video.update({_id: videoID}, {
         location: {lat: data.lat, lng: data.lng} 
     }, function(err, numberAffected, rawResponse) {
         if(err) console.log(err)
-
-        //req.flash('success', { msg: 'Videos imported!' });
-        return res.redirect('/account');
     })
+
+    //req.flash('success', { msg: 'Videos imported!' });
+    return res.redirect('/account');
       
   });
 
