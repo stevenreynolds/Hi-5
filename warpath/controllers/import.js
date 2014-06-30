@@ -243,8 +243,10 @@ exports.importComplete = function(req, res) {
   console.log(req.body);
   
   var locations = JSON.parse(req.body.locations);
+  var types     = JSON.parse(req.body.types);
 
   console.log(locations);
+  console.log(types);
 
   _(locations).forEach(function(data) { 
 
@@ -255,10 +257,22 @@ exports.importComplete = function(req, res) {
     }, function(err, numberAffected, rawResponse) {
         if(err) console.log(err)
     })
-
-    //req.flash('success', { msg: 'Videos imported!' });
-    return res.redirect('/account');
       
   });
+
+  _(types).forEach(function(data) { 
+
+    var videoID = data.id;
+
+    Video.update({_id: videoID}, {
+        type: data.type 
+    }, function(err, numberAffected, rawResponse) {
+        if(err) console.log(err)
+    })
+      
+  });
+
+  req.flash('success', { msg: 'Videos imported!' });
+  return res.redirect('/account');
 
 };

@@ -13,6 +13,7 @@ block content
     legend Choose Videos
     input(type='hidden', name='_csrf', value=_csrf)
     input(type='hidden', name='locations', value='')
+    input(type='hidden', name='types', value='')
     ul
       each video in data
         li.form-group(id="#{video.platform}_#{video.id}")
@@ -24,6 +25,14 @@ block content
 
           a.btn.btn-primary.btn-lg.geocode
             | C'est où cette vidéo ?
+
+          select
+            option(selected="selected") C'est quoi ?
+            option(value="mountain") Montagne
+            option(value="air") Air
+            option(value="land") Terre
+            option(value="snow") Neige
+            option(value="water") Eau
 
     #myModal.modal.fade(tabindex='-1', role='dialog', aria-labelledby='myModalLabel', aria-hidden='true')
       .modal-dialog.modal-lg
@@ -44,6 +53,7 @@ block content
 
   script(type="text/javascript").
     var locations = [];
+    var types = [];
 
     //https://www.mapbox.com/mapbox.js/example/v1.0.0/
     //see https://www.mapbox.com/mapbox.js/example/v1.0.0/divicon/
@@ -77,6 +87,21 @@ block content
 
     $('form').submit(function() {
         $('[name=locations]').val(JSON.stringify(locations));
+        
+        $('form select').each(function(index, el){
+          var videoID = $(this).parent('li').attr('id');
+
+          var type = {
+            id: videoID,
+            type: $(this).val()
+          }
+
+          types.push(type);
+
+        });
+
+        $('[name=types]').val(JSON.stringify(types));
+
     });
 
     var myLayer2 = L.mapbox.featureLayer().addTo(map);
