@@ -210,8 +210,7 @@ exports.getUser = function(req, res) {
           });
 
       });
-
-     // result now equals 'done'    
+  
   });
 
 };
