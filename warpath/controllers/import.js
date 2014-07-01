@@ -137,17 +137,7 @@ exports.importSelected = function(req, res) {
         if(err) console.log(err)
           console.log('++++++++++++++++++++++++++++++++++++++++++++++')
 
-        user.videos.push(v);
         callback();
-
-          // Video
-          // .findOne({ platform: 'vimeo' })
-          // .populate('_creator')
-          // .exec(function (err, story) {
-          //   if (err) console.log(err);
-          //   console.log('The creator is %s', story._creator.email);
-          //   // prints "The creator is Aaron"
-          // })
 
       });
     }, function(err){
@@ -158,7 +148,10 @@ exports.importSelected = function(req, res) {
           console.log('A file failed to process');
         } else {
 
-          user.save();
+          User.update({ _id: req.user.id },{ $addToSet: { videos: { $each: videos } } }, function(err){
+              if(err) console.log(err)
+          });
+
           console.log('All files have been processed successfully');
         }
     });

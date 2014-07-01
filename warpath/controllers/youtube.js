@@ -28,13 +28,10 @@ exports.getYoutube = function(req, res, callback) {
         }
         else {
 
-            User.findById(req.user.id, function(err, user) {
-              user.tokens.push({ kind: 'google', accessToken: newToken, refreshToken:token.refreshToken, expires_in:3600 });
-              
-              user.save(function(err) {
-                 if(err) console.log(err);
-              });
-           });
+            var saveToken = { kind: 'google', accessToken: newToken, refreshToken:token.refreshToken, expires_in:3600 };
+            User.update({ _id: req.user.id, 'tokens.kind': 'google' }, { 'tokens.$': saveToken }, function(err){
+                if(err) console.log(err)
+            });
         
             var videos = [];
 

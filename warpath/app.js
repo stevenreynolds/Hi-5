@@ -165,6 +165,8 @@ app.post('/account/import/vimeo', passportConf.isAuthenticated, importController
 app.get('/account/import/youtube', passportConf.isAuthenticated, importController.importYoutube);
 app.post('/account/import/youtube', passportConf.isAuthenticated, importController.importSelected);
 
+app.get('/user/:slug', userController.getUser);
+
 app.get('/video/:id', videoController.getVideo);
 
 app.get('/comments/:id', commentsController.getComments);

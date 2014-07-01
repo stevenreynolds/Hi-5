@@ -4,9 +4,57 @@ var crypto = require('crypto');
 var nodemailer = require('nodemailer');
 var passport = require('passport');
 var User = require('../models/User');
+var Video = require('../models/Video');
 var secrets = require('../config/secrets');
 
 var moment = require('moment');
+
+/**
+ * GET /user/:slug
+ * User page.
+ */
+
+exports.getUser = function(req, res) {
+  var slug = req.params.slug;
+
+  User
+    .findOne({ 'profile.slug': slug })
+    //.findOne({'_id': {'$regex': slug} })
+    .lean() //Very Important !
+    .populate('videos')
+    .populate('videos._video_data')
+    .exec(function (err, profile) {
+      if (err) console.log(err);
+
+      console.log('PPPPPPPPPPPPPPPROFILEEEEEEEEEE')
+      console.log(profile)
+      console.log('PPPPPPPPPPPPPPPROFILEEEEEEEEEE')
+
+      if(profile.videos.length > 0){
+
+        Video
+          //.findOne({ _id: videoID })
+          //not perfect but collision between vimeo id and youtube id will be rare like 1 in 1 billion
+          .find({'_id': {'$in': profile.videos } })
+          .lean() //Very Important !
+          .populate('_video_data')
+          .limit(4)
+          .exec(function (err, video) {
+            if (err) console.log(err);
+            console.log(video)
+
+          });
+
+      }
+      
+  
+  });
+
+  res.render('user', {
+    title: slug,
+    data: ''
+  });
+};
 
 /**
  * GET /login
