@@ -43,6 +43,10 @@ L'application se trouve dans le dossier /warpath
 - Vimeo API v3 avec module oAuth développé pour l'oAuth2 [https://github.com/ChibiJoel/passport-vimeo](https://github.com/ChibiJoel/passport-vimeo) (Il n'existait pas)
 - [http://fitvidsjs.com/](http://fitvidsjs.com/) Player Video Responsive
 - [http://sharrre.com/](http://sharrre.com/) Plugin jQuery pour le partage
+- [http://www.sharedcount.com](http://www.sharedcount.com) API scraping pour les réseaux sociaux
+- [http://stringjs.com/](http://stringjs.com/) Lib d'utilitaires pour strings
+- [http://lodash.com/](http://lodash.com/) lib d'utilitaires
+- [https://github.com/caolan/async](https://github.com/caolan/async) Async Utilities
 
 ### Installation des dépendance via NPM
 ```
