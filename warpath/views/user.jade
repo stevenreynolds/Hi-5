@@ -91,18 +91,33 @@ block content
             h4#myModalLabel.modal-title Contact
           .modal-body
             if user.id
-              p sdfsfdf
-              p Pour contacter #{profile.profile.name} tu dois être inscrit sur WarPath !
-              a(href="/signup") C'est par là !  
+              form.form-horizontal(id='email-form', method='POST', action="/contact_user")
+                input(type='hidden', name='_csrf', value=_csrf)
+                input(type='hidden', name='to', value="#{profile._id}")
+                input(type='hidden', name='fromUrl', value="/user/#{profile.profile.slug}")
+                legend Tu veux contacter #{profile.profile.name} ?
+                .form-group
+                  label.col-sm-3.control-label(for='message') Message
+                  .col-sm-7
+                    textarea.form-control(rows="3", name='message', id='message', placeholder='Ton message', autofocus)
+                .form-group
+                  .col-sm-offset-3.col-sm-7
+                    button.btn.btn-success(type='submit')
+                      i.fa.fa-check
+                      | Envoyer
+
             else
               p Pour contacter #{profile.profile.name} tu dois être inscrit sur WarPath !
               a(href="/signup") C'est par là !
           .modal-footer
-            button.btn.btn-default(type='button', data-dismiss='modal') Close
+            button.btn.btn-default(type='button', data-dismiss='modal') Annuler
     
     style.
       .modal-content{
         background:#fff;
+      }
+      textarea{
+        color:#000 !important;
       }
 
     script.

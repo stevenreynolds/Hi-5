@@ -146,6 +146,8 @@ app.post('/signup', userController.postSignup);
 app.get('/contact', contactController.getContact);
 app.post('/contact', contactController.postContact);
 
+app.post('/contact_user', passportConf.isAuthenticated, contactController.postContactUser);
+
 app.get('/legal-notice', pageController.legalNotice);
 
 app.get('/search', searchController.search);
