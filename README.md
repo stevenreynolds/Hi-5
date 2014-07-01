@@ -5,10 +5,10 @@ Site public, accessible à tous les utilisateurs avec possibilité de s’inscri
 
 Réalisation
 ------
-Code : Joël Galeran
-Wireframes : Robin
-Wireframes HD : Wilson Ngaruye
-Maquettes : Virginie Riou
+- Code : Joël Galeran
+- Wireframes : Robin
+- Wireframes HD : Wilson Ngaruye
+- Maquettes : Virginie Riou
 
 Fonctionnalités
 ------
