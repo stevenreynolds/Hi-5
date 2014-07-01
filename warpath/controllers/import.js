@@ -266,6 +266,6 @@ exports.importComplete = function(req, res) {
   });
 
   req.flash('success', { msg: 'Videos imported!' });
-  return res.redirect('/account');
+  return res.redirect('/');
 
 };
