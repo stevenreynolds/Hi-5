@@ -109,6 +109,7 @@ exports.getUser = function(req, res) {
                         var video = {
                               id:           id
                             , platform:     'youtube'
+                            , type:         video.type
                             , link:         'http://youtu.be/' + id
                             , title:        video_data.snippet.title
                             , description:  video_data.snippet.description
@@ -136,6 +137,7 @@ exports.getUser = function(req, res) {
                         var video = {
                               id:           videoID
                             , platform:     'vimeo'
+                            , type:         video.type
                             , link:         video_data.link
                             , title:        video_data.name
                             , description:  video_data.description

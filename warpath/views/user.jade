@@ -42,7 +42,17 @@ block content
                 .stats
                   .likes #{video.likes}
                   .views #{video.views}
-                  .type  #{video.type}
+                  .type  
+                    if video.type == 'mountain'
+                      button.active.btn-mountain Montagne
+                    if video.type == 'air'
+                      button.active.btn-air Air
+                    if video.type == 'snow'
+                      button.active.btn-snow Neige
+                    if video.type == 'land'
+                      button.active.btn-land Terre
+                    if video.type == 'water'
+                      button.active.btn-water Eau
 
             .clearfix
 
