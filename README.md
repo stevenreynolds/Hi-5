@@ -32,6 +32,7 @@ L'application se trouve dans le dossier /warpath
 - MongoDB
 
 ###Ressources Notables Utilisées
+- Jade (Templating)
 - Twitter Bootstrap 3 + Less
 - Mongoose (ODM MongoDB)
 - jQuery
