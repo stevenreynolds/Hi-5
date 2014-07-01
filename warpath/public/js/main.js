@@ -16,7 +16,7 @@ $(document).ready(function() {
                   if(request.type == 'User') {
                     return {
                       label: el.profile.name,
-                      value: el.profile.slug,
+                      value: '/user/' + el.profile.slug,
                     };
                   }
                   if(request.type == 'Video') {

@@ -14,7 +14,8 @@ exports.search = function(req, res) {
     var regex = new RegExp(req.query["term"], 'i');
 
     if(type == 'User'){
-        var query = User.find({'profile.name': regex}, { '_id': 0, 'profile': 1 }).limit(20);
+        var find = { $or: [ {'profile.name': regex}, {'profile.slug': regex} ] };
+        var query = User.find(find, { '_id': 0, 'profile': 1 }).limit(20);
     }
     else if(type == 'Video'){
         var find = { $or: [ { 'name': regex }, { 'snippet.title': regex } ] };
