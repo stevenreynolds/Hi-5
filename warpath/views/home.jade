@@ -146,7 +146,7 @@ block container
     myLayer.setGeoJSON(geojson);
     myLayer.on('click', function(e) {
         e.layer.unbindPopup();
-        window.open(e.layer.feature.properties.url);
+        window.location.href = e.layer.feature.properties.url;
     });
 
 
