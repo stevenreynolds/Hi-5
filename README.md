@@ -12,16 +12,27 @@ Fonctionnalités
 - Rechercher des Vidéos / Users
 - Gagner des points (Gamification)
 - Partager une vidéo
-- Oauth Instagram / Google / Vimeo
+- oAuth Instagram / Google / Vimeo
 - Login / Inscription / Reset Password Email
 - Possibilité de lier plusieurs comptes Oauth
 
 Installation
 ------
+L'application se trouve dans le dossier /warpath
 
 ###Prérequis
 - Node.js
 - MongoDB
+
+###Ressources Notables Utilisées
+- Mongoose (ODM MongoDB)
+- jQuery
+- jQuery AutoComplete (Search)
+- Less
+- Mandrill (Emails)
+- Mapbox
+- YouTube API v3
+- Vimeo API v3 avec module oAuth développé pour l'oAuth2 [https://github.com/ChibiJoel/passport-vimeo](https://github.com/ChibiJoel/passport-vimeo) (Il n'existait pas)
 
 ### Installation des dépendance via NPM
 ```
