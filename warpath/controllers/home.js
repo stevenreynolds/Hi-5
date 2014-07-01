@@ -46,14 +46,15 @@ var generateGeoJSON = function(videos, callback){
 
         var temp = video._id.split("_");
         var platform = temp[0];
+        var videoID = temp[1];
 
         console.log(video._id)
 
         if(platform == 'youtube'){
           var thevideo = {
-              id:           video.id
+              id:           videoID
             , platform:     'youtube'
-            , link:         'http://youtu.be/' + video.id
+            , link:         'http://youtu.be/' + videoID
             , title:        video._video_data.snippet.title
             , description:  video._video_data.snippet.description
             , image:        'http://img.youtube.com/vi/' + video.id + '/default.jpg'
@@ -61,7 +62,6 @@ var generateGeoJSON = function(videos, callback){
         }
 
         if(platform == 'vimeo'){
-          var videoID = video._video_data.uri.replace('/videos/', '');
           var thevideo = {
               id:           videoID
             , platform:     'vimeo'
@@ -76,7 +76,7 @@ var generateGeoJSON = function(videos, callback){
             type: 'Feature',
             properties: {
                 title: thevideo.title,
-                url: '/video/' + video.id,
+                url: '/video/' + videoID,
                 type: video.type,
             },
             geometry: {
