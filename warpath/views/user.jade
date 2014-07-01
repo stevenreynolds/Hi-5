@@ -21,7 +21,7 @@ block content
 
         .level 
           .title LEVEL
-          .points 21444 PTS
+          .points #{points} PTS
 
         .next-level
           .title NEXT
@@ -37,8 +37,8 @@ block content
           ul
             each video in videos
               li
-                a(href="#{video.link}")
-                  p #{video.title}
+                a(href="#{video.link}", title="#{video.title}")
+                  p #{S(video.title).truncate(40).s}
                   img(src="#{video.image}")
                   .stats
                     .likes #{video.likes}

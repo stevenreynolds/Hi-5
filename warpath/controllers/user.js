@@ -165,10 +165,17 @@ exports.getUser = function(req, res) {
 
       if(err) console.log(err)
 
-      res.render('user', {
-        title: slug,
-        user: profile,
-        videos: vids
+      req.user.getPoints(function(points){
+          console.log(points)
+          console.log('points!!!!!!!!!!!')
+
+          res.render('user', {
+            title: slug,
+            user: profile,
+            videos: vids,
+            points: points
+          });
+
       });
 
      // result now equals 'done'    

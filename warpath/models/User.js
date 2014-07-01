@@ -98,78 +98,95 @@ userSchema.methods.gravatar = function(size) {
 userSchema.methods.getPoints = function(cb) {
   var user = this;
 
-  var query = { _creator : user._id };
-  Video
-    .find(query)
-    .populate('_video_data')
-    .lean()
-    .exec(function(err, videos) {
-    if (err) console.log(err);
+  var views = 0;
+  var comments = 0;
+  var share_total = 0;
 
-    var views = 0;
-    var total = 0;
+  async.parallel([
+      function(callback){
+          
+        var query = { _creator : user._id };
+        Video
+          .find(query)
+          .populate('_video_data')
+          .lean()
+          .exec(function(err, videos) {
+          if (err) console.log(err);
 
-    async.each(videos, function(video, callback) {
-      var video_data = video._video_data;
+          async.each(videos, function(video, callback_each) {
+            var video_data = video._video_data;
 
-      if(video.platform == 'youtube'){
-        views += parseInt(video_data.statistics.viewCount);
-        var link = 'http://youtu.be/' + video_data.id;
+            if(video.platform == 'youtube'){
+              views += parseInt(video_data.statistics.viewCount);
+              var link = 'http://youtu.be/' + video_data.id;
+            }
+
+            if(video.platform == 'vimeo'){
+              views += parseInt(video_data.stats.plays);
+              var link = video_data.link;
+            }
+
+            comments += video.comments.length;
+
+            var request_url = "http://api.sharedcount.com?url=" + encodeURIComponent(link);
+
+            console.log(request_url)
+
+            request(request_url, function (err, response, body) {
+              
+              if (err) { console.log(err); }
+
+              if (!err && response.statusCode == 200) {
+                body = JSON.parse(body)
+
+                share_total += body.StumbleUpon
+                        + body.Reddit
+                        + body.Facebook.total_count
+                        + body.Delicious
+                        + body.GooglePlusOne
+                        + body.Twitter
+                        + body.Diggs
+                        + body.Pinterest
+                        + body.LinkedIn;
+
+                console.log(share_total)
+                console.log('total')
+                callback_each();
+              } 
+
+            });
+            
+          }, function(err){
+              if( err ) {
+                console.log(err);
+                cb(0);
+              } else {
+                
+                callback()
+                
+              }
+          });
+
+        });
+
+      },
+      function(callback){
+          callback()
       }
-
-      if(video.platform == 'vimeo'){
-        views += parseInt(video_data.stats.plays);
-        var link = video_data.link;
-      }
-
-      var request_url = "http://api.sharedcount.com?url=" + encodeURIComponent(link);
-
-      console.log(request_url)
-
-      request(request_url, function (err, response, body) {
-        
-        if (err) { console.log(err); }
-
-        if (!err && response.statusCode == 200) {
-          body = JSON.parse(body)
-
-          total += body.StumbleUpon
-                  + body.Reddit
-                  + body.Facebook.total_count
-                  + body.Delicious
-                  + body.GooglePlusOne
-                  + body.Twitter
-                  + body.Diggs
-                  + body.Pinterest
-                  + body.LinkedIn;
-
-          console.log(total)
-          console.log('total')
-          callback();
-        } 
-      });
+  ],
+  // optional callback
+  function(err, results){
+    if(err) console.log(err)
       
-    }, function(err){
-        if( err ) {
-          console.log(err);
-          cb(0);
-        } else {
-          console.log('Points')
-          var points = (views * 5) + total;
-          console.log(points)
-
-          cb(points);
-        }
-    });
-
-
-      
-
-
+    console.log('Points')          
+    console.log(points)
+    console.log('comments' + comments)
+    var points = (views * 5) + share_total + (comments * 2);
+    cb(points);
+  });
 
     console.log(views)
     console.log('dddddddddddddddddddddddddddddd')
-  });
 
 };
 

@@ -51,6 +51,8 @@ var passportConf = require('./config/passport');
  */
 
 var app = express();
+//Import String.js into jade
+app.locals.S = require('string');
 
 /**
  * Connect to MongoDB.
