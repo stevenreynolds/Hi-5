@@ -25,14 +25,16 @@ L'application se trouve dans le dossier /warpath
 - MongoDB
 
 ###Ressources Notables Utilisées
+- Twitter Bootstrap 3 + Less
 - Mongoose (ODM MongoDB)
 - jQuery
 - jQuery AutoComplete (Search)
-- Less
 - Mandrill (Emails)
 - Mapbox
 - YouTube API v3
 - Vimeo API v3 avec module oAuth développé pour l'oAuth2 [https://github.com/ChibiJoel/passport-vimeo](https://github.com/ChibiJoel/passport-vimeo) (Il n'existait pas)
+- [http://fitvidsjs.com/](http://fitvidsjs.com/) Player Video Responsive
+- [http://sharrre.com/](http://sharrre.com/) Plugin jQuery pour le partage
 
 ### Installation des dépendance via NPM
 ```
