@@ -3,6 +3,13 @@ WarPath by Hi-5
 
 Site public, accessible à tous les utilisateurs avec possibilité de s’inscrire pour créer son profil débloquant ainsi les fonctionnalités d’interactions.
 
+Réalisation
+------
+Code : Joël Galeran
+Wireframes : Robin
+Wireframes HD : Wilson Ngaruye
+Maquettes : Virginie Riou
+
 Fonctionnalités
 ------
 - Commenter les vidéos en enregistrant le timestamp
