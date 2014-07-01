@@ -302,9 +302,18 @@ exports.postSignup = function(req, res, next) {
  */
 
 exports.getAccount = function(req, res) {
+
+  var date = ''
+  if(req.user.profile.birthdate) {
+    date = moment(req.user.profile.birthdate);
+    date = date.format('YYYY-MM-DD');
+  }
+
   res.render('account/profile', {
-    title: 'Account Management'
+    title: 'Account Management',
+    birthdate: date
   });
+
 };
 
 /**
@@ -313,13 +322,30 @@ exports.getAccount = function(req, res) {
  */
 
 exports.postUpdateProfile = function(req, res, next) {
+  req.assert('email', 'Email is not valid').isEmail();
+  req.assert('city', 'City is not valid').notEmpty();
+  req.assert('country', 'Country is not valid').notEmpty();
+  req.assert('birthdate', 'BirthDate is not valid').notEmpty();
+  req.assert('name', 'Donne ton blaze !').notEmpty();
+
+  var errors = req.validationErrors();
+
+  if (errors) {
+    req.flash('errors', errors);
+    return res.redirect('/account');
+  }
+
+  var birthDate = moment(req.body.birthdate);
+
   User.findById(req.user.id, function(err, user) {
     if (err) return next(err);
     user.email = req.body.email || '';
     user.profile.name = req.body.name || '';
     user.profile.gender = req.body.gender || '';
     user.profile.location = req.body.location || '';
-    user.profile.website = req.body.website || '';
+    user.profile.city = req.body.city || '';
+    user.profile.country = req.body.country || '';
+    user.profile.birthdate = birthDate || '';
     user.updated = new Date;
 
     user.save(function(err) {

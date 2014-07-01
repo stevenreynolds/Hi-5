@@ -6,37 +6,52 @@ block content
 
   form.form-horizontal(action='/account/profile', method='POST')
     input(type='hidden', name='_csrf', value=_csrf)
+
     .form-group
-      label.col-sm-2.control-label(for='email') Email
-      .col-sm-4
+      label.col-sm-4.control-label(for='email') Tom Email
+      .col-sm-6
         input.form-control(type='email', name='email', id='email', value='#{user.email}')
+
     .form-group
-      label.col-sm-2.control-label(for='name') Name
-      .col-sm-4
+      label.col-sm-4.control-label(for='name') Ton Blaze
+      .col-sm-6
         input.form-control(type='text', name='name', id='name', value='#{user.profile.name}')
+
     .form-group
-      label.col-sm-2.control-label(for='gender') Gender
-      .col-sm-4
+      label.col-sm-4.control-label(for='gender') T'es plutôt
+      .col-sm-6
         label.radio
           input(type='radio', checked=user.profile.gender=='male', name='gender', value='male', data-toggle='radio')
-          span Male
+          span Un homme
         label.radio
           input(type='radio', checked=user.profile.gender=='female', name='gender', value='female', data-toggle='radio')
-          span Female
+          span Une femme
+    
     .form-group
-      label.col-sm-2.control-label(for='location') Location
-      .col-sm-4
-        input.form-control(type='text', name='location', id='location', value='#{user.profile.location}')
+      label.col-sm-4.control-label(for='birthdate') Quand t’es venu au monde ?
+      .col-sm-6
+        input.form-control(type='date', name='birthdate', id='birthdate', placeholder='JJ/MM/AAAA' value="#{birthdate}")
+    
     .form-group
-      label.col-sm-2.control-label(for='website') Website
-      .col-sm-4
-        input.form-control(type='text', name='website', id='website', value='#{user.profile.website}')
+      label.col-sm-4.control-label(for='city') Tu crèches où ? (La ville ! Le reste je m’en fou.. )
+      .col-sm-6
+        input.form-control(type='text', name='city', id='city', placeholder='Paris, L.A, Berlin ...', value="#{user.profile.city}")
+    
     .form-group
-      label.col-sm-2.control-label(for='gravatar') Gravatar
-      .col-sm-4
-        img(src="#{user.gravatar()}", class='profile', width='100', height='100')
+      label.col-sm-4.control-label(for='country') C’est dans quel pays ça ? 
+      .col-sm-6
+        input.form-control(type='text', name='country', id='country', placeholder='France, Etat-Unis, Allemange ...', value="#{user.profile.country}")
+
     .form-group
-      .col-sm-offset-2.col-sm-4
+      label.col-sm-4.control-label(for='gravatar')
+      .col-sm-6
+        if user.profile.picture
+          img(src="#{user.profile.picture}", class='profile', width='100', height='100')
+        else
+          img(src="#{user.gravatar()}", class='profile', width='100', height='100')
+
+    .form-group
+      .col-sm-offset-4.col-sm-4
         button.btn.btn.btn-primary(type='submit')
           i.fa.fa-magnet
           | Update Profile
@@ -59,16 +74,6 @@ block content
         button.btn.btn.btn-primary(type='submit')
           i.fa.fa-keyboard-o
           | Change Password
-
-  .page-header
-    h3 Delete Account
-
-  p You can delete your account, but keep in mind this action is irreversible.
-  form(action='/account/delete', method='POST')
-    input(type='hidden', name='_csrf', value=_csrf)
-    button.btn.btn-danger(type='submit')
-      i.fa.fa-trash-o
-      | Delete my account
 
   .page-header
     h3 Linked Accounts
@@ -97,3 +102,14 @@ block content
     p: a.text-danger(href='/account/unlink/instagram') Unlink your Instagram account
   else
     p: a(href='/auth/instagram') Link your Instagram account
+
+
+  .page-header
+    h3 Delete Account
+
+  p You can delete your account, but keep in mind this action is irreversible.
+  form(action='/account/delete', method='POST')
+    input(type='hidden', name='_csrf', value=_csrf)
+    button.btn.btn-danger(type='submit')
+      i.fa.fa-trash-o
+      | Delete my account
