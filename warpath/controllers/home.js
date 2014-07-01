@@ -77,7 +77,7 @@ var generateGeoJSON = function(videos, callback){
             properties: {
                 title: thevideo.title,
                 url: '/video/' + video.id,
-                type: 'water',
+                type: video.type,
             },
             geometry: {
                 type: 'Point',
