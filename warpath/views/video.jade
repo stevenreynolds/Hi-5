@@ -44,7 +44,7 @@ block content
         div.infos
           div.who
             span.title C'est qui ?
-            span #{video._creator.profile.name}
+            a(href="/user/#{video._creator.profile.slug}") #{video._creator.profile.name}
           div.what
             span.title De quoi ?
             span #{video.type} truc
