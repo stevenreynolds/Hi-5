@@ -1,31 +1,68 @@
 extends layout
 
+block prepend head
+  != js('jquery.sharrre.min')
+
 block content
   .col-lg-offset-2.col-lg-8.background
 
     #user-content(class="col-lg-12", data-video="#{user.profile.slug}")
-      h1 #{user.profile.name}
-      p #{user.profile.age} ans - #{user.profile.city} - #{user.profile.country}
 
-      img(src="http://api.tiles.mapbox.com/v3/warpath.ik58n87j/pin-s+cc4422(#{user.profile.geocode.lon},#{user.profile.geocode.lat},3)/#{user.profile.geocode.lon},#{user.profile.geocode.lat},1/100x50.png")
+      #profile
+        if user.profile.picture
+          img.profile-picture(src='#{user.profile.picture}')
+        else
+          img.profile-picture(src='#{user.gravatar(100)}')
 
-      .level 
-        .title LEVEL
-        .points 21444 PTS
+        img.profile-map(src="http://api.tiles.mapbox.com/v3/warpath.ik58n87j/pin-s+cc4422(#{user.profile.geocode.lon},#{user.profile.geocode.lat},3)/#{user.profile.geocode.lon},#{user.profile.geocode.lat},1/200x100.png")
 
-      .next-level
-        .title NEXT
-        .points 1000 PTS
+        h1 #{user.profile.name}
+        p.profile-infos #{user.profile.age} ans - #{user.profile.city} - #{user.profile.country}
 
-      .videos
-        h2 Ses vidéos de ouf
+        .level 
+          .title LEVEL
+          .points 21444 PTS
 
-        ul
-          each video in videos
-            li
-              p #{video.title}
-              img(src="#{video.image}")
-              .stats
-                .likes #{video.likes}
-                .views #{video.views}
-                .type  #{video.type}
+        .next-level
+          .title NEXT
+          .points 1000 PTS
+        
+        button.shareme.btn(data-url="http://wrpth.com/#{user.profile.slug}" data-text="Le profil de #{user.profile.slug} - WRPTH.com" data-title="Partage-moi ça !") 
+
+        .clearfix
+      
+      if videos
+        .videos
+          h2 Ses vidéos de ouf
+          ul
+            each video in videos
+              li
+                p #{video.title}
+                img(src="#{video.image}")
+                .stats
+                  .likes #{video.likes}
+                  .views #{video.views}
+                  .type  #{video.type}
+
+            .clearfix
+
+    script.
+      $('.shareme').sharrre({
+        share: {
+          //googlePlus: true,
+          facebook: true,
+          twitter: true
+        },
+        enableTracking: false,
+        buttons: {
+          //googlePlus: {size: 'tall', annotation:'bubble'},
+          facebook: {layout: 'box_count'},
+          twitter: {count: 'vertical'},
+        },
+        hover: function(api, options){
+          $(api.element).find('.buttons').show();
+        },
+        hide: function(api, options){
+          $(api.element).find('.buttons').hide();
+        }
+      });

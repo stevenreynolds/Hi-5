@@ -109,10 +109,10 @@ exports.getUser = function(req, res) {
                         var video = {
                               id:           id
                             , platform:     'youtube'
-                            , link:         'http://youtu.be/' + video.id
+                            , link:         'http://youtu.be/' + id
                             , title:        video_data.snippet.title
                             , description:  video_data.snippet.description
-                            , image:        'http://img.youtube.com/vi/' + video.id + '/default.jpg'
+                            , image:        'http://img.youtube.com/vi/' + id + '/mqdefault.jpg'
                             , _creator:     video._creator
                             , location:     video.location
                             , likes:        likes
