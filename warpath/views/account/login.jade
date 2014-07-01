@@ -2,30 +2,30 @@ extends ../layout
 
 block content
   form(method='POST')
-    legend Sign In
+    legend Se connecter
     input(type='hidden', name='_csrf', value=_csrf)
     .col-sm-8.col-sm-offset-2
       .form-group
         label.control-label(for='email') Email
         input.form-control(type='text', name='email', id='email', placeholder='Email', autofocus=true)
       .form-group
-        label.control-label(for='password') Password
-        input.form-control(type='password', name='password', id='password', placeholder='Password')
+        label.control-label(for='password') Mot de passe
+        input.form-control(type='password', name='password', id='password', placeholder='Mot de passe')
       .form-group
         button.btn.btn-primary(type='submit')
           i.fa.fa-unlock-alt
-          | Login
-        a.btn.btn-link(href='/forgot') Forgot your password?
+          | Connexion
+        a.btn.btn-link(href='/forgot') Tu as perdu la mémoire ?
       hr
       a.btn.btn-block.btn-facebook.btn-social(href='/auth/facebook')
         i.fa.fa-facebook
-        | Sign in with Facebook
+        | Connexion avec Facebook
       a.btn.btn-block.btn-twitter.btn-social(href='/auth/twitter')
         i.fa.fa-twitter
-        | Sign in with Twitter
+        | Connexion avec Twitter
       a.btn.btn-block.btn-google-plus.btn-social(href='/auth/google')
         i.fa.fa-google-plus
-        | Sign in with Google
+        | Connexion avec Google
       a.btn.btn-block.btn-instagram.btn-social(href='/auth/instagram')
         i.fa.fa-instagram
-        | Sign in with Instagram
+        | Connexion avec Instagram

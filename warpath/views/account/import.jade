@@ -2,15 +2,15 @@ extends ../layout
 
 block content
   .page-header
-    h3 Linked Accounts
+    h3 Comptes connectés
 
   if user.google
-    p: a.text(href='/account/import/google') Import from Youtube
+    p: a.text(href='/account/import/google') Import depuis Youtube
   else
-    p: a(href='/auth/google') Link your Google account
+    p: a(href='/auth/google') Connexion avec son compte Google
 
   if user.vimeo
-    p: a.text(href='/account/import/vimeo') Import from Vimeo
+    p: a.text(href='/account/import/vimeo') Import depuis Vimeo
   else
-    p: a(href='/auth/vimeo') Link your Vimeo account
+    p: a(href='/auth/vimeo') Connexion avec son compte Vimeo
 

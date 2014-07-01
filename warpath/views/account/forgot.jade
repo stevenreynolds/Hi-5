@@ -3,13 +3,13 @@ extends ../layout
 block content
   .col-sm-8.col-sm-offset-2
     form(method='POST')
-      legend Forgot Password
+      legend Mot de passe oublié
       input(type='hidden', name='_csrf', value=_csrf)
       .form-group
-        p Enter your email address below and we will send you password reset instructions.
+        p Tu te souviens au moins de ton mail ? Écris-le et on te renvoie ton mot de passe en retour 
         label.control-label(for='email') Email
-        input.form-control(type='email', name='email', id='email', placeholder='Email', autofocus=true)
+        input.form-control(type='email', name='email', id='email', placeholder='Écris le ici', autofocus=true)
       .form-group
         button.btn.btn-primary(type='submit')
           i.fa.fa-key
-          | Reset Password
+          | Retrouver son mot de passe

@@ -39,61 +39,61 @@ block content
       .col-sm-offset-2.col-sm-4
         button.btn.btn.btn-primary(type='submit')
           i.fa.fa-magnet
-          | Update Profile
+          | Modifier mes infos
 
   .page-header
-    h3 Change Password
+    h3 Changer son mot de passe
 
   form.form-horizontal(action='/account/password', method='POST')
     input(type='hidden', name='_csrf', value=_csrf)
     .form-group
-      label.col-sm-3.control-label(for='password') New Password
+      label.col-sm-3.control-label(for='password') Le nouveau
       .col-sm-4
         input.form-control(type='password', name='password', id='password')
     .form-group
-      label.col-sm-3.control-label(for='confirmPassword') Confirm Password
+      label.col-sm-3.control-label(for='confirmPassword') Pour être sur
       .col-sm-4
         input.form-control(type='password', name='confirmPassword', id='confirmPassword')
     .form-group
       .col-sm-offset-3.col-sm-4
         button.btn.btn.btn-primary(type='submit')
           i.fa.fa-keyboard-o
-          | Change Password
+          | Changer le mot de passe
 
   .page-header
-    h3 Delete Account
+    h3 Je ne comprends rien ici, supprimez moi !
 
-  p You can delete your account, but keep in mind this action is irreversible.
+  p Tu es sur ? C'est dommage, mais réfléchis bien, c'est une action irréversible.
   form(action='/account/delete', method='POST')
     input(type='hidden', name='_csrf', value=_csrf)
     button.btn.btn-danger(type='submit')
       i.fa.fa-trash-o
-      | Delete my account
+      | Bye bye Warpath 
 
   .page-header
-    h3 Linked Accounts
+    h3 Les comptes connectés
 
   if user.google
-    p: a.text-danger(href='/account/unlink/google') Unlink your Google account
+    p: a.text-danger(href='/account/unlink/google') Déconnecter son compte Google
   else
-    p: a(href='/auth/google') Link your Google account
+    p: a(href='/auth/google') Connecter son compte Google
 
   if user.facebook
-    p: a.text-danger(href='/account/unlink/facebook') Unlink your Facebook account
+    p: a.text-danger(href='/account/unlink/facebook') Déconnecter son compte Facebook
   else
-    p: a(href='/auth/facebook') Link your Facebook account
+    p: a(href='/auth/facebook') Connecter son compte Facebook
 
   if user.twitter
-    p: a.text-danger(href='/account/unlink/twitter') Unlink your Twitter account
+    p: a.text-danger(href='/account/unlink/twitter') Déconnecter son compte Twitter
   else
-    p: a(href='/auth/twitter') Link your Twitter account
+    p: a(href='/auth/twitter') Connecter son compte Twitter
 
   if user.vimeo
-    p: a.text-danger(href='/account/unlink/vimeo') Unlink your Vimeo account
+    p: a.text-danger(href='/account/unlink/vimeo') Déconnecter son compte Vimeo
   else
-    p: a(href='/auth/vimeo') Link your Vimeo account
+    p: a(href='/auth/vimeo') Connecter son compte Facebook
 
   if user.instagram
-    p: a.text-danger(href='/account/unlink/instagram') Unlink your Instagram account
+    p: a.text-danger(href='/account/unlink/instagram') Déconnecter son compte Facebook
   else
-    p: a(href='/auth/instagram') Link your Instagram account
+    p: a(href='/auth/instagram') Connecter son compte Facebook
