@@ -8,15 +8,18 @@ html
     meta(name='csrf-token', content=_csrf)
     meta(name='author', content='')
     title #{title} | Warpath, go further or die trying’
-
-    meta(property='og:type', content='website')
-    meta(property='og:title', content='WarPath, go further or die trying’')
-    meta(property='og:site_name', content='WarPath')
-    meta(property='og:url', content='http://www.wrpth.com')
-    meta(property='og:description', content='Attrape tes tripes et retiens-les correctement ! T’es sportif extrême ? Dépêche-toi de le prouver !')
-    meta(property='og:image', content='http://www.wrpth.com/images/ogimage.jpg')
+    
     meta(property='fb:app_id', content='1444959329093692')
     meta(property='og:locale', content='fr_FR')
+
+    block meta
+        meta(property='og:type', content='website')
+        meta(property='og:title', content='WarPath, go further or die trying’')
+        meta(property='og:site_name', content='WarPath')
+        meta(property='og:url', content='http://www.wrpth.com')
+        meta(property='og:description', content='Attrape tes tripes et retiens-les correctement ! T’es sportif extrême ? Dépêche-toi de le prouver !')
+        meta(property='og:image', content='http://www.wrpth.com/images/ogimage.jpg')
+        
 
     link(rel='apple-touch-icon', sizes='57x57', href='/favicons/apple-touch-icon-57x57.png')
     link(rel='apple-touch-icon', sizes='114x114', href='/favicons/apple-touch-icon-114x114.png')

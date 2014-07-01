@@ -1,35 +1,46 @@
 extends layout
 
+block meta
+  meta(property='og:type', content='website')
+  meta(property='og:title', content='#{profile.profile.name} - Profil | WarPath, go further or die trying’')
+  meta(property='og:site_name', content='WarPath')
+  meta(property='og:url', content='http://www.wrpth.com/user/#{profile.profile.slug}')
+  meta(property='og:description', content='Attrape tes tripes et retiens-les correctement ! T’es sportif extrême ? Dépêche-toi de le prouver !')
+  if user.profile.picture
+    meta(property='og:image', content='#{profile.profile.picture}')
+  else
+    meta(property='og:image', content='#{profile.profile.picture}')
+
 block prepend head
   != js('jquery.sharrre.min')
 
 block content
   .col-lg-offset-2.col-lg-8.background
 
-    #user-content(class="col-lg-12", data-video="#{user.profile.slug}")
+    #user-content(class="col-lg-12", data-video="#{profile.profile.slug}")
 
       #profile
         if user.profile.picture
-          img.profile-picture(src='#{user.profile.picture}')
+          img.profile-picture(src='#{profile.profile.picture}')
         else
-          img.profile-picture(src='#{user.gravatar(110)}')
+          img.profile-picture(src='#{profile.gravatar(110)}')
 
-        img.profile-map(src="http://api.tiles.mapbox.com/v3/warpath.ik58n87j/pin-s+cc4422(#{user.profile.geocode.lon},#{user.profile.geocode.lat},3)/#{user.profile.geocode.lon},#{user.profile.geocode.lat},1/200x100.png")
+        img.profile-map(src="http://api.tiles.mapbox.com/v3/warpath.ik58n87j/pin-s+cc4422(#{profile.profile.geocode.lon},#{profile.profile.geocode.lat},3)/#{profile.profile.geocode.lon},#{profile.profile.geocode.lat},1/200x100.png")
 
-        h1 #{user.profile.name} 
+        h1 #{profile.profile.name}
         .social-icons
           if user.email
-            i.fa.fa-envelope(href='#')
+            a.fa.fa-envelope(href='#')
           if user.vimeo && user.vimeo.username 
-            a.fa.fa-vimeo-square(target="_blank", href='https://vimeo.com/#{user.vimeo.username}')
+            a.fa.fa-vimeo-square(target="_blank", href='https://vimeo.com/#{profile.vimeo.username}')
           if user.instagram && user.instagram.username 
-            a.fa.fa-instagram(target="_blank", href='https://instagram.com/#{user.instagram.username}')
+            a.fa.fa-instagram(target="_blank", href='https://instagram.com/#{profile.instagram.username}')
           if user.google && user.google.channel 
-            a.fa.fa-youtube(target="_blank", href='https://youtube.com/channel/#{user.google.channel}')
+            a.fa.fa-youtube(target="_blank", href='https://youtube.com/channel/#{profile.google.channel}')
 
           .clearfix
         br
-        p.profile-infos #{user.profile.age} ans - #{user.profile.city} - #{user.profile.country}
+        p.profile-infos #{profile.profile.age} ans - #{profile.profile.city} - #{profile.profile.country}
 
         .level 
           .title LEVEL
@@ -39,7 +50,7 @@ block content
           .title NEXT
           .points #{level.nextLevel} WPTS
         
-        button.shareme.btn(data-url="http://wrpth.com/#{user.profile.slug}" data-text="Le profil de #{user.profile.slug} - WRPTH.com" data-title="Partage-moi ça !") 
+        button.shareme.btn(data-url="http://wrpth.com/#{profile.profile.slug}" data-text="Le profil de #{profile.profile.slug} - WRPTH.com" data-title="Partage-moi ça !") 
 
         .clearfix
       
@@ -77,12 +88,22 @@ block content
             button.close(type='button', data-dismiss='modal')
               span(aria-hidden='true') ×
               span.sr-only Close
-            h4#myModalLabel.modal-title Modal title
+            h4#myModalLabel.modal-title Contact
           .modal-body
-            | ...
+            if user.id
+              p sdfsfdf
+              p Pour contacter #{profile.profile.name} tu dois être inscrit sur WarPath !
+              a(href="/signup") C'est par là !  
+            else
+              p Pour contacter #{profile.profile.name} tu dois être inscrit sur WarPath !
+              a(href="/signup") C'est par là !
           .modal-footer
             button.btn.btn-default(type='button', data-dismiss='modal') Close
-            button.btn.btn-primary(type='button') Save changes
+    
+    style.
+      .modal-content{
+        background:#fff;
+      }
 
     script.
       $('.shareme').sharrre({
@@ -104,3 +125,8 @@ block content
           $(api.element).find('.buttons').hide();
         }
       });
+
+      $('.fa-envelope').on('click',function(){
+        $('#myModal').modal('show');
+      });
+

@@ -15,7 +15,7 @@ var userSchema = new mongoose.Schema({
 
   facebook    : String,
   twitter     : String,
-  
+
   google: {
     id        : String,
     username  : String,
@@ -140,8 +140,8 @@ userSchema.methods.getPoints = function(cb) {
 
             comments += video.comments.length;
 
-            var request_url = "http://api.sharedcount.com?url=" + encodeURIComponent(link);
-
+            var request_url = "http://free.sharedcount.com?url=" + encodeURIComponent(link) + "&apikey=" + "22304c02dd7115798c72457b04754096961b81c6";
+            
             console.log(request_url)
 
             request(request_url, function (err, response, body) {

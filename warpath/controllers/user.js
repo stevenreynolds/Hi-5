@@ -204,7 +204,7 @@ exports.getUser = function(req, res) {
 
           res.render('user', {
             title: slug,
-            user: profile,
+            profile: profile,
             videos: vids,
             level: user_level
           });
