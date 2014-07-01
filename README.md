@@ -6,11 +6,15 @@ Site public, accessible à tous les utilisateurs avec possibilité de s’inscri
 Fonctionnalités
 ------
 - Commenter les vidéos en enregistrant le timestamp
-- Partager une vidéo
 - Importer  ses vidéos de Youtube et Vimeo et géolocaliser les vidéos
 - Visualiser la map et les vidéos géolocalisées
 - Envoyer un message à un membre
 - Rechercher des Vidéos / Users
+- Gagner des points (Gamification)
+- Partager une vidéo
+- Oauth Instagram / Google / Vimeo
+- Login / Inscription / Reset Password Email
+- Possibilité de lier plusieurs comptes Oauth
 
 Installation
 ------
