@@ -28,8 +28,8 @@ var development = {
   },
   
   mandrill: {
-    user: process.env.MANDRILL_USER || 'hackathonstarterdemo',
-    password: process.env.MANDRILL_PASSWORD || 'E1K950_ydLR4mHw12a0ldA'
+    user: process.env.MANDRILL_USER || 'joel.galeran+hi5@gmail.com',
+    password: process.env.MANDRILL_PASSWORD || 'THS23nA89LkooF9tXIrsSw'
   },
 
   sendgrid: {
@@ -99,8 +99,8 @@ var beta = {
   },
   
   mandrill: {
-    user: process.env.MANDRILL_USER || 'hackathonstarterdemo',
-    password: process.env.MANDRILL_PASSWORD || 'E1K950_ydLR4mHw12a0ldA'
+    user: process.env.MANDRILL_USER || 'joel.galeran+hi5@gmail.com',
+    password: process.env.MANDRILL_PASSWORD || 'THS23nA89LkooF9tXIrsSw'
   },
 
   sendgrid: {
