@@ -13,7 +13,12 @@ var VideoData = require('../models/VideoData');
  */
 
 exports.index = function(req, res) {
-    console.log(req.user.getPoints())
+    
+    req.user.getPoints(function(points){
+        console.log(points)
+        console.log('points!!!!!!!!!!!')
+    });
+
     console.log('ddddddddddddd')
 
   Video

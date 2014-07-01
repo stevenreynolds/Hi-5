@@ -7,6 +7,7 @@ var Video = require('./Video');
 
 var slug = require('slug');
 var request = require('request');
+var async = require('async');
 
 var userSchema = new mongoose.Schema({
   email       : { type: String, unique: true, lowercase: true },
@@ -94,11 +95,10 @@ userSchema.methods.gravatar = function(size) {
   return 'https://gravatar.com/avatar/' + md5 + '?s=' + size + '&d=retro';
 };
 
-userSchema.methods.getPoints = function() {
+userSchema.methods.getPoints = function(cb) {
   var user = this;
 
-var query = { _creator : user._id };
-
+  var query = { _creator : user._id };
   Video
     .find(query)
     .populate('_video_data')
@@ -107,18 +107,19 @@ var query = { _creator : user._id };
     if (err) console.log(err);
 
     var views = 0;
+    var total = 0;
 
-    videos.forEach(function(video) { 
+    async.each(videos, function(video, callback) {
       var video_data = video._video_data;
 
       if(video.platform == 'youtube'){
         views += parseInt(video_data.statistics.viewCount);
-        var link = 'http://youtu.be/' + video.id;
+        var link = 'http://youtu.be/' + video_data.id;
       }
 
       if(video.platform == 'vimeo'){
         views += parseInt(video_data.stats.plays);
-        var link = video.link;
+        var link = video_data.link;
       }
 
       var request_url = "http://api.sharedcount.com?url=" + encodeURIComponent(link);
@@ -126,25 +127,45 @@ var query = { _creator : user._id };
       console.log(request_url)
 
       request(request_url, function (err, response, body) {
+        
+        if (err) { console.log(err); }
+
         if (!err && response.statusCode == 200) {
           body = JSON.parse(body)
 
-          var total = body.StumbleUpon
-                    + body.Reddit
-                    + body.Facebook.total_count
-                    + body.Delicious
-                    + body.GooglePlusOne
-                    + body.Twitter
-                    + body.Diggs
-                    + body.Pinterest
-                    + body.LinkedIn;
+          total += body.StumbleUpon
+                  + body.Reddit
+                  + body.Facebook.total_count
+                  + body.Delicious
+                  + body.GooglePlusOne
+                  + body.Twitter
+                  + body.Diggs
+                  + body.Pinterest
+                  + body.LinkedIn;
 
           console.log(total)
-
+          console.log('total')
+          callback();
         } 
-      })
+      });
+      
+    }, function(err){
+        if( err ) {
+          console.log(err);
+          cb(0);
+        } else {
+          console.log('Points')
+          var points = (views * 5) + total;
+          console.log(points)
 
+          cb(points);
+        }
     });
+
+
+      
+
+
 
     console.log(views)
     console.log('dddddddddddddddddddddddddddddd')
