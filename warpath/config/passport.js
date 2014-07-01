@@ -26,13 +26,14 @@ passport.deserializeUser(function(id, done) {
 
 passport.use(new InstagramStrategy(secrets.instagram,function(req, accessToken, refreshToken, profile, done) {
   if (req.user) {
-    User.findOne({ instagram: profile.id }, function(err, existingUser) {
+    User.findOne({ 'instagram.id': profile.id }, function(err, existingUser) {
       if (existingUser) {
         req.flash('errors', { msg: 'There is already an Instagram account that belongs to you. Sign in with that account or delete it, then link it with your current account.' });
         done(err);
       } else {
         User.findById(req.user.id, function(err, user) {
-          user.instagram = profile.id;
+          user.instagram.id = profile.id;
+          user.instagram.username = profile.username;
           user.tokens.push({ kind: 'instagram', accessToken: accessToken });
           user.profile.name = user.profile.name || profile.displayName;
           user.profile.picture = user.profile.picture || profile._json.data.profile_picture;
@@ -45,11 +46,12 @@ passport.use(new InstagramStrategy(secrets.instagram,function(req, accessToken, 
       }
     });
   } else {
-    User.findOne({ instagram: profile.id }, function(err, existingUser) {
+    User.findOne({ 'instagram.id': profile.id }, function(err, existingUser) {
       if (existingUser) return done(null, existingUser);
 
       var user = new User();
-      user.instagram = profile.id;
+      user.instagram.id = profile.id;
+      user.instagram.username = profile.username;
       user.tokens.push({ kind: 'instagram', accessToken: accessToken });
       user.profile.name = profile.displayName;
       // Similar to Twitter API, assigns a temporary e-mail address
@@ -194,13 +196,14 @@ passport.use(new GoogleStrategy(secrets.google, function(req, accessToken, refre
 // console.log(params)
 
   if (req.user) {
-    User.findOne({ google: profile.id }, function(err, existingUser) {
+    User.findOne({ 'google.id': profile.id }, function(err, existingUser) {
       if (existingUser) {
         req.flash('errors', { msg: 'There is already a Google account that belongs to you. Sign in with that account or delete it, then link it with your current account.' });
         done(err);
       } else {
         User.findById(req.user.id, function(err, user) {
-          user.google = profile.id;
+          user.google.id = profile.id;
+          user.google.link = profile._json.link;
           user.tokens.push({ kind: 'google', accessToken: accessToken, refreshToken:refreshToken, expires_in:params.expires_in });
           user.profile.name = user.profile.name || profile.displayName;
           user.profile.gender = user.profile.gender || profile._json.gender;
@@ -213,7 +216,7 @@ passport.use(new GoogleStrategy(secrets.google, function(req, accessToken, refre
       }
     });
   } else {
-    User.findOne({ google: profile.id }, function(err, existingUser) {
+    User.findOne({ 'google.id': profile.id }, function(err, existingUser) {
       if (existingUser) return done(null, existingUser);
       User.findOne({ email: profile._json.email }, function(err, existingEmailUser) {
         if (existingEmailUser) {
@@ -222,7 +225,8 @@ passport.use(new GoogleStrategy(secrets.google, function(req, accessToken, refre
         } else {
           var user = new User();
           user.email = profile._json.email;
-          user.google = profile.id;
+          user.google.id = profile.id;
+          user.google.link = profile._json.link;
           user.tokens.push({ kind: 'google', accessToken: accessToken, refreshToken:refreshToken, expires_in:params.expires_in });
           user.profile.name = profile.displayName;
           user.profile.gender = profile._json.gender;
@@ -256,21 +260,21 @@ passport.use(new GoogleStrategy(secrets.google, function(req, accessToken, refre
 // ));
 
 
-passport.use(new VimeoStrategy(secrets.vimeo, function(req, accessToken, refreshToken, profile, done) {
-    
-    console.log(accessToken)
-console.log(refreshToken)
-console.log(profile)
-console.log(done)
+passport.use(new VimeoStrategy(secrets.vimeo, function(req, accessToken, refreshToken, profile, done) { 
+// console.log(accessToken)
+// console.log(refreshToken)
+// console.log(profile)
+// console.log(done)
 
   if (req.user) {
-    User.findOne({ vimeo: profile.id }, function(err, existingUser) {
+    User.findOne({ 'vimeo.id': profile.id }, function(err, existingUser) {
       if (existingUser) {
         req.flash('errors', { msg: 'There is already a Twitter account that belongs to you. Sign in with that account or delete it, then link it with your current account.' });
         done(err);
       } else {
         User.findById(req.user.id, function(err, user) {
-          user.vimeo = profile.id;
+          user.vimeo.id = profile.id;
+          user.vimeo.username = profile.username;
           user.tokens.push({ kind: 'vimeo', accessToken: accessToken });
           user.profile.name = user.profile.name || profile.displayName;
           user.profile.location = user.profile.location || profile._json.location;
@@ -283,7 +287,7 @@ console.log(done)
       }
     });
   } else {
-    User.findOne({ vimeo: profile.id }, function(err, existingUser) {
+    User.findOne({ 'vimeo.id': profile.id }, function(err, existingUser) {
       if (existingUser) return done(null, existingUser);
       var user = new User();
       //https://stackoverflow.com/questions/14864827/using-everyauth-passport-js-to-authenticate-with-twitter-whilst-asking-for-usern
@@ -291,7 +295,8 @@ console.log(done)
       // But a person’s twitter username is guaranteed to be unique
       // so we can "fake" a vimeo email address as follows:
       //user.email = profile.username + "@vimeo.com";
-      user.vimeo = profile.id;
+      user.vimeo.id = profile.id;
+      user.vimeo.username = profile.username;
       user.tokens.push({ kind: 'vimeo', accessToken: accessToken });
       user.profile.name = profile.displayName;
       user.profile.location = profile._json.location;

@@ -47,6 +47,11 @@ exports.getYoutube = function(req, res, callback) {
             }, function (err, data) {
                 if(err) console.log(err);
 
+                var channelId = data.items[0].id;
+                User.findOneAndUpdate({ _id: req.user.id },{ 'google.channel': channelId },function(err){
+                    if(err) console.log(err)
+                });
+
                 var uploadsId = data.items[0].contentDetails.relatedPlaylists.uploads;
                 console.log("uploadsId " + uploadsId)
 

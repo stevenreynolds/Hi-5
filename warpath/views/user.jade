@@ -12,11 +12,23 @@ block content
         if user.profile.picture
           img.profile-picture(src='#{user.profile.picture}')
         else
-          img.profile-picture(src='#{user.gravatar(100)}')
+          img.profile-picture(src='#{user.gravatar(110)}')
 
         img.profile-map(src="http://api.tiles.mapbox.com/v3/warpath.ik58n87j/pin-s+cc4422(#{user.profile.geocode.lon},#{user.profile.geocode.lat},3)/#{user.profile.geocode.lon},#{user.profile.geocode.lat},1/200x100.png")
 
-        h1 #{user.profile.name}
+        h1 #{user.profile.name} 
+        .social-icons
+          if user.email
+            i.fa.fa-envelope(href='#')
+          if user.vimeo && user.vimeo.username 
+            a.fa.fa-vimeo-square(target="_blank", href='https://vimeo.com/#{user.vimeo.username}')
+          if user.instagram && user.instagram.username 
+            a.fa.fa-instagram(target="_blank", href='https://instagram.com/#{user.instagram.username}')
+          if user.google && user.google.channel 
+            a.fa.fa-youtube(target="_blank", href='https://youtube.com/channel/#{user.google.channel}')
+
+          .clearfix
+        br
         p.profile-infos #{user.profile.age} ans - #{user.profile.city} - #{user.profile.country}
 
         .level 
@@ -56,6 +68,21 @@ block content
                         button.active.btn-water Eau
 
             .clearfix
+      
+
+    #myModal.modal.fade(tabindex='-1', role='dialog', aria-labelledby='myModalLabel', aria-hidden='true')
+      .modal-dialog
+        .modal-content
+          .modal-header
+            button.close(type='button', data-dismiss='modal')
+              span(aria-hidden='true') ×
+              span.sr-only Close
+            h4#myModalLabel.modal-title Modal title
+          .modal-body
+            | ...
+          .modal-footer
+            button.btn.btn-default(type='button', data-dismiss='modal') Close
+            button.btn.btn-primary(type='button') Save changes
 
     script.
       $('.shareme').sharrre({

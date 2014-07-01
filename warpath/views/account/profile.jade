@@ -78,30 +78,30 @@ block content
   .page-header
     h3 Les comptes connectés
 
-  if user.google
-    p: a.text-danger(href='/account/unlink/google') Déconnecter son compte Google
+  if user.google && user.google.id
+    p: a.text-danger(href='/account/unlink/google') Déconnecter mon compte Google
   else
-    p: a(href='/auth/google') Connecter son compte Google
+    p: a(href='/auth/google') Connecter mon compte Google
 
   //- if user.facebook
-  //-   p: a.text-danger(href='/account/unlink/facebook') Déconnecter son compte Facebook
+  //-   p: a.text-danger(href='/account/unlink/facebook') Déconnecter mon compte Facebook
   //- else
-  //-   p: a(href='/auth/facebook') Connecter son compte Facebook
+  //-   p: a(href='/auth/facebook') Connecter mon compte Facebook
 
   //- if user.twitter
-  //-   p: a.text-danger(href='/account/unlink/twitter') Déconnecter son compte Twitter
+  //-   p: a.text-danger(href='/account/unlink/twitter') Déconnecter mon compte Twitter
   //- else
-  //-   p: a(href='/auth/twitter') Connecter son compte Twitter
+  //-   p: a(href='/auth/twitter') Connecter mon compte Twitter
 
-  if user.vimeo
-    p: a.text-danger(href='/account/unlink/vimeo') Déconnecter son compte Vimeo
+  if user.vimeo && user.vimeo.id
+    p: a.text-danger(href='/account/unlink/vimeo') Déconnecter mon compte Vimeo
   else
-    p: a(href='/auth/vimeo') Connecter son compte Vimeo
+    p: a(href='/auth/vimeo') Connecter mon compte Vimeo
 
-  if user.instagram
-    p: a.text-danger(href='/account/unlink/instagram') Déconnecter son compte Instagram
+  if user.instagram && user.instagram.id
+    p: a.text-danger(href='/account/unlink/instagram') Déconnecter mon compte Instagram
   else
-    p: a(href='/auth/instagram') Connecter son compte Instagram
+    p: a(href='/auth/instagram') Connecter mon compte Instagram
 
 
   .page-header

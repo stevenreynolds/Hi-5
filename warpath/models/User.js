@@ -15,9 +15,21 @@ var userSchema = new mongoose.Schema({
 
   facebook    : String,
   twitter     : String,
-  google      : String,
-  vimeo       : String,
-  instagram   : String,
+  
+  google: {
+    id        : String,
+    username  : String,
+    channel   : String
+  },
+  instagram: {
+    id        : String,
+    username  : String
+  },
+  vimeo: {
+    id        : String,
+    username  : String
+  },
+
   tokens      : Array,
 
   profile: {
