@@ -6,7 +6,7 @@ var passport = require('passport');
 var User = require('../models/User');
 var Video = require('../models/Video');
 var secrets = require('../config/secrets');
-
+var request = require('request');
 var moment = require('moment');
 
 /**
@@ -14,46 +14,164 @@ var moment = require('moment');
  * User page.
  */
 
+function calculateAge (birthDate) {
+    birthDate = new Date(birthDate);
+    otherDate = new Date();
+
+    var years = (otherDate.getFullYear() - birthDate.getFullYear());
+
+    if (otherDate.getMonth() < birthDate.getMonth() || 
+        otherDate.getMonth() == birthDate.getMonth() && otherDate.getDate() < birthDate.getDate()) {
+        years--;
+    }
+
+    return years;
+}
+
+
 exports.getUser = function(req, res) {
   var slug = req.params.slug;
+  if(!slug) res.send('No SLug')
 
-  User
-    .findOne({ 'profile.slug': slug })
-    //.findOne({'_id': {'$regex': slug} })
-    .lean() //Very Important !
-    .populate('videos')
-    .populate('videos._video_data')
-    .exec(function (err, profile) {
-      if (err) console.log(err);
+  async.waterfall([
+      function(callback){
+          User
+            .findOne({ 'profile.slug': slug },{ tokens: 0 })
+            .lean()
+            .exec(function (err, profile) {
+              if (err) callback(err);
 
-      console.log('PPPPPPPPPPPPPPPROFILEEEEEEEEEE')
-      console.log(profile)
-      console.log('PPPPPPPPPPPPPPPROFILEEEEEEEEEE')
+              profile.profile.age = calculateAge(profile.profile.birthdate);
 
-      if(profile.videos.length > 0){
+              console.log('PPPPPPPPPPPPPPPROFILEEEEEEEEEE')
+              console.log(profile)
+              console.log('PPPPPPPPPPPPPPPROFILEEEEEEEEEE')
 
-        Video
-          //.findOne({ _id: videoID })
-          //not perfect but collision between vimeo id and youtube id will be rare like 1 in 1 billion
-          .find({'_id': {'$in': profile.videos } })
-          .lean() //Very Important !
-          .populate('_video_data')
-          .limit(4)
-          .exec(function (err, video) {
-            if (err) console.log(err);
-            console.log(video)
+              callback(null, profile);
 
-          });
+            });
+      },
+      function(profile, callback){
 
+          var adress = encodeURIComponent(profile.profile.city + ' ' + profile.profile.country);
+          var geocode_url = "http://api.tiles.mapbox.com/v3/warpath.ik58n87j/geocode/" + adress + ".json";
+
+          console.log(geocode_url)
+
+          request(geocode_url, function (err, response, body) {
+            if (!err && response.statusCode == 200) {
+              body = JSON.parse(body)
+              console.log(body.results)
+
+              profile.profile.geocode = body.results[0][0];
+
+              callback(null, profile);
+
+            } else {
+              callback(err);
+            }
+          })
+      },
+      function(profile, callback){
+
+        if(profile.videos.length > 0){
+
+          Video
+            //.findOne({ _id: videoID })
+            //not perfect but collision between vimeo id and youtube id will be rare like 1 in 1 billion
+            .find({'_id': {'$in': profile.videos } })
+            .lean() //Very Important !
+            .populate('_video_data')
+            .limit(4)
+            .exec(function (err, videos) {
+              if (err) callback(err)
+              console.log(videos)
+
+              var vids = [];
+
+              _(videos).forEach(function(video){
+
+                      var video_data = video._video_data;
+
+                      if(video.platform == 'youtube'){
+                        var ytDate = video_data.snippet.publishedAt;
+                        ytDate = ytDate.substr(0, 11);
+                        
+                        var date = moment(ytDate);
+                        date = date.format('DD MMM YYYY');
+
+                        var likes = video_data.statistics.likeCount;
+                        var views = video_data.statistics.viewCount;
+
+                        var temp = video._id.split("_");
+                        var id = temp[1];
+
+                        var video = {
+                              id:           id
+                            , platform:     'youtube'
+                            , link:         'http://youtu.be/' + video.id
+                            , title:        video_data.snippet.title
+                            , description:  video_data.snippet.description
+                            , image:        'http://img.youtube.com/vi/' + video.id + '/default.jpg'
+                            , _creator:     video._creator
+                            , location:     video.location
+                            , likes:        likes
+                            , views:        views
+                            , date:         date
+                        }
+
+                        vids.push(video);
+                      }
+
+                      if(video.platform == 'vimeo'){
+                        console.log(video_data.created_time)
+                        var date = moment(video_data.created_time)
+                        date = date.format('DD MMM YYYY');
+
+                        var likes = video_data.stats.likes;
+                        var views = video_data.stats.plays;
+
+                        var videoID = video._video_data.uri.replace('/videos/', '');
+
+                        var video = {
+                              id:           videoID
+                            , platform:     'vimeo'
+                            , link:         video_data.link
+                            , title:        video_data.name
+                            , description:  video_data.description
+                            , image:        video_data.pictures[5].link
+                            , _creator:     video._creator
+                            , location:     video.location
+                            , likes:        likes
+                            , views:        views
+                            , date:         date
+                        }
+
+                        vids.push(video);
+                      }
+
+                  });
+
+                  callback(null, profile, vids);
+                
+            });
+
+        }
+          
       }
-      
-  
+  ], function (err, profile, vids) {
+
+      if(err) console.log(err)
+
+      res.render('user', {
+        title: slug,
+        user: profile,
+        videos: vids
+      });
+
+     // result now equals 'done'    
   });
 
-  res.render('user', {
-    title: slug,
-    data: ''
-  });
 };
 
 /**
