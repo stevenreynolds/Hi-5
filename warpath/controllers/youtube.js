@@ -10,7 +10,7 @@ var commentSchema = require('../models/Comment');
 var videoSchema = require('../models/Video');
 var videodataSchema = require('../models/VideoData');
 
-exports.getYoutube = function(callback) {
+exports.getYoutube = function(req, res, callback) {
 
     var token = _.find(req.user.tokens, { kind: 'google' });
 
@@ -28,13 +28,10 @@ exports.getYoutube = function(callback) {
         }
         else {
 
-            User.findById(req.user.id, function(err, user) {
-              user.tokens.push({ kind: 'google', accessToken: newToken, refreshToken:token.refreshToken, expires_in:3600 });
-              
-              user.save(function(err) {
-                 if(err) console.log(err);
-              });
-           });
+            var saveToken = { kind: 'google', accessToken: newToken, refreshToken:token.refreshToken, expires_in:3600 };
+            User.update({ _id: req.user.id, 'tokens.kind': 'google' }, { 'tokens.$': saveToken }, function(err){
+                if(err) console.log(err)
+            });
         
             var videos = [];
 
@@ -86,6 +83,8 @@ exports.getYoutube = function(callback) {
 
                                 var VideoData = mongoose.model('VideoData', videodataSchema);
                                 var vd = new VideoData(data);
+                                vd._id          = 'youtube_' + videoId;
+                                vd._video       = 'youtube_' + videoId;
 
                                 vd.save(function (err) {
                                   if(err) console.log(err)
@@ -116,8 +115,6 @@ exports.getYoutube = function(callback) {
 
         }
     });
-
-
 
     // https://developers.google.com/youtube/v3/docs/videos/list
     // id,snippet,contentDetails,fileDetails,player,processingDetails,recordingDetails,statistics,status,suggestions,topicDetails

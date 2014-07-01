@@ -4,7 +4,177 @@ var crypto = require('crypto');
 var nodemailer = require('nodemailer');
 var passport = require('passport');
 var User = require('../models/User');
+var Video = require('../models/Video');
 var secrets = require('../config/secrets');
+var request = require('request');
+var moment = require('moment');
+
+/**
+ * GET /user/:slug
+ * User page.
+ */
+
+function calculateAge (birthDate) {
+    birthDate = new Date(birthDate);
+    otherDate = new Date();
+
+    var years = (otherDate.getFullYear() - birthDate.getFullYear());
+
+    if (otherDate.getMonth() < birthDate.getMonth() || 
+        otherDate.getMonth() == birthDate.getMonth() && otherDate.getDate() < birthDate.getDate()) {
+        years--;
+    }
+
+    return years;
+}
+
+
+exports.getUser = function(req, res) {
+  var slug = req.params.slug;
+  if(!slug) res.send('No SLug')
+
+  async.waterfall([
+      function(callback){
+          User
+            .findOne({ 'profile.slug': slug },{ tokens: 0 })
+            .lean()
+            .exec(function (err, profile) {
+              if (err) callback(err);
+
+              profile.profile.age = calculateAge(profile.profile.birthdate);
+
+              console.log('PPPPPPPPPPPPPPPROFILEEEEEEEEEE')
+              console.log(profile)
+              console.log('PPPPPPPPPPPPPPPROFILEEEEEEEEEE')
+
+              callback(null, profile);
+
+            });
+      },
+      function(profile, callback){
+
+          var adress = encodeURIComponent(profile.profile.city + ' ' + profile.profile.country);
+          var geocode_url = "http://api.tiles.mapbox.com/v3/warpath.ik58n87j/geocode/" + adress + ".json";
+
+          console.log(geocode_url)
+
+          request(geocode_url, function (err, response, body) {
+            if (!err && response.statusCode == 200) {
+              body = JSON.parse(body)
+              console.log(body.results)
+
+              profile.profile.geocode = body.results[0][0];
+
+              callback(null, profile);
+
+            } else {
+              callback(err);
+            }
+          })
+      },
+      function(profile, callback){
+
+        if(profile.videos.length > 0){
+
+          Video
+            //.findOne({ _id: videoID })
+            //not perfect but collision between vimeo id and youtube id will be rare like 1 in 1 billion
+            .find({'_id': {'$in': profile.videos } })
+            .lean() //Very Important !
+            .populate('_video_data')
+            .limit(4)
+            .exec(function (err, videos) {
+              if (err) callback(err)
+              console.log(videos)
+
+              var vids = [];
+
+              _(videos).forEach(function(video){
+
+                      var video_data = video._video_data;
+
+                      if(video.platform == 'youtube'){
+                        var ytDate = video_data.snippet.publishedAt;
+                        ytDate = ytDate.substr(0, 11);
+                        
+                        var date = moment(ytDate);
+                        date = date.format('DD MMM YYYY');
+
+                        var likes = video_data.statistics.likeCount;
+                        var views = video_data.statistics.viewCount;
+
+                        var temp = video._id.split("_");
+                        var id = temp[1];
+
+                        var video = {
+                              id:           id
+                            , platform:     'youtube'
+                            , type:         video.type
+                            , link:         '/video/' + id
+                            , title:        video_data.snippet.title
+                            , description:  video_data.snippet.description
+                            , image:        'http://img.youtube.com/vi/' + id + '/mqdefault.jpg'
+                            , _creator:     video._creator
+                            , location:     video.location
+                            , likes:        likes
+                            , views:        views
+                            , date:         date
+                        }
+
+                        vids.push(video);
+                      }
+
+                      if(video.platform == 'vimeo'){
+                        console.log(video_data.created_time)
+                        var date = moment(video_data.created_time)
+                        date = date.format('DD MMM YYYY');
+
+                        var likes = video_data.stats.likes;
+                        var views = video_data.stats.plays;
+
+                        var videoID = video._video_data.uri.replace('/videos/', '');
+
+                        var video = {
+                              id:           videoID
+                            , platform:     'vimeo'
+                            , type:         video.type
+                            , link:         '/video/' + videoID
+                            , title:        video_data.name
+                            , description:  video_data.description
+                            , image:        video_data.pictures[5].link
+                            , _creator:     video._creator
+                            , location:     video.location
+                            , likes:        likes
+                            , views:        views
+                            , date:         date
+                        }
+
+                        vids.push(video);
+                      }
+
+                  });
+
+                  callback(null, profile, vids);
+                
+            });
+
+        }
+          
+      }
+  ], function (err, profile, vids) {
+
+      if(err) console.log(err)
+
+      res.render('user', {
+        title: slug,
+        user: profile,
+        videos: vids
+      });
+
+     // result now equals 'done'    
+  });
+
+};
 
 /**
  * GET /login
@@ -82,7 +252,12 @@ exports.getSignup = function(req, res) {
 exports.postSignup = function(req, res, next) {
   req.assert('email', 'Email is not valid').isEmail();
   req.assert('password', 'Password must be at least 4 characters long').len(4);
-  req.assert('confirmPassword', 'Passwords do not match').equals(req.body.password);
+  // req.assert('confirmPassword', 'Passwords do not match').equals(req.body.password);
+
+  req.assert('city', 'City is not valid').notEmpty();
+  req.assert('country', 'Country is not valid').notEmpty();
+  req.assert('birthdate', 'BirthDate is not valid').notEmpty();
+  req.assert('name', 'Donne ton blaze !').notEmpty();
 
   var errors = req.validationErrors();
 
@@ -91,14 +266,24 @@ exports.postSignup = function(req, res, next) {
     return res.redirect('/signup');
   }
 
+  var birthDate = moment(req.body.birthdate);
+
   var user = new User({
-    email: req.body.email,
-    password: req.body.password
+    email:              req.body.email,
+    password:           req.body.password,
+
+    'profile.name'      : req.body.name,
+    'profile.city'      : req.body.city,
+    'profile.country'   : req.body.country,
+    'profile.motivation': req.body.motivation,
+    'profile.company'   : req.body.company,
+    'profile.birthdate' : birthDate,
+
   });
 
   User.findOne({ email: req.body.email }, function(err, existingUser) {
     if (existingUser) {
-      req.flash('errors', { msg: 'Account with that email address already exists.' });
+      req.flash('errors', { msg: 'On a déjà un gars avec cette adresse email !' });
       return res.redirect('/signup');
     }
     user.save(function(err) {
@@ -117,9 +302,18 @@ exports.postSignup = function(req, res, next) {
  */
 
 exports.getAccount = function(req, res) {
+
+  var date = ''
+  if(req.user.profile.birthdate) {
+    date = moment(req.user.profile.birthdate);
+    date = date.format('YYYY-MM-DD');
+  }
+
   res.render('account/profile', {
-    title: 'Account Management'
+    title: 'Account Management',
+    birthdate: date
   });
+
 };
 
 /**
@@ -128,13 +322,31 @@ exports.getAccount = function(req, res) {
  */
 
 exports.postUpdateProfile = function(req, res, next) {
+  req.assert('email', 'Email is not valid').isEmail();
+  req.assert('city', 'City is not valid').notEmpty();
+  req.assert('country', 'Country is not valid').notEmpty();
+  req.assert('birthdate', 'BirthDate is not valid').notEmpty();
+  req.assert('name', 'Donne ton blaze !').notEmpty();
+
+  var errors = req.validationErrors();
+
+  if (errors) {
+    req.flash('errors', errors);
+    return res.redirect('/account');
+  }
+
+  var birthDate = moment(req.body.birthdate);
+
   User.findById(req.user.id, function(err, user) {
     if (err) return next(err);
     user.email = req.body.email || '';
     user.profile.name = req.body.name || '';
     user.profile.gender = req.body.gender || '';
     user.profile.location = req.body.location || '';
-    user.profile.website = req.body.website || '';
+    user.profile.city = req.body.city || '';
+    user.profile.country = req.body.country || '';
+    user.profile.birthdate = birthDate || '';
+    user.updated = new Date;
 
     user.save(function(err) {
       if (err) return next(err);
@@ -152,7 +364,7 @@ exports.postUpdateProfile = function(req, res, next) {
 
 exports.postUpdatePassword = function(req, res, next) {
   req.assert('password', 'Password must be at least 4 characters long').len(4);
-  req.assert('confirmPassword', 'Passwords do not match').equals(req.body.password);
+  // req.assert('confirmPassword', 'Passwords do not match').equals(req.body.password);
 
   var errors = req.validationErrors();
 

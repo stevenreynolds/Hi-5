@@ -1,19 +1,35 @@
 extends layout
 
+block prepend head
+  != js('hopscotch.min')
+
 block append head
   script(src='https://api.tiles.mapbox.com/mapbox.js/v1.6.4/mapbox.js')
   link(rel='stylesheet', href='https://api.tiles.mapbox.com/mapbox.js/v1.6.4/mapbox.css')
+
   style.
-    #map { position:absolute; top:40px; bottom:0; width:100%; height:100%}
+    #map { 
+      position:absolute; 
+      top:0; 
+      bottom:0; 
+      width:100%; 
+      height:100%
+    }
+    .leaflet-top {
+      top:100px;  
+    }
     .filter-ui {
-      background:#fff;
       position:absolute;
-      top:50px;
+      top:100px;
       right:10px;
       z-index:100;
       padding:10px;
       border-radius:3px;
       color:black;
+      max-width:150px;
+    }
+    .filter-ui .btn {
+      min-width:135px;
     }
 
 block container
@@ -21,7 +37,39 @@ block container
     include partials/flash
     .row
       nav(id='filters' class='filter-ui')
+        div
+          span.btn.btn-mountain Mountain
+          span.btn.btn-snow Snow
+          span.btn.btn-air Air
+          span.btn.btn-land Land
+          span.btn.btn-water Water
+
       div(id="map")
+    
+
+  script(type="text/javascript").
+    // Define the tour!
+    var tour = {
+    id: "hello-hopscotch",
+      steps: [
+        {
+          title: "Hello",
+          content: "This is the header of my page.",
+          target: ".navbar",
+          placement: "bottom"
+        },
+        {
+          title: "My content",
+          content: "Here is where I put my content.",
+          target: document.querySelector(".filter-ui"),
+          placement: "left"
+        }
+      ]
+    };
+
+    // Start the tour!
+    //hopscotch.startTour(tour);
+
 
   script(type="text/javascript").
     //https://www.mapbox.com/mapbox.js/example/v1.0.0/
@@ -30,39 +78,13 @@ block container
     var map = L.mapbox.map('map', 'warpath.ik58n87j', {
             minZoom: 3
         })
-            .addControl(L.mapbox.geocoderControl('warpath.ik58n87j'));
-      //.setView([39.12367, -76.81229], 9);
+        .addControl(L.mapbox.geocoderControl('warpath.ik58n87j'));
 
     var myLayer = L.mapbox.featureLayer().addTo(map);
 
     // The GeoJSON representing the two point features
-    var geojson = {
-        type: 'FeatureCollection',
-        features: [{
-            type: 'Feature',
-            properties: {
-                title: 'Washington, D.C.',
-                url: 'http://en.wikipedia.org/wiki/Washington,_D.C.',
-                type: 'air',
-            },
-            geometry: {
-                type: 'Point',
-                coordinates: [-77.03201, 38.90065]
-            }
-        },
-        {
-            type: 'Feature',
-            properties: {
-                title: 'Baltimore, MD',
-                url: 'http://en.wikipedia.org/wiki/Baltimore',
-                type: 'snow',
-            },
-            geometry: {
-                type: 'Point',
-                coordinates: [-76.60767, 39.28755]
-            }
-        }]
-    };
+    var geojson = !{geoJSON_videos};
+    console.log(geojson)
 
     // Set a custom icon on each marker based on feature properties.
     myLayer.on('layeradd', function(e) {
@@ -72,19 +94,46 @@ block container
         var json_icon = {
             "snow": {
                 "icon": {
-                    "iconUrl": "/img/astronaut2.png",
-                    "iconSize": [100, 100],
-                    "iconAnchor": [50, 50],
-                    "popupAnchor": [0, -55],
+                    "iconUrl": "/img/pins/snow.png",
+                    "iconSize": [32, 96],
+                    "iconAnchor": [8, 96],
+                    "popupAnchor": [8, -96],
                     "className": "dot"
                 }
             },
             "air": {
                 "icon": {
-                    "iconUrl": "/img/astronaut2.png",
-                    "iconSize": [10, 10],
-                    "iconAnchor": [50, 50],
-                    "popupAnchor": [0, -55],
+                    "iconUrl": "/img/pins/air.png",
+                    "iconSize": [32, 96],
+                    "iconAnchor": [8, 96],
+                    "popupAnchor": [8, -96],
+                    "className": "dot"
+                }
+            },
+            "land": {
+                "icon": {
+                    "iconUrl": "/img/pins/land.png",
+                    "iconSize": [32, 96],
+                    "iconAnchor": [8, 96],
+                    "popupAnchor": [8, -96],
+                    "className": "dot"
+                }
+            },
+            "mountain": {
+                "icon": {
+                    "iconUrl": "/img/pins/mountain.png",
+                    "iconSize": [32, 96],
+                    "iconAnchor": [8, 96],
+                    "popupAnchor": [8, -96],
+                    "className": "dot"
+                }
+            },
+            "water": {
+                "icon": {
+                    "iconUrl": "/img/pins/water.png",
+                    "iconSize": [32, 96],
+                    "iconAnchor": [8, 96],
+                    "popupAnchor": [8, -96],
                     "className": "dot"
                 }
             }
@@ -97,7 +146,7 @@ block container
     myLayer.setGeoJSON(geojson);
     myLayer.on('click', function(e) {
         e.layer.unbindPopup();
-        window.open(e.layer.feature.properties.url);
+        window.location.href = e.layer.feature.properties.url;
     });
 
 
@@ -105,36 +154,32 @@ block container
     // types. If you are doing this with another featureLayer, you should change
     // map.featureLayer to the variable you have assigned to your featureLayer.
     map.featureLayer.on('ready', function() {
-      var types = ['snow', 'air'];
 
-      var checkboxes = [];
-      // Create a filter interface.
-      for (var i = 0; i < types.length; i++) {
-        // Create an an input checkbox and label inside.
-        var item = filters.appendChild(document.createElement('div'));
-        var checkbox = item.appendChild(document.createElement('input'));
-        var label = item.appendChild(document.createElement('label'));
-        checkbox.type = 'checkbox';
-        checkbox.id = types[i];
-        checkbox.checked = true;
-        // create a label to the right of the checkbox with explanatory text
-        label.innerHTML = types[i];
-        label.setAttribute('for', types[i]);
-        // Whenever a person clicks on this checkbox, call the update().
-        checkbox.addEventListener('change', update);
-        checkboxes.push(checkbox);
-      }
+      var filters = $('.filter-ui .btn');
+      filters
+        .each(function(index, el){
+          $(el).data('state', 'active');
+        })
+        .on('click', function(){
+          
+          if ( $(this).data('state') == 'active' ) 
+            $(this).data('state', 'inactive').addClass('active');
+          else
+            $(this).data('state', 'active').removeClass('active');
+
+          update();
+        });
+
 
       // This function is called whenever someone clicks on a checkbox and changes
       // the selection of markers to be displayed.
       function update() {
         var enabled = {};
-        // Run through each checkbox and record whether it is checked. If it is,
-        // add it to the object of types to display, otherwise do not.
-        for (var i = 0; i < checkboxes.length; i++) {
-          if (checkboxes[i].checked) enabled[checkboxes[i].id] = true;
-        }
-
+        $('.filter-ui .btn')
+          .each(function(index, el){
+            if ($(el).data('state') == 'active') enabled[$(el).text().toLowerCase()] = true;
+          });
+        
         myLayer.setFilter(function(feature) {
           return (feature.properties['type'] in enabled);
         });

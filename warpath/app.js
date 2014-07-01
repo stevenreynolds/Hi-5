@@ -25,20 +25,24 @@ var connectAssets = require('connect-assets');
  * Controllers (route handlers).
  */
 
-var homeController = require('./controllers/home');
-var userController = require('./controllers/user');
-var apiController = require('./controllers/api');
+var homeController    = require('./controllers/home');
+var userController    = require('./controllers/user');
+var apiController     = require('./controllers/api');
 var contactController = require('./controllers/contact');
-var searchController = require('./controllers/search');
+var pageController    = require('./controllers/page');
 
-var importController = require('./controllers/import');
+var videoController   = require('./controllers/video');
+var searchController  = require('./controllers/search');
+
+var importController  = require('./controllers/import');
 var youtubeController = require('./controllers/youtube');
-var vimeoController = require('./controllers/vimeo');
+var vimeoController   = require('./controllers/vimeo');
+
+var commentsController   = require('./controllers/comments');
 
 /**
  * API keys and Passport configuration.
  */
-
 var secrets = require('./config/secrets');
 var passportConf = require('./config/passport');
 
@@ -65,7 +69,7 @@ var week = day * 7;
  * CSRF whitelist.
  */
 
-var csrfExclude = ['/url1', '/url2'];
+var csrfExclude = ['/comments'];
 
 /**
  * Express configuration.
@@ -118,7 +122,7 @@ app.use(express.static(path.join(__dirname, 'public'), { maxAge: week }));
 
 app.use(function(req, res, next) {
   //If Email is not set force redirect to the page to complete the profile
-  if (req.url != '/account/complete-profile' && !req.user.email) {
+  if (req.url != '/account/complete-profile' && req.user && !req.user.email) {
       req.flash('errors', { msg: 'Hey your email is empty !' });
       return res.redirect('/account/complete-profile');
   }
@@ -140,6 +144,8 @@ app.post('/signup', userController.postSignup);
 app.get('/contact', contactController.getContact);
 app.post('/contact', contactController.postContact);
 
+app.get('/legal-notice', pageController.legalNotice);
+
 app.get('/search', searchController.search);
 
 app.get('/account', passportConf.isAuthenticated, userController.getAccount);
@@ -156,8 +162,15 @@ app.post('/account/import_complete', passportConf.isAuthenticated, importControl
 
 app.get('/account/import/vimeo', passportConf.isAuthenticated, importController.importVimeo);
 app.post('/account/import/vimeo', passportConf.isAuthenticated, importController.importSelected);
+app.get('/account/import/youtube', passportConf.isAuthenticated, importController.importYoutube);
+app.post('/account/import/youtube', passportConf.isAuthenticated, importController.importSelected);
 
-app.get('/account/import/google', passportConf.isAuthenticated, importController.importYoutube);
+app.get('/user/:slug', userController.getUser);
+
+app.get('/video/:id', videoController.getVideo);
+
+app.get('/comments/:id', commentsController.getComments);
+app.post('/comments', commentsController.addComment);
 
 
 //app.get('/import', youtubeController.getYoutube);
@@ -233,6 +246,12 @@ app.get('/auth/vimeo/callback', passport.authenticate('vimeo', { failureRedirect
  */
 
 app.use(errorHandler());
+
+
+//The 404 Route (ALWAYS Keep this as the last route)
+app.get('*', function(req, res){
+  res.send('what???', 404);
+});
 
 /**
  * Start Express server.

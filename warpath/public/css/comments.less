@@ -1,0 +1,75 @@
+.timeline {
+    border-bottom: 1px solid #000;
+    height: 11px;
+    margin: 10px 0 20px;
+    z-index: 5;
+}
+
+.comment {
+    position: absolute;
+    background-color: #ffefd5;
+    z-index: 199;
+    top: 0; 
+    left: 0;
+    padding: 4px 6px 2px 6px;
+    font-size: 12px;
+    font-family: Arial;
+    line-height: 17px;
+    text-overflow: ellipsis;
+    max-width: 250px; 
+    display: none;
+
+    strong {
+      font-weight: bold;
+      color: #2894e6;
+  }
+}
+
+.avatar {
+  position: absolute;
+  display: block;
+  width: 20px; height: 20px;
+  background-size: 20px;
+  &:hover div {
+    display: block;
+  }
+  div {
+    display: none;
+    margin-top: 32px;
+    min-width: 130px;
+    max-width: 200px;
+
+    background: #333;
+    min-height: 40px;
+    // border: 2px solid #333;
+    margin-left: -10px;
+    padding: 3px 10px;
+
+    color:#fff;
+
+    &:before {
+      border-width: 0 12px 12px;
+      content: "";
+      position: absolute;
+      top: 22px;
+      left: -2px;
+      border-style: solid;
+      border-color: #333 transparent;
+      display: block;
+      width: 0;
+    }
+
+
+    span{
+      font-size:13px;
+      text-decoration: none;
+    }
+  } 
+}
+
+// .avatar:hover {
+//     width: 40px; height: 40px;
+//     cursor: pointer;
+//     z-index: 99;
+//     background-size: 40px;
+// }

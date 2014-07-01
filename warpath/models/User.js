@@ -1,11 +1,11 @@
 var mongoose      = require('mongoose')
-    , slug        = require('slug')
     , Schema      = mongoose.Schema;
 
 var bcrypt = require('bcrypt-nodejs');
 var crypto = require('crypto');
 var Video = require('./Video');
 
+var slug = require('slug');
 
 var userSchema = new mongoose.Schema({
   email       : { type: String, unique: true, lowercase: true },
@@ -24,50 +24,45 @@ var userSchema = new mongoose.Schema({
     gender    : { type: String, default: '' },
     location  : { type: String, default: '' },
     website   : { type: String, default: '' },
-    picture   : { type: String, default: '' }
+    picture   : { type: String, default: '' },
+
+    city      : { type: String, default: '' },
+    country   : { type: String, default: '' },
+    birthdate : { type: Date,   default: Date.now },
+    motivation: { type: Boolean, default: 0 },
+    company   : { type: String, default: '' },
   },
 
   videos: [{ type: String, ref: 'Video' }],
 
   resetPasswordToken    : String,
-  resetPasswordExpires  : Date
+  resetPasswordExpires  : Date,
+
+  updated: { type: Date, default: Date.now },
+  created: { type: Date, default: Date.now }
 });
 
 /**
  * Hash the password for security.
  * "Pre" is a Mongoose middleware that executes before each user.save() call.
  */
-var TheUser = mongoose.model('User', userSchema);
 
 userSchema.pre('save', function(next) {
   var user = this;
 
-  //Generate Slug
-  if(!user.profile.slug) {
-    TheUser.count({ 'profile.slug': new RegExp('^' + slug(user.profile.name) + '$', 'i') }, function(err, count) {
-      if (err) console.log(err);
-      console.log(count)
-      if(count == 0)
-        user.profile.slug = slug(user.profile.name);
-      else
-        user.profile.slug = slug(user.profile.name + (count-1) );
+  user.generateSlug();
 
+  if (!user.isModified('password')) return next();
 
-        if (!user.isModified('password')) return next();
+  bcrypt.genSalt(5, function(err, salt) {
+    if (err) return next(err);
 
-        bcrypt.genSalt(5, function(err, salt) {
-          if (err) return next(err);
-
-          bcrypt.hash(user.password, salt, null, function(err, hash) {
-            if (err) return next(err);
-            user.password = hash;
-            next();
-          });
-        });
-
-    }); 
-  }
-
+    bcrypt.hash(user.password, salt, null, function(err, hash) {
+      if (err) return next(err);
+      user.password = hash;
+      next();
+    });
+  });
 });
 
 /**
@@ -96,6 +91,33 @@ userSchema.methods.gravatar = function(size) {
 
   var md5 = crypto.createHash('md5').update(this.email).digest('hex');
   return 'https://gravatar.com/avatar/' + md5 + '?s=' + size + '&d=retro';
+};
+
+userSchema.methods.generateSlug = function() {
+  var user = this;
+  if (user.profile && user.profile.name && !user.profile.slug) {
+
+    var slugname = slug(user.profile.name);
+    mongoose.model('User', userSchema)
+      .count({ 'profile.slug': new RegExp('^' + slugname + '$', 'i') })
+      .lean()
+      .exec(function(err, count) {
+      if (err) console.log(err);
+      
+      console.log(slugname)
+      console.log(count)
+
+      if(count == 0)
+        user.profile.slug = slugname;
+      else
+        user.profile.slug = slugname + (count-1)
+
+      user.save();
+
+    });
+
+  }
+
 };
 
 module.exports = mongoose.model('User', userSchema);

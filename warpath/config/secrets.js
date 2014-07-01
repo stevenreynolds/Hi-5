@@ -16,9 +16,9 @@
  * refer to https://help.github.com/articles/remove-sensitive-data
 */
 
-module.exports = {
+var development = {
 
-  db: process.env.MONGODB|| 'mongodb://localhost:27017/test',
+  db: process.env.MONGODB || 'mongodb://localhost:27017/test',
 
   sessionSecret: process.env.SESSION_SECRET || '!b17e$@^shg#+o$34c32x-lo^!%z02_&ffmj-fcpce8pc%@&@^',
 
@@ -66,11 +66,11 @@ module.exports = {
   },
 
   vimeo: {
-    consumerKey: process.env.VIMEO_ID || '72b9d5149a45dd2e174d1fc1a5bbe579f162f6bf',
-    consumerSecret: process.env.VIMEO_SECRET || '7b40f1ae77cf4e41c823c378f10d11190267e48b',
+    consumerKey: process.env.VIMEO_ID || '3d350c9960a700cdfb619f5d77fe5a7fb29b281d',
+    consumerSecret: process.env.VIMEO_SECRET || '9279513670fb60061d48fa50e4228b36b3fde4c3',
 
-    clientID: process.env.VIMEO_ID || '72b9d5149a45dd2e174d1fc1a5bbe579f162f6bf',
-    clientSecret: process.env.VIMEO_SECRET || '7b40f1ae77cf4e41c823c378f10d11190267e48b',
+    clientID: process.env.VIMEO_ID || '3d350c9960a700cdfb619f5d77fe5a7fb29b281d',
+    clientSecret: process.env.VIMEO_SECRET || '9279513670fb60061d48fa50e4228b36b3fde4c3',
 
     redirectUrl: '/auth/vimeo/callback',
     callbackURL: '/auth/vimeo/callback',
@@ -87,31 +87,11 @@ module.exports = {
 };
 
 
+var beta = {
 
+  db: process.env.MONGODB || 'mongodb://localhost:27017/test',
 
-/**
- * IMPORTANT * IMPORTANT * IMPORTANT * IMPORTANT * IMPORTANT * IMPORTANT *
- *
- * You should never commit this file to a public repository on GitHub!
- * All public code on GitHub can be searched, that means anyone can see your
- * uploaded secrets.js file.
- *
- * I did it for your convenience using "throw away" credentials so that
- * all features could work out of the box.
- *
- * Untrack secrets.js before pushing your code to public GitHub repository:
- *
- * git rm --cached config/secrets.js
- *
- * If you have already commited this file to GitHub with your keys, then
- * refer to https://help.github.com/articles/remove-sensitive-data
-*
-
-module.exports = {
-
-  db: process.env.MONGODB|| 'mongodb://localhost:27017/test',
-
-  sessionSecret: process.env.SESSION_SECRET || 'Your Session Secret goes here',
+  sessionSecret: process.env.SESSION_SECRET || '!b17e$@^shg#+o$34c32x-lo^!%z02_&ffmj-fcpce8pc%@&@^',
 
   mailgun: {
     user: process.env.MAILGUN_USER || 'postmaster@sandbox697fcddc09814c6b83718b9fd5d4e5dc.mailgun.org',
@@ -128,87 +108,58 @@ module.exports = {
     password: process.env.SENDGRID_PASSWORD || 'hspassword00'
   },
 
-  nyt: {
-    key: process.env.NYT_KEY || '9548be6f3a64163d23e1539f067fcabd:5:68537648'
-  },
-
-  lastfm: {
-    api_key: process.env.LASTFM_KEY || 'c8c0ea1c4a6b199b3429722512fbd17f',
-    secret: process.env.LASTFM_SECRET || 'is cb7857b8fba83f819ea46ca13681fe71'
-  },
-
   facebook: {
-    clientID: process.env.FACEBOOK_ID || '754220301289665',
-    clientSecret: process.env.FACEBOOK_SECRET || '41860e58c256a3d7ad8267d3c1939a4a',
-    callbackURL: '/auth/facebook/callback',
+    clientID: process.env.FACEBOOK_ID || '1444959329093692',
+    clientSecret: process.env.FACEBOOK_SECRET || '3d94ac73bfef0818fe3215e62ae66f57',
+    callbackURL: 'http://beta.wrpth.com/auth/facebook/callback',
     passReqToCallback: true
   },
 
   instagram: {
-    clientID: process.env.INSTAGRAM_ID || '9f5c39ab236a48e0aec354acb77eee9b',
-    clientSecret: process.env.INSTAGRAM_SECRET || '5920619aafe842128673e793a1c40028',
-    callbackURL: '/auth/instagram/callback',
-    passReqToCallback: true
-  },
-
-  github: {
-    clientID: process.env.GITHUB_ID || 'cb448b1d4f0c743a1e36',
-    clientSecret: process.env.GITHUB_SECRET || '815aa4606f476444691c5f1c16b9c70da6714dc6',
-    callbackURL: '/auth/github/callback',
+    clientID: process.env.INSTAGRAM_ID || 'f670b0b4f957496cbfe3a3feef3d5fe3',
+    clientSecret: process.env.INSTAGRAM_SECRET || 'ee857e4e2aa145a8b9e86a035543b2fc',
+    callbackURL: 'http://beta.wrpth.com/auth/instagram/callback',
     passReqToCallback: true
   },
 
   twitter: {
-    consumerKey: process.env.TWITTER_KEY || '6NNBDyJ2TavL407A3lWxPFKBI',
-    consumerSecret: process.env.TWITTER_SECRET  || 'ZHaYyK3DQCqv49Z9ofsYdqiUgeoICyh6uoBgFfu7OeYC7wTQKa',
-    callbackURL: '/auth/twitter/callback',
+    consumerKey: process.env.TWITTER_KEY || 'caK4z7QF8m01u5XUHRyqNVPJW',
+    consumerSecret: process.env.TWITTER_SECRET  || 'CJLMSYIBVXymXuV3hJYx8pfJrkfRDWGEldptbKAwBjtLnWktzr',
+    callbackURL: 'http://beta.wrpth.com/auth/twitter/callback',
     passReqToCallback: true
   },
 
   google: {
-    clientID: process.env.GOOGLE_ID || '828110519058.apps.googleusercontent.com',
-    clientSecret: process.env.GOOGLE_SECRET || 'JdZsIaWhUFIchmC1a_IZzOHb',
-    callbackURL: '/auth/google/callback',
+    clientID: process.env.GOOGLE_ID || '538310333639-u9qkn7ej4s9kv4fri3jrbsghpo69kjhn.apps.googleusercontent.com',
+    clientSecret: process.env.GOOGLE_SECRET || 'EqidctuY0D_m4m4hFGwfRFUk',
+    callbackURL: 'http://beta.wrpth.com/auth/google/callback',
     passReqToCallback: true
   },
 
-  linkedin: {
-    clientID: process.env.LINKEDIN_ID || '77chexmowru601',
-    clientSecret: process.env.LINKEDIN_SECRET || 'szdC8lN2s2SuMSy8',
-    callbackURL: '/auth/linkedin/callback',
-    scope: ['r_fullprofile', 'r_emailaddress', 'r_network'],
+  vimeo: {
+    consumerKey: process.env.VIMEO_ID || 'b8ee7e5bce433c38cfa2a5fdce394b28947f0a78',
+    consumerSecret: process.env.VIMEO_SECRET || '19f27b0df64c0bb53a3a619214688424501ea510',
+
+    clientID: process.env.VIMEO_ID || 'b8ee7e5bce433c38cfa2a5fdce394b28947f0a78',
+    clientSecret: process.env.VIMEO_SECRET || '19f27b0df64c0bb53a3a619214688424501ea510',
+
+    redirectUrl: 'http://beta.wrpth.com/auth/vimeo/callback',
+    callbackURL: 'http://beta.wrpth.com/auth/vimeo/callback',
     passReqToCallback: true
   },
 
-  steam: {
-    apiKey: process.env.STEAM_KEY || 'D1240DEF4D41D416FD291D0075B6ED3F'
+  foursquare: {
+    clientId: process.env.FOURSQUARE_ID || '2STROLSFBMZLAHG3IBA141EM2HGRF0IRIBB4KXMOGA2EH3JG',
+    clientSecret: process.env.FOURSQUARE_SECRET || 'UAABFAWTIHIUFBL0PDC3TDMSXJF2GTGWLD3BES1QHXKAIYQB',
+    redirectUrl: process.env.FOURSQUARE_REDIRECT_URL || 'http://localhost:3000/auth/foursquare/callback'
   },
 
-  twilio: {
-    sid: process.env.TWILIO_SID || 'AC6f0edc4c47becc6d0a952536fc9a6025',
-    token: process.env.TWILIO_TOKEN || 'a67170ff7afa2df3f4c7d97cd240d0f3'
-  },
+}
 
-  clockwork: {
-    apiKey: process.env.CLOCKWORK_KEY || '9ffb267f88df55762f74ba2f517a66dc8bedac5a'
-  },
-
-  stripe: {
-    apiKey: process.env.STRIPE_KEY || 'sk_test_BQokikJOvBiI2HlWgH4olfQ2'
-  },
-
-  tumblr: {
-    consumerKey: process.env.TUMBLR_KEY || 'FaXbGf5gkhswzDqSMYI42QCPYoHsu5MIDciAhTyYjehotQpJvM',
-    consumerSecret: process.env.TUMBLR_SECRET || 'QpCTs5IMMCsCImwdvFiqyGtIZwowF5o3UXonjPoNp4HVtJAL4o',
-    callbackURL: '/auth/tumblr/callback'
-  },
-
-
-
-  venmo: {
-    clientId: process.env.VENMO_ID || '1688',
-    clientSecret: process.env.VENMO_SECRET || 'uQXtNBa6KVphDLAEx8suEush3scX8grs',
-    redirectUrl: process.env.VENMO_REDIRECT_URL || 'http://localhost:3000/auth/venmo/callback'
-  }
-};
-*/
+console.log(process.env.NODE_ENV)
+switch(process.env.NODE_ENV){
+    case 'development': module.exports = development; break;
+    case 'production':  module.exports = beta;        break;
+    case 'beta':        module.exports = beta;        break;
+    default:            module.exports = development;
+}

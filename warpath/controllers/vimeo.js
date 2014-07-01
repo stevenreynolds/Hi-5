@@ -57,7 +57,6 @@ exports.getVimeo = function(req, res, callback) {
 
                             videos.push(body)
 
-
                             // var Video = mongoose.model('Video', videoSchema);
                             // var v = new Video();
                             
@@ -69,8 +68,9 @@ exports.getVimeo = function(req, res, callback) {
                             // });
 
                             var vd = new VideoData(body);
-
-                            vd._id = 'vimeo_' + videoId;
+                            vd._id          = 'vimeo_' + videoId;
+                            vd._video       = 'vimeo_' + videoId;
+                            
                             vd.save(function (err) {
                               if(err) console.log(err)
                             });

@@ -25,6 +25,7 @@ function onYouTubeIframeAPIReady() {
 
     if( $("#video").hasClass('youtube') ) {
         videoType = 'youtube';
+        console.log('Youtube reeeeeeady')
 
         player.video = new YT.Player('video', {
           height: '390',
@@ -110,10 +111,12 @@ function onPlayerReady() {
         getDurationInterval = setInterval(getDuration, 50);
         
         // the timeline element holds all the avatars
-        timeline = document.createElement("div");
-        timeline.id = "timeline";
-        timeline.className = "timeline";
-        timeline = container.insertBefore(timeline, iframe.nextSibling);
+        // timeline = document.createElement("div");
+        // timeline.id = "timeline";
+        // timeline.className = "timeline";
+        // timeline = container.insertBefore(timeline, iframe.nextSibling);
+
+        timeline = document.getElementById("timeline");
 
         // the comment element displays the author's name and the comment
         comment = document.createElement("div");
@@ -186,7 +189,6 @@ function getCurrentTime(callback) {
 // add an onclick event to the avatar, so we can seek to the referenced time
 $(document).on("click", ".avatar", function(e) {
     e.preventDefault();
-
     // get the comment to which this avatar is linked
     var c = comments[e.target.id.substr(6)];
     // move the video to the desired time

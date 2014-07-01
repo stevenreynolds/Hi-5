@@ -24,12 +24,12 @@
 // ## Settings for some of the most global styles.
 
 //** Background color for `<body>`.
-@body-bg:               #636B6B; //#2B3E50;
+@body-bg:               transparent; //#2B3E50;
 //** Global text color on `<body>`.
 @text-color:            #222C2B; //@gray-lighter;
 
 //** Global textual link color.
-@link-color:            @brand-primary;
+@link-color:            #000; //@brand-primary;
 //** Link hover color set via `darken()` function.
 @link-hover-color:      @link-color;
 
@@ -50,7 +50,7 @@
 @font-family-base:        'din_regularalternate', Arial, sans-serif;
 @font-family-headings:    'din_engschrift', Arial, sans-serif;
 
-@font-size-base:          15px;
+@font-size-base:          16px;
 @font-size-large:         ceil((@font-size-base * 1.25)); // ~18px
 @font-size-small:         ceil((@font-size-base * 0.85)); // ~12px
 
@@ -181,7 +181,7 @@
 //** Text color for `<input>`s
 @input-color:                    #fff; //@body-bg;
 //** `<input>` border color
-@input-border:                   transparent;
+@input-border:                   #fff;
 //** `<input>` border radius
 @input-border-radius:            @border-radius-base;
 //** Border color for inputs on focus

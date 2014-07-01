@@ -1,0 +1,63 @@
+extends layout
+
+block prepend head
+  != js('comments')
+
+block append head
+  script(type="text/javascript" src="http://www.youtube.com/player_api")
+  script(src="http://a.vimeocdn.com/js/froogaloop2.min.js")
+
+block content
+  .col-lg-offset-2.col-lg-8.background
+
+    #video-content(class="col-lg-12", data-video="#{video.platform}_#{video.id}")
+      //- a(target='_blank' href='#{video.link}') Link
+      h1 #{video.title}
+      //- p #{video._video_data.description}
+      
+      div.video-block
+        if video.platform == 'youtube'
+          iframe#video.youtube(type="text/html" src="http://www.youtube.com/embed/#{video.id}?enablejsapi=1" frameborder="0")
+        else  
+          iframe#video.vimeo(src="http://player.vimeo.com/video/#{video.id}?api=1&amp;player_id=video" frameborder="0" webkitAllowFullScreen mozallowfullscreen allowFullScreen)
+        
+        div#timeline.timeline.col-lg-12
+        
+        .col-lg-12
+          if isConnected
+            form#comment-form.form-horizontal.col-lg-8(method='POST')
+              input(type='hidden', name='_csrf', value=_csrf)
+              .form-group
+                input#comment(type='text', placeholder='Ton com\'')
+                button#submitComment.btn.btn.btn-primary(type='submit')
+                  i
+                    | Balance!
+          else
+            a.btn.col-lg-8(href="/signup") Tu veux donner ton avis ? Inscris-toi !
+          
+          .stats.col-lg-3
+            .views #{video.views} vues
+            .likes #{video.likes} likes
+          
+        .clearfix
+
+        div.infos
+          div.who
+            span.title C'est qui ?
+            a(href="/user/#{video._creator.profile.slug}") #{video._creator.profile.name}
+          div.what
+            span.title De quoi ?
+            span #{video.type} truc
+          div.when
+            span.title Quand ça ?
+            span #{video.date}
+          div.where
+            span.title Où ça ?
+            img(src="http://api.tiles.mapbox.com/v3/warpath.ik58n87j/pin-s+cc4422(#{video.location.lng},#{video.location.lat},3)/#{video.location.lng},#{video.location.lat},1/100x50.png") 
+          .clearfix
+
+
+      //- div.related
+      //-   h5 Grouille toi de regarder ce qu'il se passe par ici
+      //-   ul
+      //-     li video

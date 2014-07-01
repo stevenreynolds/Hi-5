@@ -6,37 +6,52 @@ block content
 
   form.form-horizontal(action='/account/profile', method='POST')
     input(type='hidden', name='_csrf', value=_csrf)
+
     .form-group
-      label.col-sm-2.control-label(for='email') Email
-      .col-sm-4
+      label.col-sm-4.control-label(for='email') Tom Email
+      .col-sm-6
         input.form-control(type='email', name='email', id='email', value='#{user.email}')
+
     .form-group
-      label.col-sm-2.control-label(for='name') Name
-      .col-sm-4
+      label.col-sm-4.control-label(for='name') Ton Blaze
+      .col-sm-6
         input.form-control(type='text', name='name', id='name', value='#{user.profile.name}')
+
     .form-group
-      label.col-sm-2.control-label(for='gender') Gender
-      .col-sm-4
+      label.col-sm-4.control-label(for='gender') T'es plutôt
+      .col-sm-6
         label.radio
           input(type='radio', checked=user.profile.gender=='male', name='gender', value='male', data-toggle='radio')
-          span Male
+          span Un homme
         label.radio
           input(type='radio', checked=user.profile.gender=='female', name='gender', value='female', data-toggle='radio')
-          span Female
+          span Une femme
+    
     .form-group
-      label.col-sm-2.control-label(for='location') Location
-      .col-sm-4
-        input.form-control(type='text', name='location', id='location', value='#{user.profile.location}')
+      label.col-sm-4.control-label(for='birthdate') Quand t’es venu au monde ?
+      .col-sm-6
+        input.form-control(type='date', name='birthdate', id='birthdate', placeholder='JJ/MM/AAAA' value="#{birthdate}")
+    
     .form-group
-      label.col-sm-2.control-label(for='website') Website
-      .col-sm-4
-        input.form-control(type='text', name='website', id='website', value='#{user.profile.website}')
+      label.col-sm-4.control-label(for='city') Tu crèches où ? (La ville ! Le reste je m’en fou.. )
+      .col-sm-6
+        input.form-control(type='text', name='city', id='city', placeholder='Paris, L.A, Berlin ...', value="#{user.profile.city}")
+    
     .form-group
-      label.col-sm-2.control-label(for='gravatar') Gravatar
-      .col-sm-4
-        img(src="#{user.gravatar()}", class='profile', width='100', height='100')
+      label.col-sm-4.control-label(for='country') C’est dans quel pays ça ? 
+      .col-sm-6
+        input.form-control(type='text', name='country', id='country', placeholder='France, Etat-Unis, Allemange ...', value="#{user.profile.country}")
+
     .form-group
-      .col-sm-offset-2.col-sm-4
+      label.col-sm-4.control-label(for='gravatar')
+      .col-sm-6
+        if user.profile.picture
+          img(src="#{user.profile.picture}", class='profile', width='100', height='100')
+        else
+          img(src="#{user.gravatar()}", class='profile', width='100', height='100')
+
+    .form-group
+      .col-sm-offset-4.col-sm-4
         button.btn.btn.btn-primary(type='submit')
           i.fa.fa-magnet
           | Modifier mes infos
@@ -61,6 +76,7 @@ block content
           | Changer le mot de passe
 
   .page-header
+<<<<<<< HEAD
     h3 Je ne comprends rien ici, supprimez moi !
 
   p Tu es sur ? C'est dommage, mais réfléchis bien, c'est une action irréversible.
@@ -72,12 +88,16 @@ block content
 
   .page-header
     h3 Les comptes connectés
+=======
+    h3 Linked Accounts
+>>>>>>> FETCH_HEAD
 
   if user.google
     p: a.text-danger(href='/account/unlink/google') Déconnecter son compte Google
   else
     p: a(href='/auth/google') Connecter son compte Google
 
+<<<<<<< HEAD
   if user.facebook
     p: a.text-danger(href='/account/unlink/facebook') Déconnecter son compte Facebook
   else
@@ -87,6 +107,17 @@ block content
     p: a.text-danger(href='/account/unlink/twitter') Déconnecter son compte Twitter
   else
     p: a(href='/auth/twitter') Connecter son compte Twitter
+=======
+  //- if user.facebook
+  //-   p: a.text-danger(href='/account/unlink/facebook') Unlink your Facebook account
+  //- else
+  //-   p: a(href='/auth/facebook') Link your Facebook account
+
+  //- if user.twitter
+  //-   p: a.text-danger(href='/account/unlink/twitter') Unlink your Twitter account
+  //- else
+  //-   p: a(href='/auth/twitter') Link your Twitter account
+>>>>>>> FETCH_HEAD
 
   if user.vimeo
     p: a.text-danger(href='/account/unlink/vimeo') Déconnecter son compte Vimeo
@@ -96,4 +127,19 @@ block content
   if user.instagram
     p: a.text-danger(href='/account/unlink/instagram') Déconnecter son compte Facebook
   else
+<<<<<<< HEAD
     p: a(href='/auth/instagram') Connecter son compte Facebook
+=======
+    p: a(href='/auth/instagram') Link your Instagram account
+
+
+  .page-header
+    h3 Delete Account
+
+  p You can delete your account, but keep in mind this action is irreversible.
+  form(action='/account/delete', method='POST')
+    input(type='hidden', name='_csrf', value=_csrf)
+    button.btn.btn-danger(type='submit')
+      i.fa.fa-trash-o
+      | Delete my account
+>>>>>>> FETCH_HEAD
