@@ -402,3 +402,28 @@ form{
 .fa {
   margin-right: 5px;
 }
+
+
+.insta, .facebook { 
+  margin-top: 5px;
+  margin-left: 10px;
+  display: inline-block; 
+  background: url(../img/social.png) no-repeat; 
+  overflow: hidden; 
+  text-indent: -9999px; 
+  text-align: left; 
+  width: 30px; height: 30px;
+}
+ 
+.insta {
+  background-position: -30px -0px; 
+  &:hover{
+    background-position: -0px -0px;
+  }
+}
+.facebook { 
+  background-position: -30px -30px; 
+  &:hover{
+    background-position: -0px -30px;
+  }
+}
