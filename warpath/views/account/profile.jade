@@ -76,7 +76,35 @@ block content
           | Changer le mot de passe
 
   .page-header
-<<<<<<< HEAD
+    h3 Les comptes connectés
+
+  if user.google
+    p: a.text-danger(href='/account/unlink/google') Déconnecter son compte Google
+  else
+    p: a(href='/auth/google') Connecter son compte Google
+
+  //- if user.facebook
+  //-   p: a.text-danger(href='/account/unlink/facebook') Déconnecter son compte Facebook
+  //- else
+  //-   p: a(href='/auth/facebook') Connecter son compte Facebook
+
+  //- if user.twitter
+  //-   p: a.text-danger(href='/account/unlink/twitter') Déconnecter son compte Twitter
+  //- else
+  //-   p: a(href='/auth/twitter') Connecter son compte Twitter
+
+  if user.vimeo
+    p: a.text-danger(href='/account/unlink/vimeo') Déconnecter son compte Vimeo
+  else
+    p: a(href='/auth/vimeo') Connecter son compte Vimeo
+
+  if user.instagram
+    p: a.text-danger(href='/account/unlink/instagram') Déconnecter son compte Instagram
+  else
+    p: a(href='/auth/instagram') Connecter son compte Instagram
+
+
+  .page-header
     h3 Je ne comprends rien ici, supprimez moi !
 
   p Tu es sur ? C'est dommage, mais réfléchis bien, c'est une action irréversible.
@@ -84,62 +112,4 @@ block content
     input(type='hidden', name='_csrf', value=_csrf)
     button.btn.btn-danger(type='submit')
       i.fa.fa-trash-o
-      | Bye bye Warpath 
-
-  .page-header
-    h3 Les comptes connectés
-=======
-    h3 Linked Accounts
->>>>>>> FETCH_HEAD
-
-  if user.google
-    p: a.text-danger(href='/account/unlink/google') Déconnecter son compte Google
-  else
-    p: a(href='/auth/google') Connecter son compte Google
-
-<<<<<<< HEAD
-  if user.facebook
-    p: a.text-danger(href='/account/unlink/facebook') Déconnecter son compte Facebook
-  else
-    p: a(href='/auth/facebook') Connecter son compte Facebook
-
-  if user.twitter
-    p: a.text-danger(href='/account/unlink/twitter') Déconnecter son compte Twitter
-  else
-    p: a(href='/auth/twitter') Connecter son compte Twitter
-=======
-  //- if user.facebook
-  //-   p: a.text-danger(href='/account/unlink/facebook') Unlink your Facebook account
-  //- else
-  //-   p: a(href='/auth/facebook') Link your Facebook account
-
-  //- if user.twitter
-  //-   p: a.text-danger(href='/account/unlink/twitter') Unlink your Twitter account
-  //- else
-  //-   p: a(href='/auth/twitter') Link your Twitter account
->>>>>>> FETCH_HEAD
-
-  if user.vimeo
-    p: a.text-danger(href='/account/unlink/vimeo') Déconnecter son compte Vimeo
-  else
-    p: a(href='/auth/vimeo') Connecter son compte Facebook
-
-  if user.instagram
-    p: a.text-danger(href='/account/unlink/instagram') Déconnecter son compte Facebook
-  else
-<<<<<<< HEAD
-    p: a(href='/auth/instagram') Connecter son compte Facebook
-=======
-    p: a(href='/auth/instagram') Link your Instagram account
-
-
-  .page-header
-    h3 Delete Account
-
-  p You can delete your account, but keep in mind this action is irreversible.
-  form(action='/account/delete', method='POST')
-    input(type='hidden', name='_csrf', value=_csrf)
-    button.btn.btn-danger(type='submit')
-      i.fa.fa-trash-o
-      | Delete my account
->>>>>>> FETCH_HEAD
+      | Bye bye Warpath

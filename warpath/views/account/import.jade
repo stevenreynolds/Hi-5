@@ -5,15 +5,9 @@ block content
     h3 Comptes connectés
 
   if user.google
-<<<<<<< HEAD
-    p: a.text(href='/account/import/google') Import depuis Youtube
+    p: a.text(href='/account/import/youtube') Import depuis Youtube
   else
     p: a(href='/auth/google') Connexion avec son compte Google
-=======
-    p: a.text(href='/account/import/youtube') Import from Youtube
-  else
-    p: a(href='/auth/google') Link your Google/YouTube account
->>>>>>> FETCH_HEAD
 
   if user.vimeo
     p: a.text(href='/account/import/vimeo') Import depuis Vimeo

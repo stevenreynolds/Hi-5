@@ -10,20 +10,14 @@
           select#search-type.form-control
             option(value='Video') Videos
             option(value='User') Users
-          //- .search-button
+          //- i.fa.fa-search
 
       ul.nav.navbar-nav.navbar-right
         if !user
           li(class=title=='Login'?'active':undefined)
-<<<<<<< HEAD
-            a(href='/login') Je me connecte
+            a.btn.btn-connect(href='/login') Je me connecte
           li(class=title=='Create Account'?'active':undefined)
-            a(href='/signup') Je veux un compte 
-=======
-            a.btn.btn-connect(href='/login') Connecte-toi !
-          li(class=title=='Create Account'?'active':undefined)
-            a.btn.btn-signup(href='/signup') Inscris-toi !
->>>>>>> FETCH_HEAD
+            a.btn.btn-signup(href='/signup') Je veux un compte 
         else
           li.dropdown(class=title=='Account Management'?'active':undefined)
             a.dropdown-toggle(href='#', data-toggle='dropdown')
