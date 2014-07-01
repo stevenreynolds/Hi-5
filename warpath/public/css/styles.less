@@ -60,7 +60,7 @@ footer {
   iframe{
     max-width: 100%;
   }
-  
+
   .stats{
     color: #F31951;
     font-weight: bold;
@@ -276,11 +276,51 @@ footer {
   }
 }
 
+
+//Autocomplete
+.ui-autocomplete{
+  border-radius: 0 !important;
+  width:446px !important;
+}
+/* highlight results */
+.ui-autocomplete span.hl_results {
+    background-color: #ffff66;
+}
+/* scroll results */
+.ui-autocomplete {
+    max-height: 250px;
+    overflow-y: auto;
+    /* prevent horizontal scrollbar */
+    overflow-x: hidden;
+    /* add padding for vertical scrollbar */
+    padding-right: 5px;
+}
+.ui-autocomplete li {
+    font-size: 16px;
+}
+.ui-state-focus{
+  border:none !important;
+  background:none !important;
+  color:#EE285C !important;
+}
+
+
 .navbar-right{
   li > a {
     margin-top: -1px;
     padding-top: 6px;
     padding-bottom: 6px;
+    background: #fff;
+
+    &:hover{
+      background: #ccc;
+    }
+  }
+  .dropdown-toggle:hover, .dropdown-toggle:focus{
+    background-color: #ccc!important;
+  }
+  .dropdown-menu{
+    background: #fff;
   }
 
   .btn{

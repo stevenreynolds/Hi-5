@@ -5,12 +5,11 @@
         span WARPATH
     .collapse.navbar-collapse
       ul.nav.navbarnav.col-lg-6.col-lg-offset-2
-        li.col-lg-12(class='search')
+        li.col-lg-12.ui-front(class='search')
           input#search.form-control(type='text', placeholder='WHAT I WANT TO SEE...')
           select#search-type.form-control
             option(value='Video') Videos
             option(value='User') Users
-          div.ui-front
 
       ul.nav.navbar-nav.navbar-right
         if !user
