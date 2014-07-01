@@ -169,11 +169,44 @@ exports.getUser = function(req, res) {
           console.log(points)
           console.log('points!!!!!!!!!!!')
 
+          var level = 1;
+
+          var levels = {
+            1: 500,
+            2: 1000,
+            3: 2000,
+            4: 5000,
+            5: 10000,
+            6: 25000,
+          }
+          
+          if(points <= levels[1]){
+            level = 1;
+          } else if(points <= levels[2]){
+            level = 2;
+          } else if(points <= levels[3]){
+            level = 3;
+          } else if(points <= levels[4]){
+            level = 4;
+          } else if(points <= levels[5]){
+            level = 5;
+          } else if(points <= levels[6] || points >= levels[6]){
+            level = 6;
+          }
+          console.log('level')
+          console.log(levels[level])
+
+          var user_level = {
+            points: points,
+            level: level,
+            nextLevel: levels[level] - points
+          }
+
           res.render('user', {
             title: slug,
             user: profile,
             videos: vids,
-            points: points
+            level: user_level
           });
 
       });
