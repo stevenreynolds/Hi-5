@@ -14,3 +14,19 @@ Fonctionnalités
 
 Installation
 ------
+
+###Prérequis
+- Node.js
+- MongoDB
+
+### Installation des dépendance via NPM
+```
+npm install
+```
+### Lancement de l'app
+```
+node app.js
+```
+### Il est temps d'ouvrir son naviguateur !
+- Version locale : [http://localhost:3000](http://localhost:3000)
+- Version online : [http://beta.wrpth.com](http://beta.wrpth.com)
