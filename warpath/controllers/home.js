@@ -13,6 +13,9 @@ var VideoData = require('../models/VideoData');
  */
 
 exports.index = function(req, res) {
+    console.log(req.user.getPoints())
+    console.log('ddddddddddddd')
+
   Video
     .find({})
     .lean() //Very Important !

@@ -6,6 +6,7 @@ var crypto = require('crypto');
 var Video = require('./Video');
 
 var slug = require('slug');
+var request = require('request');
 
 var userSchema = new mongoose.Schema({
   email       : { type: String, unique: true, lowercase: true },
@@ -91,6 +92,64 @@ userSchema.methods.gravatar = function(size) {
 
   var md5 = crypto.createHash('md5').update(this.email).digest('hex');
   return 'https://gravatar.com/avatar/' + md5 + '?s=' + size + '&d=retro';
+};
+
+userSchema.methods.getPoints = function() {
+  var user = this;
+
+var query = { _creator : user._id };
+
+  Video
+    .find(query)
+    .populate('_video_data')
+    .lean()
+    .exec(function(err, videos) {
+    if (err) console.log(err);
+
+    var views = 0;
+
+    videos.forEach(function(video) { 
+      var video_data = video._video_data;
+
+      if(video.platform == 'youtube'){
+        views += parseInt(video_data.statistics.viewCount);
+        var link = 'http://youtu.be/' + video.id;
+      }
+
+      if(video.platform == 'vimeo'){
+        views += parseInt(video_data.stats.plays);
+        var link = video.link;
+      }
+
+      var request_url = "http://api.sharedcount.com?url=" + encodeURIComponent(link);
+
+      console.log(request_url)
+
+      request(request_url, function (err, response, body) {
+        if (!err && response.statusCode == 200) {
+          body = JSON.parse(body)
+
+          var total = body.StumbleUpon
+                    + body.Reddit
+                    + body.Facebook.total_count
+                    + body.Delicious
+                    + body.GooglePlusOne
+                    + body.Twitter
+                    + body.Diggs
+                    + body.Pinterest
+                    + body.LinkedIn;
+
+          console.log(total)
+
+        } 
+      })
+
+    });
+
+    console.log(views)
+    console.log('dddddddddddddddddddddddddddddd')
+  });
+
 };
 
 userSchema.methods.generateSlug = function() {
