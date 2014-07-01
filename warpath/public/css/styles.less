@@ -60,29 +60,41 @@ footer {
   iframe{
     max-width: 100%;
   }
+  
+  .stats{
+    color: #F31951;
+    font-weight: bold;
+    line-height: 39px;
+    margin-left: 30px;
+    div{
+      margin-left: 10px;
+      float: left;
+    }
+  }
+
+  .infos{
+    margin: 6px auto;
+    border-top: 2px solid #ccc;
+    padding-top: 20px;
+    .who, .when, .what, .where {
+      text-align: center;
+      float:left;
+      width: 25%;
+      .title{
+        font-size: 20px;
+        text-transform: uppercase;
+        display: block;
+        font-weight: bold;
+      }
+    }
+  }
+
 }
 
 #video-content{
     position: relative;
 }
 
-.infos{
-  margin: 10px auto;
-  .who, .when, .what, .where {
-    text-align: center;
-    float:left;
-    width: 25%;
-    .title{
-      font-size: 20px;
-      text-transform: uppercase;
-      display: block;
-    }
-  }
-}
-
-.clear{
-  clear: both;
-}
 
 #comment-form{
   #comment, #submitComment{
