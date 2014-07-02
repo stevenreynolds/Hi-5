@@ -156,48 +156,56 @@ exports.getUser = function(req, res) {
 
       if(err) console.log(err)
 
-      req.user.getPoints(function(points){
-          console.log(points + ' points!!!!!!!!!!!')
+      User
+      .findOne({ 'profile.slug': slug },{ tokens: 0 })
+      .exec(function (err, theuser) {
+        if (err) callback(err);
+       
+        theuser.getPoints(function(points){
+            console.log(points + ' points!!!!!!!!!!!')
 
-          var level = 1;
+            var level = 1;
 
-          var levels = {
-            1: 500,
-            2: 1000,
-            3: 2000,
-            4: 5000,
-            5: 10000,
-            6: 25000,
-          }
-          
-          if(points <= levels[1]){
-            level = 1;
-          } else if(points <= levels[2]){
-            level = 2;
-          } else if(points <= levels[3]){
-            level = 3;
-          } else if(points <= levels[4]){
-            level = 4;
-          } else if(points <= levels[5]){
-            level = 5;
-          } else if(points <= levels[6] || points >= levels[6]){
-            level = 6;
-          }
+            var levels = {
+              1: 500,
+              2: 1000,
+              3: 2000,
+              4: 5000,
+              5: 10000,
+              6: 25000,
+            }
+            
+            if(points <= levels[1]){
+              level = 1;
+            } else if(points <= levels[2]){
+              level = 2;
+            } else if(points <= levels[3]){
+              level = 3;
+            } else if(points <= levels[4]){
+              level = 4;
+            } else if(points <= levels[5]){
+              level = 5;
+            } else if(points <= levels[6] || points >= levels[6]){
+              level = 6;
+            }
 
-          var user_level = {
-            points: points,
-            level: level,
-            nextLevel: levels[level] - points
-          }
+            var user_level = {
+              points: points,
+              level: level,
+              nextLevel: levels[level] - points
+            }
 
-          res.render('user', {
-            title: slug,
-            profile: profile,
-            videos: vids,
-            level: user_level
-          });
+            res.render('user', {
+              title: slug,
+              profile: profile,
+              videos: vids,
+              level: user_level
+            });
 
-      });
+        });
+
+
+       });
   
   });
 

@@ -108,7 +108,7 @@ userSchema.methods.gravatar = function(size) {
 };
 
 userSchema.methods.getPoints = function(cb) {
-  var user = this;
+  var user = JSON.parse(JSON.stringify(this));
 
   var views = 0;
   var comments = 0;

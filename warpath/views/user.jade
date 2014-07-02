@@ -6,7 +6,7 @@ block meta
   meta(property='og:site_name', content='WarPath')
   meta(property='og:url', content='http://www.wrpth.com/user/#{profile.profile.slug}')
   meta(property='og:description', content='Attrape tes tripes et retiens-les correctement ! T’es sportif extrême ? Dépêche-toi de le prouver !')
-  if user.profile.picture
+  if profile.profile.picture
     meta(property='og:image', content='#{profile.profile.picture}')
   else
     meta(property='og:image', content='#{profile.profile.picture}')
@@ -20,7 +20,7 @@ block content
     #user-content(class="col-lg-12", data-video="#{profile.profile.slug}")
 
       #profile
-        if user.profile.picture
+        if profile.profile.picture
           img.profile-picture(src='#{profile.profile.picture}')
         else
           img.profile-picture(src='#{profile.gravatar(110)}')
@@ -29,13 +29,13 @@ block content
 
         h1 #{profile.profile.name}
         .social-icons
-          if user.email
+          if profile.email
             a.fa.fa-envelope(href='#')
-          if user.vimeo && user.vimeo.username 
+          if profile.vimeo && profile.vimeo.username 
             a.fa.fa-vimeo-square(target="_blank", href='https://vimeo.com/#{profile.vimeo.username}')
-          if user.instagram && user.instagram.username 
+          if profile.instagram && profile.instagram.username 
             a.fa.fa-instagram(target="_blank", href='https://instagram.com/#{profile.instagram.username}')
-          if user.google && user.google.channel 
+          if profile.google && profile.google.channel 
             a.fa.fa-youtube(target="_blank", href='https://youtube.com/channel/#{profile.google.channel}')
 
           .clearfix
@@ -90,7 +90,7 @@ block content
               span.sr-only Close
             h4#myModalLabel.modal-title Contact
           .modal-body
-            if user.id
+            if user && user.id
               form.form-horizontal(id='email-form', method='POST', action="/contact_user")
                 input(type='hidden', name='_csrf', value=_csrf)
                 input(type='hidden', name='to', value="#{profile._id}")
