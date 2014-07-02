@@ -11,6 +11,8 @@ $(document).ready(function() {
             type: "GET",
             data: request,  // request is the value of search input
             success: function (data) {
+              if (data.length > 0) {
+                
                 // Map response values to fiedl label and value
                 response($.map(data, function (el) {
                   if(request.type == 'User') {
@@ -26,12 +28,15 @@ $(document).ready(function() {
                     };
                   }
                 }));
+              } else {
+                  response([{ label: 'On a rien trouvé ...', val: -1}]);
+              }
             }
         });
     },
          
      // The minimum number of characters a user must type before a search is performed.
-     minLength: 3, 
+     minLength: 2, 
      
      // set an onFocus event to show the result on input field when result is focused
      focus: function (event, ui) { 
@@ -40,6 +45,9 @@ $(document).ready(function() {
         event.preventDefault();
      },
      select: function (event, ui) {
+        if (ui.item.val == -1) {
+            return false;
+        }
         // Prevent value from being put in the input:
         // this.value = ui.item.label;
         // Set the id to the next input hidden field
@@ -56,7 +64,6 @@ $(document).ready(function() {
   $('.search-btn').on('click', function(){
     $("#search").autocomplete("search");
   });
-  
 
 
 });
