@@ -56,7 +56,6 @@ exports.getVideo = function(req, res) {
         }
 
         if(video.platform == 'vimeo'){
-            console.log(video_data.created_time)
             var date = moment(video_data.created_time)
             date = date.format('DD MMM YYYY');
 

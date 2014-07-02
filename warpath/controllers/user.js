@@ -95,7 +95,7 @@ exports.getUser = function(req, res) {
                         var likes = video_data.statistics.likeCount;
                         var views = video_data.statistics.viewCount;
 
-                        var temp = video._id.split("_");
+                        var temp = video._id.split("youtube_");
                         var id = temp[1];
 
                         var video = {
