@@ -156,10 +156,81 @@ var beta = {
 
 }
 
+
+var production = {
+
+  db: process.env.MONGODB || 'mongodb://localhost:27017/test',
+
+  sessionSecret: process.env.SESSION_SECRET || '!b17e$@^shg#+o$34c32x-lo^!%z02_&ffmj-fcpce8pc%@&@^',
+
+  mailgun: {
+    user: process.env.MAILGUN_USER || 'postmaster@sandbox697fcddc09814c6b83718b9fd5d4e5dc.mailgun.org',
+    password: process.env.MAILGUN_PASSWORD || '29eldds1uri6'
+  },
+  
+  mandrill: {
+    user: process.env.MANDRILL_USER || 'joel.galeran+hi5@gmail.com',
+    password: process.env.MANDRILL_PASSWORD || 'THS23nA89LkooF9tXIrsSw'
+  },
+
+  sendgrid: {
+    user: process.env.SENDGRID_USER || 'hslogin',
+    password: process.env.SENDGRID_PASSWORD || 'hspassword00'
+  },
+
+  facebook: {
+    clientID: process.env.FACEBOOK_ID || '1444959329093692',
+    clientSecret: process.env.FACEBOOK_SECRET || '3d94ac73bfef0818fe3215e62ae66f57',
+    callbackURL: 'http://beta.wrpth.com/auth/facebook/callback',
+    passReqToCallback: true
+  },
+
+  instagram: {
+    clientID: process.env.INSTAGRAM_ID || '7245ac18e16f4047a798a5e60af07d39',
+    clientSecret: process.env.INSTAGRAM_SECRET || '3804ec6e9be34e619ec075728a9c7aa0',
+    callbackURL: 'http://www.wrpth.com/auth/instagram/callback',
+    passReqToCallback: true
+  },
+
+  twitter: {
+    consumerKey: process.env.TWITTER_KEY || 'caK4z7QF8m01u5XUHRyqNVPJW',
+    consumerSecret: process.env.TWITTER_SECRET  || 'CJLMSYIBVXymXuV3hJYx8pfJrkfRDWGEldptbKAwBjtLnWktzr',
+    callbackURL: 'http://beta.wrpth.com/auth/twitter/callback',
+    passReqToCallback: true
+  },
+
+  google: {
+    clientID: process.env.GOOGLE_ID || '538310333639-usboth4ttfnh7rv6b4ptrddpopphqe0u.apps.googleusercontent.com',
+    clientSecret: process.env.GOOGLE_SECRET || 'Vqc_lnUnDoIvgLPqAZU_CqJH',
+    callbackURL: 'http://www.wrpth.com/auth/google/callback',
+    passReqToCallback: true
+  },
+
+  vimeo: {
+    consumerKey: process.env.VIMEO_ID || '3b4b3aae24e187a5bf24b41111d6bdb2ecc2bf77',
+    consumerSecret: process.env.VIMEO_SECRET || '500a460174a70ff05de9a9c20875b7fc95be7d8a',
+
+    clientID: process.env.VIMEO_ID || '3b4b3aae24e187a5bf24b41111d6bdb2ecc2bf77',
+    clientSecret: process.env.VIMEO_SECRET || '500a460174a70ff05de9a9c20875b7fc95be7d8a',
+
+    redirectUrl: 'http://www.wrpth.com/auth/vimeo/callback',
+    callbackURL: 'http://www.wrpth.com/auth/vimeo/callback',
+    passReqToCallback: true
+  },
+
+  foursquare: {
+    clientId: process.env.FOURSQUARE_ID || '2STROLSFBMZLAHG3IBA141EM2HGRF0IRIBB4KXMOGA2EH3JG',
+    clientSecret: process.env.FOURSQUARE_SECRET || 'UAABFAWTIHIUFBL0PDC3TDMSXJF2GTGWLD3BES1QHXKAIYQB',
+    redirectUrl: process.env.FOURSQUARE_REDIRECT_URL || 'http://localhost:3000/auth/foursquare/callback'
+  },
+
+}
+
+
 console.log(process.env.NODE_ENV)
 switch(process.env.NODE_ENV){
     case 'development': module.exports = development; break;
-    case 'production':  module.exports = beta;        break;
+    case 'production':  module.exports = production;  break;
     case 'beta':        module.exports = beta;        break;
     default:            module.exports = development;
 }
