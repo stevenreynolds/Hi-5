@@ -5,10 +5,10 @@ Site public, accessible à tous les utilisateurs avec possibilité de s’inscri
 
 Réalisation
 ------
-- Code : Joël Galeran
 - Wireframes : Robin
-- Wireframes HD : Wilson Ngaruye
+- Wireframes HD ([disponibles online](http://wireframes.wrpth.com)) : Wilson Ngaruye
 - Maquettes : Virginie Riou
+- Code : Joël Galeran
 
 Fonctionnalités
 ------
