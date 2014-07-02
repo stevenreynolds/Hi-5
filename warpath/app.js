@@ -27,7 +27,6 @@ var connectAssets = require('connect-assets');
 
 var homeController    = require('./controllers/home');
 var userController    = require('./controllers/user');
-var apiController     = require('./controllers/api');
 var contactController = require('./controllers/contact');
 var pageController    = require('./controllers/page');
 
@@ -176,22 +175,6 @@ app.get('/video/:id', videoController.getVideo);
 app.get('/comments/:id', commentsController.getComments);
 app.post('/comments', commentsController.addComment);
 
-
-//app.get('/import', youtubeController.getYoutube);
-//app.get('/import', vimeoController.getVimeo);
-
-/**
- * API examples routes.
- */
-
-app.get('/api', apiController.getApi);
-app.get('/api/scraping', apiController.getScraping);
-app.get('/api/facebook', passportConf.isAuthenticated, passportConf.isAuthorized, apiController.getFacebook);
-app.get('/api/twitter', passportConf.isAuthenticated, passportConf.isAuthorized, apiController.getTwitter);
-app.post('/api/twitter', passportConf.isAuthenticated, passportConf.isAuthorized, apiController.postTwitter);
-//app.get('/api/vimeo', passportConf.isAuthenticated, passportConf.isAuthorized, apiController.getTwitter);
-app.get('/api/instagram', passportConf.isAuthenticated, passportConf.isAuthorized, apiController.getInstagram);
-
 /**
  * OAuth sign-in routes.
  */
@@ -228,22 +211,6 @@ app.get('/auth/vimeo/callback', passport.authenticate('vimeo', { failureRedirect
   else res.redirect(req.session.returnTo || '/');
 });
 
-/**
- * OAuth authorization routes for API examples.
- */
-
-// app.get('/auth/foursquare', passport.authorize('foursquare'));
-// app.get('/auth/foursquare/callback', passport.authorize('foursquare', { failureRedirect: '/api' }), function(req, res) {
-//   res.redirect('/api/foursquare');
-// });
-// app.get('/auth/tumblr', passport.authorize('tumblr'));
-// app.get('/auth/tumblr/callback', passport.authorize('tumblr', { failureRedirect: '/api' }), function(req, res) {
-//   res.redirect('/api/tumblr');
-// });
-// app.get('/auth/venmo', passport.authorize('venmo', { scope: 'make_payments access_profile access_balance access_email access_phone' }));
-// app.get('/auth/venmo/callback', passport.authorize('venmo', { failureRedirect: '/api' }), function(req, res) {
-//   res.redirect('/api/venmo');
-// });
 
 /**
  * 500 Error Handler.
