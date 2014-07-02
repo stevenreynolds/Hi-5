@@ -199,7 +199,7 @@ exports.getUser = function(req, res) {
             var user_level = {
               points: points,
               level: level,
-              nextLevel: levels[level] - points,
+              nextLevel: Math.abs(levels[level] - points),
               badge: badge
             }
 
