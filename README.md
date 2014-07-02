@@ -47,6 +47,7 @@ L'application se trouve dans le dossier /warpath
 - [http://stringjs.com/](http://stringjs.com/) Lib d'utilitaires pour strings
 - [http://lodash.com/](http://lodash.com/) lib d'utilitaires
 - [https://github.com/caolan/async](https://github.com/caolan/async) Async Utilities
+- [https://linkedin.github.io/hopscotch/](https://linkedin.github.io/hopscotch/) hopscotch pour la visite guidée
 
 ### Installation des dépendance via NPM
 ```
