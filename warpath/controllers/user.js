@@ -534,13 +534,13 @@ exports.postReset = function(req, res, next) {
       });
       var mailOptions = {
         to: user.email,
-        from: 'hackathon@starter.com',
-        subject: 'Your Hackathon Starter password has been changed',
-        text: 'Hello,\n\n' +
-          'This is a confirmation that the password for your account ' + user.email + ' has just been changed.\n'
+        from: 'password@wrpth.com',
+        subject: 'Ton mot de passe WarPath a été changé',
+        text: 'Salut,\n\n' +
+          'Juste pour te confirmer que le mot de passe lié à ' + user.email + ' a été changé.\n'
       };
       smtpTransport.sendMail(mailOptions, function(err) {
-        req.flash('success', { msg: 'Success! Your password has been changed.' });
+        req.flash('success', { msg: 'Yes! Le nouveau mot de passe l\'air terrible !' });
         done(err);
       });
     }
