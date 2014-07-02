@@ -43,10 +43,6 @@ exports.getUser = function(req, res) {
 
               profile.profile.age = calculateAge(profile.profile.birthdate);
 
-              console.log('PPPPPPPPPPPPPPPROFILEEEEEEEEEE')
-              console.log(profile)
-              console.log('PPPPPPPPPPPPPPPROFILEEEEEEEEEE')
-
               callback(null, profile);
 
             });
@@ -56,12 +52,9 @@ exports.getUser = function(req, res) {
           var adress = encodeURIComponent(profile.profile.city + ' ' + profile.profile.country);
           var geocode_url = "http://api.tiles.mapbox.com/v3/warpath.ik58n87j/geocode/" + adress + ".json";
 
-          console.log(geocode_url)
-
           request(geocode_url, function (err, response, body) {
             if (!err && response.statusCode == 200) {
               body = JSON.parse(body)
-              console.log(body.results)
 
               profile.profile.geocode = body.results[0][0];
 
@@ -85,7 +78,6 @@ exports.getUser = function(req, res) {
             .limit(4)
             .exec(function (err, videos) {
               if (err) callback(err)
-              console.log(videos)
 
               var vids = [];
 
@@ -125,7 +117,6 @@ exports.getUser = function(req, res) {
                       }
 
                       if(video.platform == 'vimeo'){
-                        console.log(video_data.created_time)
                         var date = moment(video_data.created_time)
                         date = date.format('DD MMM YYYY');
 
@@ -166,8 +157,7 @@ exports.getUser = function(req, res) {
       if(err) console.log(err)
 
       req.user.getPoints(function(points){
-          console.log(points)
-          console.log('points!!!!!!!!!!!')
+          console.log(points + ' points!!!!!!!!!!!')
 
           var level = 1;
 
@@ -193,8 +183,6 @@ exports.getUser = function(req, res) {
           } else if(points <= levels[6] || points >= levels[6]){
             level = 6;
           }
-          console.log('level')
-          console.log(levels[level])
 
           var user_level = {
             points: points,

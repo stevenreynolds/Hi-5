@@ -9,7 +9,7 @@ var VideoData = require('../models/VideoData');
 
 /**
  * GET /
- * Home page with Videos.
+ * Home page map with Videos.
  */
 
 exports.index = function(req, res) {
@@ -22,7 +22,6 @@ exports.index = function(req, res) {
     .exec(function (err, videos) {
       if (err) console.log(err);
 
-      //console.log(videos);
       generateGeoJSON(videos, function(geoJSON){
         
         res.render('home', {
@@ -48,8 +47,6 @@ var generateGeoJSON = function(videos, callback){
         var temp = video._id.split("_");
         var platform = temp[0];
         var videoID = temp[1];
-
-        console.log(video._id)
 
         if(platform == 'youtube'){
           var thevideo = {
@@ -89,8 +86,6 @@ var generateGeoJSON = function(videos, callback){
         geoJSON.features.push(point);
 
     });
-
-    console.log(geoJSON.features)
 
     callback(geoJSON);
 

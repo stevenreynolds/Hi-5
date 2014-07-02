@@ -121,8 +121,4 @@ exports.getYoutube = function(req, res, callback) {
         }
     });
 
-    // https://developers.google.com/youtube/v3/docs/videos/list
-    // id,snippet,contentDetails,fileDetails,player,processingDetails,recordingDetails,statistics,status,suggestions,topicDetails
-    // GET https://www.googleapis.com/youtube/v3/videos?part=id%2Csnippet%2CcontentDetails%2CfileDetails%2Cplayer%2CprocessingDetails%2CrecordingDetails%2Cstatistics%2Cstatus%2Csuggestions%2CtopicDetails&id=KlhAjqtmEC8&key={YOUR_API_KEY}
-
 };

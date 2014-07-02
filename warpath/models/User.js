@@ -141,8 +141,6 @@ userSchema.methods.getPoints = function(cb) {
             comments += video.comments.length;
 
             var request_url = "http://free.sharedcount.com?url=" + encodeURIComponent(link) + "&apikey=" + "22304c02dd7115798c72457b04754096961b81c6";
-            
-            console.log(request_url)
 
             request(request_url, function (err, response, body) {
               
@@ -161,8 +159,6 @@ userSchema.methods.getPoints = function(cb) {
                         + body.Pinterest
                         + body.LinkedIn;
 
-                console.log(share_total)
-                console.log('total')
                 callback_each();
               } 
 
@@ -190,15 +186,9 @@ userSchema.methods.getPoints = function(cb) {
   function(err, results){
     if(err) console.log(err)
       
-    console.log('Points')          
-    console.log(points)
-    console.log('comments' + comments)
     var points = (views * 5) + share_total + (comments * 2);
     cb(points);
   });
-
-    console.log(views)
-    console.log('dddddddddddddddddddddddddddddd')
 
 };
 
@@ -212,9 +202,6 @@ userSchema.methods.generateSlug = function() {
       .lean()
       .exec(function(err, count) {
       if (err) console.log(err);
-      
-      console.log(slugname)
-      console.log(count)
 
       if(count == 0)
         user.profile.slug = slugname;

@@ -6,7 +6,7 @@ var Video = require('../models/Video');
 var VideoData = require('../models/VideoData');
 
 /**
- * GET /search?term=*
+ * GET /search?term=*&type=
  * Search page.
  */
 exports.search = function(req, res) {
@@ -22,7 +22,6 @@ exports.search = function(req, res) {
         var query = VideoData.find(find).limit(20);
     }
 
-    // Execute query in a callback and return users list
     query.exec(function(err, data) {
 
         if (err) {
@@ -31,11 +30,9 @@ exports.search = function(req, res) {
          }, 404);
         } 
 
-         console.log(data)
-
-         res.send(data, {
+        res.send(data, {
             'Content-Type': 'application/json'
-         }, 200);
+        }, 200);
    
     });
 

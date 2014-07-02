@@ -23,7 +23,6 @@ passport.deserializeUser(function(id, done) {
 });
 
 // Sign in with Instagram.
-
 passport.use(new InstagramStrategy(secrets.instagram,function(req, accessToken, refreshToken, profile, done) {
   if (req.user) {
     User.findOne({ 'instagram.id': profile.id }, function(err, existingUser) {
@@ -54,10 +53,6 @@ passport.use(new InstagramStrategy(secrets.instagram,function(req, accessToken, 
       user.instagram.username = profile.username;
       user.tokens.push({ kind: 'instagram', accessToken: accessToken });
       user.profile.name = profile.displayName;
-      // Similar to Twitter API, assigns a temporary e-mail address
-      // to get on with the registration process. It can be changed later
-      // to a valid e-mail address in Profile Management.
-      //user.email = profile.username + "@instagram.com";
       user.profile.website = profile._json.data.website;
       user.profile.picture = profile._json.data.profile_picture;
       user.save(function(err) {
@@ -98,7 +93,6 @@ passport.use(new LocalStrategy({ usernameField: 'email' }, function(email, passw
  */
 
 // Sign in with Facebook.
-
 passport.use(new FacebookStrategy(secrets.facebook, function(req, accessToken, refreshToken, profile, done) {
   if (req.user) {
     User.findOne({ facebook: profile.id }, function(err, existingUser) {
@@ -145,7 +139,6 @@ passport.use(new FacebookStrategy(secrets.facebook, function(req, accessToken, r
 }));
 
 // Sign in with Twitter.
-
 passport.use(new TwitterStrategy(secrets.twitter, function(req, accessToken, tokenSecret, profile, done) {
   if (req.user) {
     User.findOne({ twitter: profile.id }, function(err, existingUser) {
@@ -171,11 +164,6 @@ passport.use(new TwitterStrategy(secrets.twitter, function(req, accessToken, tok
     User.findOne({ twitter: profile.id }, function(err, existingUser) {
       if (existingUser) return done(null, existingUser);
       var user = new User();
-      //https://stackoverflow.com/questions/14864827/using-everyauth-passport-js-to-authenticate-with-twitter-whilst-asking-for-usern
-      // Twitter will not provide an email address.  Period.
-      // But a person’s twitter username is guaranteed to be unique
-      // so we can "fake" a twitter email address as follows:
-      //user.email = profile.username + "@twitter.com";
       user.twitter = profile.id;
       user.tokens.push({ kind: 'twitter', accessToken: accessToken, tokenSecret: tokenSecret });
       user.profile.name = profile.displayName;
@@ -188,12 +176,9 @@ passport.use(new TwitterStrategy(secrets.twitter, function(req, accessToken, tok
   }
 }));
 
-// Sign in with Google.
 
+// Sign in with Google.
 passport.use(new GoogleStrategy(secrets.google, function(req, accessToken, refreshToken, params, profile, done) {
-// console.log(accessToken)
-// console.log(refreshToken)
-// console.log(params)
 
   if (req.user) {
     User.findOne({ 'google.id': profile.id }, function(err, existingUser) {
@@ -240,32 +225,8 @@ passport.use(new GoogleStrategy(secrets.google, function(req, accessToken, refre
   }
 }));
 
-// passport.use('vimeo', new OAuth2Strategy({
-//     authorizationURL: 'https://api.vimeo.com/oauth/authorize',
-//     tokenURL: 'https://api.vimeo.com/oauth/access_token',
-//     clientID: secrets.vimeo.clientId,
-//     clientSecret: secrets.vimeo.clientSecret,
-//     callbackURL: secrets.vimeo.redirectUrl,
-//     passReqToCallback: true
-//   },
-//   function(req, accessToken, refreshToken, profile, done) {
-
-//     console.log(accessToken)
-// console.log(refreshToken)
-// console.log(profile)
-// console.log(done)
-
-
-//   }
-// ));
-
-
+// Sign in with Vimeo.
 passport.use(new VimeoStrategy(secrets.vimeo, function(req, accessToken, refreshToken, profile, done) { 
-// console.log(accessToken)
-// console.log(refreshToken)
-// console.log(profile)
-// console.log(done)
-
   if (req.user) {
     User.findOne({ 'vimeo.id': profile.id }, function(err, existingUser) {
       if (existingUser) {
@@ -290,11 +251,6 @@ passport.use(new VimeoStrategy(secrets.vimeo, function(req, accessToken, refresh
     User.findOne({ 'vimeo.id': profile.id }, function(err, existingUser) {
       if (existingUser) return done(null, existingUser);
       var user = new User();
-      //https://stackoverflow.com/questions/14864827/using-everyauth-passport-js-to-authenticate-with-twitter-whilst-asking-for-usern
-      // Twitter will not provide an email address.  Period.
-      // But a person’s twitter username is guaranteed to be unique
-      // so we can "fake" a vimeo email address as follows:
-      //user.email = profile.username + "@vimeo.com";
       user.vimeo.id = profile.id;
       user.vimeo.username = profile.username;
       user.tokens.push({ kind: 'vimeo', accessToken: accessToken });
@@ -309,88 +265,6 @@ passport.use(new VimeoStrategy(secrets.vimeo, function(req, accessToken, refresh
 
   }
 ));
-
-
-// passport.use('foursquare', new OAuth2Strategy({
-//     authorizationURL: 'https://foursquare.com/oauth2/authorize',
-//     tokenURL: 'https://foursquare.com/oauth2/access_token',
-//     clientID: secrets.foursquare.clientId,
-//     clientSecret: secrets.foursquare.clientSecret,
-//     callbackURL: secrets.foursquare.redirectUrl,
-//     passReqToCallback: true
-//   },
-//   function(req, accessToken, refreshToken, profile, done) {
-//     User.findById(req.user._id, function(err, user) {
-//       user.tokens.push({ kind: 'foursquare', accessToken: accessToken });
-//       user.save(function(err) {
-//         done(err, user);
-//       });
-//     });
-//   }
-// ));
-
-// passport.use(new VimeoStrategy(secrets.vimeo, function(req, accessToken, tokenSecret, profile, done) {
-//   console.log(accessToken)
-//   console.log(tokenSecret)
-//   console.log(profile)
-//   console.log(done)
-
-//   if (req.user) {
-//     User.findOne({ vimeo: profile.id }, function(err, existingUser) {
-//       if (existingUser) {
-//         req.flash('errors', { msg: 'There is already a Twitter account that belongs to you. Sign in with that account or delete it, then link it with your current account.' });
-//         done(err);
-//       } else {
-//         User.findById(req.user.id, function(err, user) {
-//           user.vimeo = profile.id;
-//           user.tokens.push({ kind: 'vimeo', accessToken: accessToken, tokenSecret: tokenSecret });
-//           user.profile.name = user.profile.name || profile.displayName;
-//           user.profile.location = user.profile.location || profile.person._json.location;
-//           user.profile.picture = user.profile.picture || profile._json.person.portraits.portrait[0]._content;
-//           user.save(function(err) {
-//             req.flash('info', { msg: 'Vimeo account has been linked.' });
-//             done(err, user);
-//           });
-//         });
-//       }
-//     });
-//   } else {
-//     User.findOne({ vimeo: profile.id }, function(err, existingUser) {
-//       if (existingUser) return done(null, existingUser);
-//       var user = new User();
-//       //https://stackoverflow.com/questions/14864827/using-everyauth-passport-js-to-authenticate-with-twitter-whilst-asking-for-usern
-//       // Twitter will not provide an email address.  Period.
-//       // But a person’s twitter username is guaranteed to be unique
-//       // so we can "fake" a vimeo email address as follows:
-//       user.email = profile.username + "@vimeo.com";
-//       user.twitter = profile.id;
-//       user.tokens.push({ kind: 'vimeo', accessToken: accessToken, tokenSecret: tokenSecret });
-//       user.profile.name = profile.displayName;
-//       user.profile.location = profile.person._json.location;
-//       user.profile.picture = profile._json.person.portraits.portrait[0]._content;
-//       user.save(function(err) {
-//         done(err, user);
-//       });
-//     });
-//   }    
-
-// }));
-
-// TODO
-// generateSlug = function(){
-//   //Generate Slug
-//   if(!user.profile.slug) {
-//     User.count({ 'profile.slug': new RegExp('^' + slug(user.profile.name) + '$', 'i') }, function(err, count) {
-//       if (err) console.log(err);
-      
-//       console.log(count)
-//       if(count == 0)
-//         user.profile.slug = slug(user.profile.name);
-//       else
-//         user.profile.slug = slug(user.profile.name + (count-1) );
-//     }); 
-//   }
-// }
 
 // Login Required middleware.
 

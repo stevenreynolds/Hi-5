@@ -25,21 +25,11 @@ exports.getVimeo = function(req, res, callback) {
             page : 1,
             per_page : 100
         }
-    }, function (error, body, status_code, headers) {
-        if (error) {
-            console.log('error');
-            console.log(error);
-            res.send(error)
+    }, function (err, body, status_code, headers) {
+        if (err) {
+            console.log(err);
+            res.send(err)
         } else {
-            // console.log('body');
-            // console.log(body);
-
-            // console.log('status code');
-            // console.log(status_code);
-            // console.log('headers');
-            // console.log(headers);
-        
-
             var videos = [];
 
             async.each(body.data, function( video, callback ) {
@@ -47,25 +37,12 @@ exports.getVimeo = function(req, res, callback) {
 
                 lib.request({
                         path : '/videos/'+videoId,
-                    }, function (error, body, status_code, headers) {
-                        if (error) {
-                            console.log('error');
-                            console.log(error);
+                    }, function (err, body, status_code, headers) {
+                        if (err) {
+                            console.log(err);
                         } else {
-                            console.log('body');
-                            console.log(body);
 
                             videos.push(body)
-
-                            // var Video = mongoose.model('Video', videoSchema);
-                            // var v = new Video();
-                            
-                            // v.id = videoId
-                            // v.platform = 'vimeo';
-
-                            // v.save(function (err) {
-                            //   if(err) console.log(err)
-                            // });
 
                             var vd = new VideoData(body);
                             vd._id          = 'vimeo_' + videoId;
@@ -76,11 +53,6 @@ exports.getVimeo = function(req, res, callback) {
                             });
                             
                             callback();
-
-                            // console.log('status code');
-                            // console.log(status_code);
-                            // console.log('headers');
-                            // console.log(headers);
                         }
                 });
 

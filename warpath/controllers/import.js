@@ -70,10 +70,6 @@ exports.importYoutube = function(req, res) {
       return res.redirect('/account/import');
     }
 
-    console.log('____________________________________________________________')
-    console.log(videos)
-    console.log('____________________________________________________________')
-
     var data = {
       title: 'Import from YouTube',
       videos: []
@@ -103,22 +99,14 @@ exports.importSelected = function(req, res) {
   var videos = req.body.videos;
   if(videos)
     videos = JSON.parse(videos);
-  //if(videos.length == 0) res.redirect('/');
 
-  console.log('importSelected')
-  console.log(req.body)
+  //if(videos.length == 0) res.redirect('/');
 
   User.findById(req.user.id, function(err, user) {
 
     var Video = mongoose.model('Video', Video);
 
-    console.log(videos)
-    console.log('_________________________-----------------_________________________')
-
-
     async.eachSeries(videos, function( lavideo, callback) {
-
-      console.log(lavideo)
 
       var temp = lavideo.split("_");
       var platform = temp[0];
@@ -131,32 +119,22 @@ exports.importSelected = function(req, res) {
       v._creator = user._id;
       v.platform = platform;
 
-      console.log(v)
-
       v.save(function (err) {
         if(err) console.log(err)
-          console.log('++++++++++++++++++++++++++++++++++++++++++++++')
-
         callback();
-
       });
     }, function(err){
-        // if any of the file processing produced an error, err would equal that error
-        if( err ) {
-          // One of the iterations produced an error.
-          // All processing will now stop.
-          console.log('A file failed to process');
-        } else {
+
+        if( err ) { console.log(err); } 
+        else {
 
           User.update({ _id: req.user.id },{ $addToSet: { videos: { $each: videos } } }, function(err){
               if(err) console.log(err)
           });
 
-          console.log('All files have been processed successfully');
         }
     });
 
-    console.log(videos)
 
     VideoData
       .find({
@@ -164,26 +142,15 @@ exports.importSelected = function(req, res) {
       })
       .lean()
       .exec(function(err, docs){
-        if(err) console.log(err)
-
+      
+      if(err) console.log(err)
 
       var videos_data = [];
 
-      console.log('----------------------------docs----------------------------------------------')
-      console.log(videos)
-      console.log(docs)
-      console.log('----------------------------docs----------------------------------------------')
-
-
       _(docs).forEach(function(video) { 
-
-        console.log('fffffffffffffffffffffffffffffffff')
-        console.log(video)
 
         var temp = video._id.split("_");
         var platform = temp[0];
-
-        console.log(platform)
 
         if(platform == 'youtube'){
           var video = {
@@ -211,10 +178,6 @@ exports.importSelected = function(req, res) {
         videos_data.push(video);
       });
 
-      console.log('----------------------------videos_data----------------------------------------------')
-      console.log(videos_data)
-      console.log('----------------------------videos_data----------------------------------------------')
-
       res.render('account/import_modify', {
         title: 'Add Data',
         data: videos_data
@@ -233,13 +196,9 @@ exports.importSelected = function(req, res) {
  * POST /account/import_complete
  */
 exports.importComplete = function(req, res) {
-  console.log(req.body);
   
   var locations = JSON.parse(req.body.locations);
   var types     = JSON.parse(req.body.types);
-
-  console.log(locations);
-  console.log(types);
 
   _(locations).forEach(function(data) { 
 
