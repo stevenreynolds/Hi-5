@@ -48,28 +48,69 @@ block container
     
 
   script(type="text/javascript").
-    // Define the tour!
+    var newVisit = localStorage.getItem('isNewVisit');
+    localStorage.setItem('isNewVisit', 'no');
+    
+    hopscotch.registerHelper('fillText', function(textFieldId, textStr) {
+      document.getElementById(textFieldId).value = textStr;
+    });
+
+    var tourLocales = {
+      nextBtn: "Prochqine étape",
+      prevBtn: "En arrière !",
+      doneBtn: "Fini ! Grouille toi !",
+    };
+
     var tour = {
-    id: "hello-hopscotch",
+      id: "hello-hopscotch",
+      i18n: tourLocales,
       steps: [
         {
-          title: "Hello",
-          content: "This is the header of my page.",
-          target: ".navbar",
+          title: "Pour toi novice !",
+          content: "Tu es peut-être expert dans ton domaine, mais surement pas sur le site. <br/> Alors ce n’est pas une obligation, mais un gros conseil : <strong>SUIS CE TUTORIEL !</strong> <br/><br/>  À bon entendeur.",
+          target: ".navbar-brand",
+          placement: "left",
+          placement: "bottom",
+          xOffset: 'center',
+          arrowOffset: 'center',
+          width: 400
+        },
+        {
+          title: "Commence déjà par choisir ton univers !",
+          content: "",
+          target: ".btn-snow",
+          placement: "left",
+        },
+        {
+          title: "Accède directement aux meilleurs vidéos sur la carte !",
+          content: "Encore 3 étapes",
+          target: ".leaflet-marker-icon",
+          placement: "left",
+          onNext: ["fillText", "search", "N'importe quoi!"],
+        },
+        {
+          title: "Classique :",
+          content: "Tape ici ce que tu veux !",
+          target: "#search",
           placement: "bottom"
         },
         {
-          title: "My content",
-          content: "Here is where I put my content.",
-          target: document.querySelector(".filter-ui"),
-          placement: "left"
+          title: "Si tu veux profiter à fond, il faut un compte !",
+          content: "",
+          target: ".btn-signup",
+          placement: "bottom"
+          
         }
+
+
       ]
     };
 
-    // Start the tour!
-    //hopscotch.startTour(tour);
-
+    if(!newVisit){
+      // Start the tour!
+      hopscotch.startTour(tour);
+    }
+      
 
   script(type="text/javascript").
     //https://www.mapbox.com/mapbox.js/example/v1.0.0/
