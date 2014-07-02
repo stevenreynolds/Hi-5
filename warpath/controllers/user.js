@@ -174,25 +174,33 @@ exports.getUser = function(req, res) {
               5: 10000,
               6: 25000,
             }
-            
+            var badge = '/img/badges/';
+
             if(points <= levels[1]){
               level = 1;
+              badge += 'noob.png'; 
             } else if(points <= levels[2]){
               level = 2;
+              badge += 'kid.png'; 
             } else if(points <= levels[3]){
               level = 3;
+              badge += 'boy.png'; 
             } else if(points <= levels[4]){
               level = 4;
+              badge += 'jackass.png'; 
             } else if(points <= levels[5]){
               level = 5;
+              badge += 'badass.png'; 
             } else if(points <= levels[6] || points >= levels[6]){
               level = 6;
+              badge += 'daredevil.png'; 
             }
 
             var user_level = {
               points: points,
               level: level,
-              nextLevel: levels[level] - points
+              nextLevel: levels[level] - points,
+              badge: badge
             }
 
             res.render('user', {
