@@ -38,11 +38,11 @@ block container
     .row
       nav(id='filters' class='filter-ui')
         div
-          span.btn.btn-mountain Montagne
-          span.btn.btn-snow Neige
-          span.btn.btn-air Air
-          span.btn.btn-land Terre
-          span.btn.btn-water Eau
+          span.btn.btn-mountain(data-type="mountain") Montagne
+          span.btn.btn-snow(data-type="snow") Neige
+          span.btn.btn-air(data-type="air") Air
+          span.btn.btn-land(data-type="land") Terre
+          span.btn.btn-water(data-type="water") Eau
 
       div(id="map")
     
@@ -215,9 +215,11 @@ block container
       // the selection of markers to be displayed.
       function update() {
         var enabled = {};
-        $('.filter-ui .btn')
+        var filters = $('.filter-ui .btn');
+        filters
           .each(function(index, el){
-            if ($(el).data('state') == 'active') enabled[$(el).text().toLowerCase()] = true;
+            if ($(el).data('state') == 'active') 
+              enabled[$(el).data('type')] = true;
           });
         
         myLayer.setFilter(function(feature) {
