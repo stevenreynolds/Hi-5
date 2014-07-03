@@ -59,4 +59,5 @@ node app.js
 ```
 ### Il est temps d'ouvrir son naviguateur !
 - Version locale : [http://localhost:3000](http://localhost:3000)
-- Version online : [http://beta.wrpth.com](http://beta.wrpth.com)
+- Version online : [http://www.wrpth.com](http://www.wrpth.com)
+ ou [http://beta.wrpth.com](http://beta.wrpth.com)
