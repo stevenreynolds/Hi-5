@@ -52,6 +52,7 @@ exports.getVideo = function(req, res) {
                 , likes:        likes
                 , views:        views
                 , date:         date
+                , type:         video.type
             }
         }
 
@@ -76,6 +77,7 @@ exports.getVideo = function(req, res) {
                 , likes:        likes
                 , views:        views
                 , date:         date
+                , type:         video.type
             }
         }
 
