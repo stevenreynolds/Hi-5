@@ -124,10 +124,9 @@ function getDuration(callback) {
     if(videoType === 'vimeo'){
         clearInterval(getDurationInterval);
 
-        player.api('getDuration', function(value) {
-            duration = value;
-
-            if(callback && value)
+        player.api('getDuration', function(duration) {
+            
+            if(callback && duration)
                 callback(value);
             else
                 return duration;
@@ -139,8 +138,8 @@ function getDuration(callback) {
             if(duration != '') {
                 clearInterval(getDurationInterval);
             }
-            if(callback)
-                callback(value);
+            if(callback && duration)
+                callback(duration);
             else
                 return duration;
         }
